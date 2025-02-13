@@ -1,38 +1,58 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=c++
-
-### C++ ###
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
+# 編譯輸出
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+*.dylib
 *.a
 *.lib
-
-# Executables
 *.exe
 *.out
 *.app
 
-# End of https://www.toptal.com/developers/gitignore/api/c++ 
+# 編譯器中間文件
+*.d
+*.gcda
+*.gcno
+*.gcov
+
+# CMake 相關文件
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# IDE 相關文件
+.vscode/
+.idea/
+.vs/
+*.code-workspace
+*.sln
+*.vcxproj*
+*.cbp
+*.ncb
+*.sdf
+*.opendb
+*.tlog
+*.user
+*.VC.db
+*.DS_Store
+
+# 生成的日誌與臨時文件
+*.log
+*.tmp
+*.bak
+*.swp
+
+# 測試輸出與 coverage 資料
+/tests/output/
+/tests/results/
+*.gcov
+*.lcov
+
+# 其他可能的目錄與文件
+bin/
+build/
+debug/
+release/
+dist/
