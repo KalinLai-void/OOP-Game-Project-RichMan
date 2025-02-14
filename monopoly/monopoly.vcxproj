@@ -127,7 +127,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="monopoly.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="EventTile.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameConfig.cpp" />
+    <ClCompile Include="HospitalTile.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Bank.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PropertyTile.cpp" />
+    <ClCompile Include="StoreTile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bank.hpp" />
+    <ClInclude Include="Board.hpp" />
+    <ClInclude Include="EventTile.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameConfig.hpp" />
+    <ClInclude Include="HospitalTile.hpp" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PropertyTile.hpp" />
+    <ClInclude Include="StoreTile.hpp" />
+    <ClInclude Include="Tile.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

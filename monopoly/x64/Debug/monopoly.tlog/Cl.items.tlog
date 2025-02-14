@@ -1,1 +1,10 @@
-C:\Code\monopoly\monopoly\monopoly.cpp;C:\Code\monopoly\monopoly\x64\Debug\monopoly.obj
+C:\Code\monopoly\monopoly\Board.cpp;C:\Code\monopoly\monopoly\x64\Debug\Board.obj
+C:\Code\monopoly\monopoly\EventTile.cpp;C:\Code\monopoly\monopoly\x64\Debug\EventTile.obj
+C:\Code\monopoly\monopoly\Game.cpp;C:\Code\monopoly\monopoly\x64\Debug\Game.obj
+C:\Code\monopoly\monopoly\GameConfig.cpp;C:\Code\monopoly\monopoly\x64\Debug\GameConfig.obj
+C:\Code\monopoly\monopoly\HospitalTile.cpp;C:\Code\monopoly\monopoly\x64\Debug\HospitalTile.obj
+C:\Code\monopoly\monopoly\Main.cpp;C:\Code\monopoly\monopoly\x64\Debug\Main.obj
+C:\Code\monopoly\monopoly\Bank.cpp;C:\Code\monopoly\monopoly\x64\Debug\Bank.obj
+C:\Code\monopoly\monopoly\Player.cpp;C:\Code\monopoly\monopoly\x64\Debug\Player.obj
+C:\Code\monopoly\monopoly\PropertyTile.cpp;C:\Code\monopoly\monopoly\x64\Debug\PropertyTile.obj
+C:\Code\monopoly\monopoly\StoreTile.cpp;C:\Code\monopoly\monopoly\x64\Debug\StoreTile.obj

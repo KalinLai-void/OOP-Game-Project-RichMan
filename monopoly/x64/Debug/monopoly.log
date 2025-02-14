@@ -1,2 +1,5 @@
-﻿  monopoly.cpp
+﻿  Game.cpp
+  GameConfig.cpp
+  Main.cpp
+  正在產生程式碼...
   monopoly.vcxproj -> C:\Code\monopoly\x64\Debug\monopoly.exe
