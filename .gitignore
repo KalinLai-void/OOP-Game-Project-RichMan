@@ -1,4 +1,7 @@
-# 編譯輸出
+# Ignore build artifacts (compiled files, temporary files)
+bin/
+build/
+dist/
 *.o
 *.obj
 *.so
@@ -10,49 +13,61 @@
 *.out
 *.app
 
-# 編譯器中間文件
+# Ignore intermediate compiler files
 *.d
 *.gcda
 *.gcno
 *.gcov
+*.lastbuildstate
 
-# CMake 相關文件
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-Makefile
+# Ignore Visual Studio build folders
+x64/
+x86/
+Debug/
+Release/
 
-# IDE 相關文件
+# Ignore Visual Studio generated files
+*.ilk
+*.pdb
+*.idb
+*.exp
+*.ipch
+*.aps
+*.ncb
+*.sdf
+*.suo
+*.cache
+*.pch
+*.tlog
+*.user
+*.VC.db
+.vs/
+
+# Ignore IDE settings and metadata
 .vscode/
 .idea/
-.vs/
 *.code-workspace
 *.sln
 *.vcxproj*
 *.cbp
-*.ncb
-*.sdf
-*.opendb
-*.tlog
-*.user
-*.VC.db
-*.DS_Store
 
-# 生成的日誌與臨時文件
+# Ignore generated logs and temporary files
 *.log
 *.tmp
 *.bak
 *.swp
 
-# 測試輸出與 coverage 資料
+# Ignore testing output and code coverage data
 /tests/output/
 /tests/results/
 *.gcov
 *.lcov
 
-# 其他可能的目錄與文件
-bin/
-build/
-debug/
-release/
-dist/
+# Ignore CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Ignore OS-specific files
+.DS_Store

@@ -146,7 +146,6 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameConfig.hpp" />
     <ClInclude Include="HospitalTile.hpp" />
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PropertyTile.hpp" />
     <ClInclude Include="StartTile.hpp" />
