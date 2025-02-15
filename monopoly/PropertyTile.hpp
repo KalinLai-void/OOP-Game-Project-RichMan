@@ -1,4 +1,4 @@
-#ifndef PROPERTYTILE_HPP
+﻿#ifndef PROPERTYTILE_HPP
 #define PROPERTYTILE_HPP
 
 #include "Tile.hpp"

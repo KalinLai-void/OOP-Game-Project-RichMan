@@ -1,10 +1,13 @@
 #include "Player.hpp"
 
-Player::Player(const std::string& n, long long m)
-    : name(n), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0) {}
+Player::Player(const std::string& n, const std::string& i, long long m)
+    : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0) {}
 
 std::string Player::getName() const {
     return name;
+}
+std::string Player::getIcon() const {
+    return icon;
 }
 long long Player::getMoney() const {
     return money;

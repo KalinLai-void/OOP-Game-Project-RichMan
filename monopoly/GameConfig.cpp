@@ -1,4 +1,5 @@
 ﻿#include "GameConfig.hpp"
+#include <iostream>
 
 // 🔥 初始化唯一的 `GameConfig` 實例
 GameConfig GameConfig::instance;
@@ -9,22 +10,103 @@ GameConfig& GameConfig::getInstance() {
 
 void GameConfig::setMode(GameMode newMode) {
     this->mode = newMode;
-    loadConfig();
+    loadConfig(); // 重新載入配置
 }
+
 GameMode GameConfig::getMode() const {
     return mode;
 }
 
+void GameConfig::setPlayersNum(int num) {
+    if (num > 0 && num <= 4) { // 假設最多 4 名玩家
+        playersNum = num;
+    } else {
+        std::cerr << "玩家數量不合法，應介於 1 到 4 之間" << std::endl;
+    }
+}
+
+int GameConfig::getPlayersNum() const {
+    return playersNum;
+}
+
+void GameConfig::setPlayerNames(const std::vector<std::string>& names) {
+    if (names.size() == playersNum) {
+        playerNames = names;
+    } else {
+        std::cerr << "錯誤: 玩家名稱數量與玩家數量不匹配！" << std::endl;
+    }
+}
+
+std::vector<std::string> GameConfig::getPlayerNames() const {
+    return playerNames;
+}
+
+void GameConfig::setplayerIcons(const std::vector<std::string>& icons) {
+    if (icons.size() == playersNum) {
+        playerIcons = icons;
+    } else {
+        std::cerr << "錯誤: 玩家ICON數量與玩家數量不匹配！" << std::endl;
+    }
+}
+std::vector<std::string> GameConfig::getplayerIcons() const {
+    return playerIcons;
+}
+
+void GameConfig::setStartMoney(int amount) {
+    if (amount >= 0) {
+        startMoney = amount;
+    } else {
+        std::cerr << "錯誤: 起始金額不能為負數！" << std::endl;
+    }
+}
+
+int GameConfig::getStartMoney() const {
+    return startMoney;
+}
+
+void GameConfig::setWinMoney(int amount) {
+    if (amount >= startMoney) {
+        winMoney = amount;
+    } else {
+        std::cerr << "錯誤: 勝利金額應該大於等於起始金額！" << std::endl;
+    }
+}
+
+int GameConfig::getWinMoney() const {
+    return winMoney;
+}
+
+void GameConfig::setPassingStartBonus(int amount) {
+    this->passingStartBonus = amount;
+}
+int GameConfig::getPassingStartBonus() const {
+    return passingStartBonus;
+}
+
+void GameConfig::setBoardTiles(const std::vector<TileConfig>& tiles) {
+    this->boardTiles = tiles;
+}
+
+std::vector<TileConfig> GameConfig::getBoardTiles() const {
+    return boardTiles; // 返回整個 `boardTiles` 向量
+}
+
+// 🔥 直接修改 `this` 指向的 `GameConfig`，刪除錯誤的 `GameConfig config;`
 void GameConfig::loadConfig() {
-    GameConfig config;
+    this->playerIcons = {
+        "◆ ", // the space is for better alignment
+        "◇ ",
+        "■ ",
+        "□ ",
+    };
     switch (mode) {
     case GameMode::DEBUG:
-        players = 4;
-        player_names = {"Alice", "Bob", "Charlie", "David"};
-        player_icons = {"Red", "Blue", "Green", "Yellow"};
-        start_money = 100000;
-        win_money = 1000000;
-        boardTiles = {
+        this->playersNum = 4;
+        this->playerNames = {"Alice", "Bob", "Charlie", "David"};
+        this->startMoney = 100000;
+        this->winMoney = 300000;
+        this->passingStartBonus = 10000;
+        this->boardTiles = {
             {   "start",     "起點",     0,    0},
             {"property",     "美國",  2000,  200},
             {   "event",     "命運",     0,    0},
@@ -57,12 +139,12 @@ void GameConfig::loadConfig() {
         break;
 
     case GameMode::DUEL:
-        players = 2;
-        player_names = {"Player1", "Player2"};
-        player_icons = {"Black", "White"};
-        start_money = 10000;
-        win_money = 100000;
-        boardTiles = {
+        this->playersNum = 2;
+        this->playerNames = {"Player1", "Player2"};
+        this->startMoney = 10000;
+        this->winMoney = 30000;
+        this->passingStartBonus = 1000;
+        this->boardTiles = {
             {   "start",     "起點",     0,    0},
             {"property",     "美國",  2000,  200},
             {   "event",     "命運",     0,    0},

@@ -17,20 +17,50 @@ struct TileConfig {
 class GameConfig {
 private:
     static GameConfig instance;
-    GameMode mode;
+    GameMode mode = GameMode::DEBUG;
+    int playersNum = 2;
+    int startMoney = 0;
+    int winMoney = 0;
+    int passingStartBonus = 0;
+    std::vector<std::string> playerNames;
+    std::vector<std::string> playerIcons;
+    std::vector<TileConfig> boardTiles;
+
     GameConfig() = default; // 私有建構函式，避免外部創建物件
 
 public:
-    int players;
-    int start_money;
-    int win_money;
-    std::vector<std::string> player_names;
-    std::vector<std::string> player_icons;
-    std::vector<TileConfig> boardTiles; // 地圖格子資訊
-
     static GameConfig& getInstance();
+
+    // 設定與獲取遊戲模式
     void setMode(GameMode newMode);
     GameMode getMode() const;
+
+    // 設定與獲取玩家數量
+    void setPlayersNum(int num);
+    int getPlayersNum() const;
+
+    // 設定與獲取玩家名稱
+    void setPlayerNames(const std::vector<std::string>& names);
+    std::vector<std::string> getPlayerNames() const;
+
+    // 設定與獲取玩家ICON
+    void setplayerIcons(const std::vector<std::string>& icons);
+    std::vector<std::string> getplayerIcons() const;
+
+    // 設定與獲取金錢資訊
+    void setStartMoney(int amount);
+    int getStartMoney() const;
+
+    void setWinMoney(int amount);
+    int getWinMoney() const;
+
+    void setPassingStartBonus(int amount);
+    int getPassingStartBonus() const;
+
+    // 設定與獲取棋盤格資訊
+    void setBoardTiles(const std::vector<TileConfig>& tiles);
+    std::vector<TileConfig> getBoardTiles() const;
+
     void loadConfig();
 };
 

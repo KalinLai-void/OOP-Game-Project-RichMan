@@ -9,8 +9,8 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    Game game;
-    game.initGame(GameConfig::getInstance());
+    Game game(GameConfig::getInstance());
+    game.initGame();
     game.start();
 
     return 0;

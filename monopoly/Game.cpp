@@ -8,12 +8,12 @@ using namespace std;
 
 std::default_random_engine Game::engine;
 
-Game::Game()
-    : gameOver(false) {
+Game::Game(const GameConfig& cfg)
+    : board(cfg), config(cfg), gameOver(false) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
 }
 
-void Game::initGame(const GameConfig& config) {
+void Game::initGame() {
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
         cout << "請輸入玩家人數 (2~4 之間)：";
@@ -27,13 +27,12 @@ void Game::initGame(const GameConfig& config) {
             cout << "請輸入第 " << (i + 1) << " 位玩家名稱：";
             std::string name;
             cin >> name;
-            auto p = std::make_shared<Player>(name, 10000);
+            auto p = std::make_shared<Player>(name, config.getplayerIcons()[i], 10000);
             players.push_back(p);
         }
     } else {
-        for (int i = 0; i < config.players; i++) {
-            auto p = std::make_shared<Player>(config.player_names[i], config.start_money); // ✅ 使用 `start_money`
-            players.push_back(p);
+        for (int i = 0; i < config.getPlayersNum(); i++) {
+            players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getplayerIcons()[i], config.getStartMoney()));
         }
     }
 }
@@ -42,8 +41,8 @@ void Game::start() {
     cout << "遊戲開始！" << endl;
     while (!gameOver) {
         for (auto& p : players) {
-            if (p->isBankrupt())
-                continue;
+            system("cls");
+            board.drawBoard(players); // 呼叫 Board::drawBoard() 顯示棋盤
             if (p->isInHospital()) {
                 cout << "玩家 " << p->getName() << " 目前在醫院，無法行動。" << endl;
                 p->updateHospitalStatus();
