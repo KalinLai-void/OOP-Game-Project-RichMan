@@ -83,6 +83,9 @@
     <ClInclude Include="StartTile.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
