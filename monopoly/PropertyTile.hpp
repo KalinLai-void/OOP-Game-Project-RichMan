@@ -34,7 +34,7 @@
 #include <string>
 
 // 假設你已有 PropertyLevel 定義
-enum class PropertyLevel { LEVEL1 = 1, LEVEL2, LEVEL3 };
+enum class PropertyLevel { LEVEL1 = 1, LEVEL2 = 2, LEVEL3 = 3 };
 
 class Player; // 前向宣告
 

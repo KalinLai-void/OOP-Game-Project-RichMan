@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-// 🔥 定義遊戲模式
+// 定義遊戲模式
 enum class GameMode { DEBUG, DUEL, RELEASE, CUSTOM };
 
 struct TileConfig {
@@ -22,7 +22,8 @@ private:
     int startMoney = 0;
     int winMoney = 0;
     int passingStartBonus = 0;
-    std::vector<std::string> playerNames;
+    int mapSize = 8;
+    std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
     std::vector<TileConfig> boardTiles;
 
@@ -40,12 +41,12 @@ public:
     int getPlayersNum() const;
 
     // 設定與獲取玩家名稱
-    void setPlayerNames(const std::vector<std::string>& names);
+    void setPlayersName(const std::vector<std::string>& names);
     std::vector<std::string> getPlayerNames() const;
 
     // 設定與獲取玩家ICON
-    void setplayerIcons(const std::vector<std::string>& icons);
-    std::vector<std::string> getplayerIcons() const;
+    void setPlayerIcons(const std::vector<std::string>& icons);
+    std::vector<std::string> getPlayerIcons() const;
 
     // 設定與獲取金錢資訊
     void setStartMoney(int amount);
@@ -60,6 +61,8 @@ public:
     // 設定與獲取棋盤格資訊
     void setBoardTiles(const std::vector<TileConfig>& tiles);
     std::vector<TileConfig> getBoardTiles() const;
+
+    int getMapSize() const;
 
     void loadConfig();
 };

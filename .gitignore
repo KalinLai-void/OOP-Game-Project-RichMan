@@ -45,6 +45,7 @@ Release/
 
 # Ignore IDE settings and metadata
 .vscode/
+.qodo/
 .idea/
 *.code-workspace
 *.sln
@@ -56,12 +57,14 @@ Release/
 *.tmp
 *.bak
 *.swp
+tmp.*
 
 # Ignore testing output and code coverage data
 /tests/output/
 /tests/results/
 *.gcov
 *.lcov
+test.*
 
 # Ignore CMake generated files
 CMakeCache.txt

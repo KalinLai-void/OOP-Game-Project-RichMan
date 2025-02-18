@@ -89,5 +89,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="dialogue.json">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="config.json">
+      <Filter>資源檔</Filter>
+    </None>
   </ItemGroup>
 </Project>

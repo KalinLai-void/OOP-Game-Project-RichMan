@@ -5,9 +5,7 @@
 #include <ctime>
 #include <iostream>
 #include <random>
-#ifdef _WIN32
-#    include <windows.h> // 為了 system("cls")
-#endif
+
 using namespace std;
 
 std::default_random_engine Game::engine;
@@ -31,12 +29,12 @@ void Game::initGame() {
             cout << "請輸入第 " << (i + 1) << " 位玩家名稱：";
             std::string name;
             cin >> name;
-            auto p = std::make_shared<Player>(name, config.getplayerIcons()[i], 10000);
+            auto p = std::make_shared<Player>(name, config.getPlayerIcons()[i], 10000);
             players.push_back(p);
         }
     } else {
         for (int i = 0; i < config.getPlayersNum(); i++) {
-            players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getplayerIcons()[i], config.getStartMoney()));
+            players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
         }
     }
 }
@@ -47,12 +45,6 @@ void Game::start() {
     while (!gameOver) {
         // 每個回合依序輪到各玩家行動
         for (auto& p : players) {
-            // 清除畫面 (Windows 下 system("cls")，其他平台則 system("clear"))
-#ifdef _WIN32
-            system("cls");
-#else
-            system("clear");
-#endif
             // 畫出目前棋盤狀態
             board.drawBoard(players);
 
@@ -208,12 +200,12 @@ void Game::endGame() {
 //             cout << "請輸入第 " << (i + 1) << " 位玩家名稱：";
 //             std::string name;
 //             cin >> name;
-//             auto p = std::make_shared<Player>(name, config.getplayerIcons()[i], 10000);
+//             auto p = std::make_shared<Player>(name, config.getPlayerIcons()[i], 10000);
 //             players.push_back(p);
 //         }
 //     } else {
 //         for (int i = 0; i < config.getPlayersNum(); i++) {
-//             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getplayerIcons()[i], config.getStartMoney()));
+//             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
 //         }
 //     }
 // }
