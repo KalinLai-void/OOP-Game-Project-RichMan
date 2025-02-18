@@ -13,8 +13,9 @@
 #endif
 
 Board::Board(const GameConfig& config) {
-    //this->mapSize = config.getMapSize();
+    // this->mapSize = config.getMapSize();
     this->mapSize = 8;
+    this->tileWidth = config.getTileWidth();
     for (const auto& boardTiles : config.getBoardTiles()) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.name, boardTiles.cost, boardTiles.rent));
@@ -84,18 +85,6 @@ std::shared_ptr<Tile> Board::getTile(int index) {
     return tiles[index];
 }
 
-void setConsoleSize(int width, int height) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    // 設定緩衝區大小（確保它大於等於視窗大小）
-    COORD bufferSize = {width, height};
-    SetConsoleScreenBufferSize(hConsole, bufferSize);
-
-    // 設定視窗大小
-    SMALL_RECT windowSize = {0, 0, width - 1, height - 1};
-    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-}
-
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 // 清除畫面 (Windows 下 system("cls")，其他平台則 system("clear"))
 #ifdef _WIN32
@@ -104,13 +93,6 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     system("clear");
 #endif
     std::vector<std::vector<std::string>> tempPlayerBoard = playerBoard;
-    int cellWidth = 12;
-
-    // // 設定終端寬度與高度
-    // int terminalWidth = (mapSize * cellWidth) + (mapSize + 1);
-    // int terminalHeight = (mapSize * 2) + 6; // 棋盤 + 邊框 + 玩家資訊表格
-
-    // setConsoleSize(terminalWidth, terminalHeight); // 設定視窗大小
 
     // 更新玩家位置
     for (const auto& player : players) {
@@ -166,21 +148,21 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     // }
     std::cout << "+";
     for (int j = 0; j < mapSize; j++) {
-        std::cout << std::string(cellWidth, '-') << "+";
+        std::cout << std::string(this->tileWidth, '-') << "+";
     }
     std::cout << "\n";
     for (int i = 0; i < mapSize; i++) {
         std::cout << "| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(cellWidth - 2) << board[i][j] << " | ";
+            std::cout << std::left << std::setw(this->tileWidth - 2) << board[i][j] << " | ";
         }
         std::cout << "\n| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(cellWidth - 2) << tempPlayerBoard[i][j] << " | ";
+            std::cout << std::left << std::setw(this->tileWidth - 2) << tempPlayerBoard[i][j] << " | ";
         }
         std::cout << "\n+";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::string(cellWidth, '-') << "+";
+            std::cout << std::string(this->tileWidth, '-') << "+";
         }
         std::cout << "\n";
     }

@@ -139,6 +139,7 @@
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="StartTile.cpp" />
     <ClCompile Include="StoreTile.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="StartTile.hpp" />
     <ClInclude Include="StoreTile.hpp" />
     <ClInclude Include="Tile.hpp" />
+    <ClInclude Include="Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

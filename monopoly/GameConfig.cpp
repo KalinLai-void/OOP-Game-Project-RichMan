@@ -1,4 +1,5 @@
 ﻿#include "GameConfig.hpp"
+#include "Utils.hpp"
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -22,9 +23,10 @@ void GameConfig::loadConfig() {
     json config;
     file >> config;
     file.close();
-  
+
     try {
         this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
+        this->tileWidth = config["tileWidth"].get<int>();
 
         std::string modeStr = (mode == GameMode::DEBUG) ? "DEBUG" : "DUEL";
         auto& modeConfig = config["modes"][modeStr];
@@ -38,9 +40,13 @@ void GameConfig::loadConfig() {
 
         this->boardTiles.clear();
         for (const auto& tile : modeConfig["boardTiles"]) {
-            this->boardTiles.push_back({tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(),
-            tile["toll"].get<int>()});
+            this->boardTiles.push_back({tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
         }
+
+        // 設定 Windows Console 視窗大小 # TODO: but now failure
+        // int consoleWidth = 1000;
+        // int consoleHeight = 1000;
+        // setConsoleSize(consoleWidth, consoleHeight);
     } catch (const std::exception& e) {
         std::cerr << "Error: Failed to load configuration - " << e.what() << std::endl;
     }
@@ -133,4 +139,8 @@ std::vector<TileConfig> GameConfig::getBoardTiles() const {
 
 int GameConfig::getMapSize() const {
     return mapSize;
+}
+
+int GameConfig::getTileWidth() const {
+    return tileWidth;
 }

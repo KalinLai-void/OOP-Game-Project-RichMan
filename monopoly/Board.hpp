@@ -9,6 +9,7 @@
 class Board {
 private:
     int mapSize = 0;
+    int tileWidth = 0;
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::vector<std::string>> board;
     std::vector<std::vector<std::string>> playerBoard;

@@ -1,6 +1,7 @@
 ﻿#ifndef GAMECONFIG_HPP
 #define GAMECONFIG_HPP
 
+#include "Utils.hpp"
 #include <string>
 #include <vector>
 
@@ -23,6 +24,7 @@ private:
     int winMoney = 0;
     int passingStartBonus = 0;
     int mapSize = 8;
+    int tileWidth = 12;
     std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
     std::vector<TileConfig> boardTiles;
@@ -63,6 +65,8 @@ public:
     std::vector<TileConfig> getBoardTiles() const;
 
     int getMapSize() const;
+
+    int getTileWidth() const;
 
     void loadConfig();
 };

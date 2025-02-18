@@ -48,6 +48,9 @@
     <ClCompile Include="StartTile.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp">
@@ -84,6 +87,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

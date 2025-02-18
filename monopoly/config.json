@@ -5,6 +5,7 @@
     "[C]",
     "[D]"
   ],
+  "tileWidth": 12,
   "modes": {
     "DEBUG": {
       "playersNum": 4,
