@@ -2,9 +2,9 @@
 #define GAMECONFIG_HPP
 
 #include "Utils.hpp"
+#include "nlohmann/json.hpp"
 #include <string>
 #include <vector>
-
 // 定義遊戲模式
 enum class GameMode { DEBUG, DUEL, RELEASE, CUSTOM };
 
@@ -25,6 +25,7 @@ private:
     int passingStartBonus = 0;
     int mapSize = 8;
     int tileWidth = 12;
+    long long animationSecond = 0;
     std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
     std::vector<TileConfig> boardTiles;
@@ -72,6 +73,8 @@ public:
     int getMapSize() const;
 
     int getTileWidth() const;
+
+    long long getAnimationSecond() const;
 
     void loadConfig();
 };

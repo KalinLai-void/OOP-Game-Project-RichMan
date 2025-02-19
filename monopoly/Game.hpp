@@ -1,17 +1,21 @@
-#ifndef GAME_HPP
-#    define GAME_HPP
+﻿#ifndef GAME_HPP
+#define GAME_HPP
 
-#    include "Board.hpp"
-#    include "GameConfig.hpp"
-#    include "Player.hpp"
-#    include <memory>
-#    include <random>
-#    include <vector>
+#include "Board.hpp"
+#include "GameConfig.hpp"
+#include "Player.hpp"
+#include <memory>
+#include <random>
+#include <vector>
 
+enum class State { INIT, START, MOVED, FINISH };
+State& operator++(State& state);
 class Game {
 private:
     Board board;
     GameConfig config;
+    State currentState;
+
     std::vector<std::shared_ptr<Player>> players;
     bool gameOver;
     static std::default_random_engine engine;
@@ -25,38 +29,8 @@ public:
     void start();
     void checkGameOver();
     void endGame();
+    void changeState(State newState);
+    std::string getStateString();
 };
 
 #endif // GAME_HPP
-
-// // Game.hpp (部分內容)
-// #ifndef GAME_HPP
-// #define GAME_HPP
-
-// #include "Board.hpp"
-// #include "GameConfig.hpp"
-// #include "Player.hpp"
-// #include <memory>
-// #include <vector>
-
-// class Game {
-// public:
-//     Game(const GameConfig& cfg);
-//     void initGame();
-//     void start();
-//     void checkGameOver();
-//     void endGame();
-
-// private:
-//     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
-
-//     Board board;
-//     GameConfig config;
-//     bool gameOver;
-//     std::vector<std::shared_ptr<Player>> players;
-
-//     // 宣告隨機引擎
-//     static std::default_random_engine engine;
-// };
-
-// #endif // GAME_HPP

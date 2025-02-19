@@ -1,10 +1,7 @@
 ﻿#include "GameConfig.hpp"
 #include "Utils.hpp"
-#include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
-
-using json = nlohmann::json;
 
 // Initialize the unique `GameConfig` instance
 GameConfig GameConfig::instance;
@@ -20,7 +17,7 @@ void GameConfig::loadConfig() {
         return;
     }
 
-    json config;
+    nlohmann::json config;
     file >> config;
     file.close();
 
@@ -28,6 +25,7 @@ void GameConfig::loadConfig() {
         this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
+        this->animationSecond = config["animationSecond"].get<float>();
 
         std::string modeStr = (mode == GameMode::DEBUG) ? "DEBUG" : "DUEL";
         auto& modeConfig = config["modes"][modeStr];
@@ -151,4 +149,8 @@ int GameConfig::getMapSize() const {
 
 int GameConfig::getTileWidth() const {
     return tileWidth;
+}
+
+long long GameConfig::getAnimationSecond() const {
+    return animationSecond;
 }

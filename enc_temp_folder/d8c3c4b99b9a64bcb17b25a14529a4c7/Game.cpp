@@ -68,8 +68,10 @@ void Game::start() {
     // --------------------
     // START
     // --------------------
-    delayTime(config.getAnimationSecond());
     ++currentState;
+    cout << playerAction()["input_prompt"] << " ";
+    // // cout << config.getAnimationSecond() << endl;
+     delayTime(config.getAnimationSecond());
     // -----
     // 遊戲主迴圈：直到 gameOver 為 true
     while (!gameOver) {
@@ -80,17 +82,14 @@ void Game::start() {
 
             // 若玩家在醫院則更新狀態並跳過此回合
             if (p->isInHospital()) {
-                cout << "player [" << p->getName() << "] is in the hospital. He can't move." << endl;
+                cout << "玩家 " << p->getName() << " 目前在醫院，無法行動。" << endl;
                 p->updateHospitalStatus();
-                delayTime(config.getAnimationSecond());
                 // 暫停一下以便玩家觀察狀態 (可自行加入等待機制)
                 continue;
             }
 
             // 進入玩家行動階段：先呼叫 processPlayerAction() 選單
             // 玩家可以選擇直接擲骰子 (按 T) 或進行其他操作
-            
-            cout << playerAction()["input_prompt"] << " ";
             processPlayerAction(p, board.getTile(p->getPosition()));
 
             // 檢查玩家是否破產

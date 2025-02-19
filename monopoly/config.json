@@ -12,6 +12,7 @@
     "OOO"
   ],
   "tileWidth": 12,
+  "animationSecond": 1,
   "modes": {
     "DEBUG": {
       "playersNum": 4,

@@ -1,6 +1,8 @@
-﻿#include "utils.hpp"
+﻿#include "Utils.hpp"
 #include <iostream>
 #include <string>
+#include <thread> 
+#include <chrono>
 
 #ifdef _WIN32
 void setConsoleSize(int width, int height) {
@@ -14,6 +16,10 @@ void setConsoleSize(int width, int height) {
     system(command.c_str());
 }
 #endif
+
+void delayTime(long long s) {
+    std::this_thread::sleep_for(std::chrono::seconds(s));
+}
 
 // #ifdef _WIN32
 // void setConsoleSize(int width, int height) {
