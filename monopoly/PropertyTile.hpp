@@ -44,6 +44,7 @@ public:
     virtual void landOn(std::shared_ptr<Player> player) override;
     long long getToll() const;
     long long getUpgradeCost() const;
+    PropertyLevel getPropertyLevel() const;
 
 private:
     void purchase(std::shared_ptr<Player> player);

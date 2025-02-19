@@ -27,6 +27,7 @@ void GameConfig::loadConfig() {
     try {
         this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
         this->tileWidth = config["tileWidth"].get<int>();
+        this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
 
         std::string modeStr = (mode == GameMode::DEBUG) ? "DEBUG" : "DUEL";
         auto& modeConfig = config["modes"][modeStr];
@@ -37,7 +38,6 @@ void GameConfig::loadConfig() {
         this->winMoney = modeConfig["winMoney"].get<int>();
         this->passingStartBonus = modeConfig["passingStartBonus"].get<int>();
         this->mapSize = modeConfig["mapSize"].get<int>();
-
         this->boardTiles.clear();
         for (const auto& tile : modeConfig["boardTiles"]) {
             this->boardTiles.push_back({tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
@@ -95,6 +95,14 @@ void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
 
 std::vector<std::string> GameConfig::getPlayerIcons() const {
     return playerIcons;
+}
+
+void GameConfig::setPropertyLevelIcons(const std::vector<std::string>& icons) {
+    propertyLevelIcons = icons;
+}
+
+std::vector<std::string> GameConfig::getPropertyLevelIcons() const {
+    return propertyLevelIcons;
 }
 
 void GameConfig::setStartMoney(int amount) {

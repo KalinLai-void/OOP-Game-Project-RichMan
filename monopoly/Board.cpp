@@ -34,8 +34,8 @@ Board::Board(const GameConfig& config) {
 
     // 建立 8x8 的空白棋盤
     board = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, "   "));
-    playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
-
+    propertyLevelBoard = std::vector<std::vector<int>>(mapSize, std::vector<int>(mapSize, 0));
+    propertyLevelIcons = config.getPropertyLevelIcons();
     int posIndex = 0; // 格子索引 (0~31)
     for (int col = 0; col < mapSize; ++col) {
         // 上排
@@ -92,7 +92,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 #else
     system("clear");
 #endif
-    std::vector<std::vector<std::string>> tempPlayerBoard = playerBoard;
+    std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 
     // 更新玩家位置
     for (const auto& player : players) {
@@ -139,27 +139,43 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         }
 
         // 在棋盤上標記玩家位置
-        tempPlayerBoard[rowOut][colOut] += player->getIcon();
+        playerBoard[rowOut][colOut] += player->getIcon();
     }
 
-    // // 輸出棋盤
-    // for (int i = 0; i < players.size(); i++) {
-    //     std::cout << std::setw(2) << players[i]->getIcon() << ":" << players[i]->getName() << "   ";
-    // }
+    // 更新房屋等級
+    int posIndex = 0;
+    for (int col = 0; col < mapSize; ++col)
+        updatePropertyLevelBoard(0, col, posIndex++);
+    for (int row = 1; row < mapSize; ++row)
+        updatePropertyLevelBoard(row, mapSize - 1, posIndex++);
+    for (int col = mapSize - 2; col >= 0; --col)
+        updatePropertyLevelBoard(mapSize - 1, col, posIndex++);
+    for (int row = mapSize - 2; row > 0; --row)
+        updatePropertyLevelBoard(row, 0, posIndex++);
+
+    // 輸出棋盤
     std::cout << "+";
     for (int j = 0; j < mapSize; j++) {
         std::cout << std::string(this->tileWidth, '-') << "+";
     }
     std::cout << "\n";
     for (int i = 0; i < mapSize; i++) {
+        // tile name
         std::cout << "| ";
         for (int j = 0; j < mapSize; j++) {
             std::cout << std::left << std::setw(this->tileWidth - 2) << board[i][j] << " | ";
         }
+        // player icon
         std::cout << "\n| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(this->tileWidth - 2) << tempPlayerBoard[i][j] << " | ";
+            std::cout << std::left << std::setw(this->tileWidth - 2) << playerBoard[i][j] << " | ";
         }
+        // property level
+        std::cout << "\n| ";
+        for (int j = 0; j < mapSize; j++) {
+            std::cout << std::left << std::setw(this->tileWidth - 2) << propertyLevelIcons[propertyLevelBoard[i][j]] << " | ";
+        }
+        // footer
         std::cout << "\n+";
         for (int j = 0; j < mapSize; j++) {
             std::cout << std::string(this->tileWidth, '-') << "+";
@@ -191,4 +207,18 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         std::cout << std::setw(24) << " |" << std::endl;
     }
     std::cout << "+------------+------------+------------------------+\n";
+}
+
+void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
+    if (tiles[posIndex]) {
+        // 嘗試將 Tile 轉型為 PropertyTile
+        std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
+
+        if (propertyTile) { // 確保這是 PropertyTile
+            int level = static_cast<int>(propertyTile->getPropertyLevel());
+            if (level > 0) {
+                propertyLevelBoard[row][col] = level; // 例如 L1, L2, L3
+            }
+        }
+    }
 }

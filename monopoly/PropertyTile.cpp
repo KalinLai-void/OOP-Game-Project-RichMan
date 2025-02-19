@@ -27,6 +27,10 @@ long long PropertyTile::getUpgradeCost() const {
     return static_cast<long long>(basePrice * 0.5);
 }
 
+PropertyLevel PropertyTile::getPropertyLevel() const {
+    return level;
+}
+
 void PropertyTile::purchase(std::shared_ptr<Player> player) {
     cout << "玩家 " << player->getName() << " 抵達 [" << name << "] - 無人擁有的地產" << endl;
     cout << "請按 R 購買 (花費 " << basePrice << ")，或按其他鍵跳過: ";

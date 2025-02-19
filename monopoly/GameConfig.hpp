@@ -28,6 +28,7 @@ private:
     std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
     std::vector<TileConfig> boardTiles;
+    std::vector<std::string> propertyLevelIcons;
 
     GameConfig() = default; // 私有建構函式，避免外部創建物件
 
@@ -49,6 +50,10 @@ public:
     // 設定與獲取玩家ICON
     void setPlayerIcons(const std::vector<std::string>& icons);
     std::vector<std::string> getPlayerIcons() const;
+
+    // 設定與獲取地產等級ICON
+    void setPropertyLevelIcons(const std::vector<std::string>& icons);
+    std::vector<std::string> getPropertyLevelIcons() const;
 
     // 設定與獲取金錢資訊
     void setStartMoney(int amount);

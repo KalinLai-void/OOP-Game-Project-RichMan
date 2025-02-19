@@ -5,6 +5,12 @@
     "[C]",
     "[D]"
   ],
+  "propertyLevelIcons":[
+    " ",
+    "O",
+    "OO",
+    "OOO"
+  ],
   "tileWidth": 12,
   "modes": {
     "DEBUG": {

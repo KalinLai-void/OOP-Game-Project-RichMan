@@ -1,6 +1,6 @@
 ﻿#include "utils.hpp"
-#include <string>
 #include <iostream>
+#include <string>
 
 #ifdef _WIN32
 void setConsoleSize(int width, int height) {
