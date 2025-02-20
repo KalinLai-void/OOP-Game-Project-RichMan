@@ -1,46 +1,62 @@
 {
-  "player_action": {
-    "init": {
-      "prompt": "Welcome to Monopoly!"
+    "input_playrer_num": {
+        "prompt": "Please enter the number of players (2-4):"
     },
-    "start": {
-      "prompt": "Please choose an action:",
-      "options": [
-        { "key": "T", "description": "Roll the dice" },
-        { "key": "I", "description": "View items" }
-      ]
+    "player_action": {
+        "init": {
+            "prompt": "Welcome to Monopoly!",
+            "options":[]
+        },
+        "start": {
+            "prompt": "Please choose an action:",
+            "options": [
+                { "key": "T", "description": "Roll the dice" },
+                { "key": "I", "description": "View items" }
+            ]
+        },
+        "moved": {
+            "prompt": "Please choose an action:",
+            "options": [
+                { "key": "R", "description": "Buy/Upgrade property" },
+                { "key": "S", "description": "Sell property" },
+                { "key": "I", "description": "View items" },
+                { "key": "O", "description": "PASS" },
+                { "key": "P", "description": "Initiate trade" }
+            ]
+        },
+        "skip_jail": {
+            "prompt": "You have an option to skip this action. Choose what you want to do:",
+            "options": [
+                { "key": "W", "description": "Wait for next turn" }
+            ]
+        },
+        "skip_hospital": {
+            "prompt": "You have an option to skip this action. Choose what you want to do:",
+            "options": [
+                { "key": "W", "description": "Wait for next turn" }
+            ]
+        },
+        "end_turn": {
+            "prompt": "The turn is about to end, you can choose:",
+            "options": [
+                { "key": "E", "description": "End turn" }
+            ]
+        },
+        "sell": {
+            "prompt": "Choose an action:",
+            "options": [
+                { "key": "S", "description": "Sell property" }
+            ]
+        },
+        "default": {
+            "prompt": "Please choose an action:",
+            "options": [                
+                { "key": "T", "description": "Roll the dice" },
+                { "key": "I", "description": "View items" }
+            ]
+        }
     },
-    "moved": {
-      "prompt": "Please choose an action:",
-      "options": [
-        { "key": "R", "description": "Buy/Upgrade property" },
-        { "key": "S", "description": "Sell property" },
-        { "key": "I", "description": "View items" },
-        { "key": "P", "description": "Initiate trade" }
-      ]
-    },
-    "skip_jail": {
-      "prompt": "You have an option to skip this action. Choose what you want to do:",
-      "options": [
-        { "key": "W", "description": "Wait for next turn" }
-      ]
-    },
-    "skip_hospital": {
-      "prompt": "You have an option to skip this action. Choose what you want to do:",
-      "options": [
-        { "key": "W", "description": "Wait for next turn" }
-      ]
-    },
-    
-    "end_turn": {
-      "prompt": "The turn is about to end, you can choose:",
-      "options": [
-        { "key": "E", "description": "End turn" }
-      ]
-    },
-    "sell": {
-    "options": [
-    { "key": "S", "description": "Sell property" }
-    ]
-  }
+    "invalid_input": {
+        "prompt": "Invalid input. Please try again."
+    }
 }

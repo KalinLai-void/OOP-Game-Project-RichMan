@@ -1,4 +1,4 @@
-#ifndef EVENTTILE_HPP
+﻿#ifndef EVENTTILE_HPP
 #define EVENTTILE_HPP
 
 #include "Tile.hpp"
@@ -6,7 +6,8 @@
 class EventTile : public Tile {
 public:
     EventTile(const std::string& n);
-    void landOn(std::shared_ptr<Player> player) override;
+    TileAction landOn(std::shared_ptr<Player> player) override;
+    void triggerEvent(std::shared_ptr<Player> player);
 };
 
 #endif // EVENTTILE_HPP

@@ -1,6 +1,11 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
+#include "EventTile.hpp"
+#include "HospitalTile.hpp"
 #include "InputManager.hpp"
+#include "PropertyTile.hpp"
+#include "StartTile.hpp"
+#include "StoreTile.hpp"
 #include "Utils.hpp"
 #include <algorithm>
 #include <ctime>
@@ -9,7 +14,7 @@
 #include <random>
 
 using namespace std;
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 std::default_random_engine Game::engine;
 
@@ -17,12 +22,21 @@ Game::Game(const GameConfig& cfg)
     : board(cfg), config(cfg), gameOver(false) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
     State currentState = State::INIT;
+
+    // load dialogue.json
+    std::ifstream file("dialogue.json");
+    if (!file) {
+        cerr << "Error: Could not open dialogue.json" << endl;
+        return;
+    }
+    file >> dialogueData;
+    file.close();
 }
 
 void Game::initGame() {
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
-        cout << "請輸入玩家人數 (2~4 之間)：";
+        cout << dialogueData["input_plaer_num"];
         cin >> playerCount;
         if (playerCount < 2)
             playerCount = 2;
@@ -44,62 +58,41 @@ void Game::initGame() {
 }
 
 void Game::start() {
-    std::ifstream file("dialogue.json");
-    if (!file) {
-        cerr << "Error: Could not open dialogue.json" << endl;
-        return;
-    }
-    json dialogueData;
-    file >> dialogueData;
-    file.close();
-
-    auto playerAction = [&]() -> json& {
-        return dialogueData["player_action"][getStateString()];
-    };
-
-    // json playerAction = dialogueData["player_action"][getStateString()];
-
     // 顯示對話
     cout << "\n" << playerAction()["prompt"] << endl;
     for (const auto& option : playerAction()["options"]) {
         cout << option["key"] << ": " << option["description"] << endl;
     }
 
-    // --------------------
-    // START
-    // --------------------
+    // 設定開始狀態
     delayTime(config.getAnimationSecond());
     ++currentState;
-    // -----
-    // 遊戲主迴圈：直到 gameOver 為 true
-    while (!gameOver) {
-        // 每個回合依序輪到各玩家行動
-        for (auto& p : players) {
-            // 畫出目前棋盤狀態
-            board.drawBoard(players);
 
-            // 若玩家在醫院則更新狀態並跳過此回合
+    // 遊戲主迴圈
+    while (!gameOver) {
+        for (auto& p : players) {
+            // board.drawBoard(players);
+            cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
-                cout << "player [" << p->getName() << "] is in the hospital. He can't move." << endl;
+                cout << "You're in the hospital. You can't move." << endl;
                 p->updateHospitalStatus();
                 delayTime(config.getAnimationSecond());
-                // 暫停一下以便玩家觀察狀態 (可自行加入等待機制)
                 continue;
             }
-
-            // 進入玩家行動階段：先呼叫 processPlayerAction() 選單
-            // 玩家可以選擇直接擲骰子 (按 T) 或進行其他操作
-            
-            cout << playerAction()["input_prompt"] << " ";
+            // start
             processPlayerAction(p, board.getTile(p->getPosition()));
+            ++currentState;
 
-            // 檢查玩家是否破產
+            // moved
+            //  使用 processPlayerAction 處理玩家行動
+            processPlayerAction(p, board.getTile(p->getPosition()));
+            ++currentState;
+
             if (p->isBankrupt()) {
-                cout << "玩家 " << p->getName() << " 已破產，跳過行動。" << endl;
+                cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
                 continue;
             }
 
-            // 檢查是否觸發遊戲結束條件
             checkGameOver();
             if (gameOver)
                 break;
@@ -109,46 +102,107 @@ void Game::start() {
 }
 
 void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile) {
-    // 根據 tile 類型進行額外的動作處理，這裡以房產操作為例
-    // 你可以擴充其他類型的 tile 對應的操作
-    cout << "\n請選擇操作：" << endl;
-    cout << "R: 購買/升級房產" << endl;
-    cout << "S: 出售房產" << endl;
-    cout << "I: 查看道具" << endl;
-    cout << "P: 發起交易" << endl;
-    cout << "T: 擲骰子" << endl;
-    cout << "請按下對應按鍵：";
+    // 執行對應的行動
+    TileAction action = TileAction::NONE;
+    if (currentState == State::MOVED) {
+        action = tile->landOn(player);
+        switch (action) {
+        case TileAction::PURCHASE_PROPERTY:
+            cout << "You can purchase " << tile->getName() << ". Press 'R' to purchase." << endl;
+            break;
+        case TileAction::OWN:
+            cout << "You can upgrade or sell " << tile->getName() << ". Press 'R' to upgrade. Press 'S' to sell." << endl;
+            cout << "Upgrade cost: " << static_pointer_cast<PropertyTile>(tile)->getUpgradeCost() << endl;
+            cout << "Sell value: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
+            break;
+        case TileAction::PAY_TOLL:
+            cout << tile->getName() << " is owned by " << static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName()
+                 << ". You need to pay a toll. Press 'R' to pay." << std::endl;
+            break;
+        case TileAction::HOSPITAL:
+            cout << "You are in the hospital. Press 'R' to try your luck, or any other key to stay." << endl;
+            break;
+        case TileAction::SPECIAL_EVENT:
+            cout << "Something exciting is about to happen! Press any key to uncover the secret." << endl;
+            break;
+        case TileAction::START:
+            cout << "You are at the start point. You receive a bonus of " << static_pointer_cast<StartTile>(tile)->getBonus() << ". Press any key to continue."
+                 << endl;
+            break;
+        case TileAction::STORE:
+            cout << "You are at the store. Press 'R' to entry." << endl;
+            break;
+        default:
+            cout << "No specific action available. Press 'T' to throw dice, 'I' for item card, 'P' for player trading." << endl;
+            break;
+        }
+    }
+    //----------------------------------
+    // 顯示對話框
+    cout << "\n" << playerAction()["prompt"] << endl;
 
-    char key = InputManager::getKey();
-    cout << key << endl; // 顯示玩家所按的鍵
+    // 顯示所有可選的行動
+    for (const auto& option : dialogueData["player_action"]["default"]["options"]) {
+        cout << option["key"] << ": " << option["description"] << endl;
+    }
 
+    char key;
+
+    // 檢查玩家輸入是否有效
+    bool validInput = false;
+    while (!validInput) {
+        key = InputManager::getKey();
+        cout << key << endl; // 顯示玩家所按的鍵
+        for (const auto& option : playerAction()["options"]) {
+            if (option["key"].get<std::string>()[0] == key) {
+                validInput = true;
+                break;
+            }
+        }
+        if (!validInput) {
+            cout << dialogueData["invalid_input"]["prompt"] << endl;
+        }
+    }
+    //----------------------------------
     switch (key) {
     case 'R':
-    case 'r':
-        // 此處假設 tile 為 PropertyTile，呼叫其購買或升級邏輯
-        tile->landOn(player);
-        break;
+        switch (action) {
+        case TileAction::PURCHASE_PROPERTY:
+            static_pointer_cast<PropertyTile>(tile)->purchase(player);
+            break;
+        case TileAction::OWN:
+            static_pointer_cast<PropertyTile>(tile)->upgrade(player);
+            break;
+        case TileAction::PAY_TOLL:
+            static_pointer_cast<PropertyTile>(tile)->payToll(player);
+            break;
+        case TileAction::HOSPITAL:
+            static_pointer_cast<HospitalTile>(tile)->handleHospitalChoice(player);
+            break;
+        case TileAction::STORE:
+            static_pointer_cast<StoreTile>(tile)->enterStore(player);
+            break;
+        }
     case 'S':
-    case 's':
-        // 呼叫玩家出售房產的介面或邏輯（需根據實際設計實作）
-        cout << "呼叫出售房產功能（待實作）" << endl;
-        break;
+        if (action == TileAction::OWN) {
+            static_pointer_cast<PropertyTile>(tile)->sell(player);
+        }
     case 'I':
-    case 'i':
-        // 呼叫查看道具卡介面（待實作）
-        cout << "呼叫道具卡介面（待實作）" << endl;
+        cout << "Opening the item card interface (to be implemented)." << endl;
         break;
     case 'P':
-    case 'p':
-        // 呼叫發起玩家交易介面（待實作）
-        cout << "呼叫玩家交易介面（待實作）" << endl;
+        cout << "Opening the player trading interface (to be implemented)." << endl;
+        break;
+    case 'O':
+        cout << "PASS" << endl;
         break;
     case 'T':
-    case 't':
         throwDice(player);
         break;
+    // input any key to continue
     default:
-        cout << "無效按鍵，結束操作，繼續遊戲。" << endl;
+        if (action == TileAction::SPECIAL_EVENT)
+            static_pointer_cast<EventTile>(tile)->triggerEvent(player);
         break;
     }
 }
@@ -166,11 +220,11 @@ void Game::throwDice(std::shared_ptr<Player> player) {
     // 顯示更新後的棋盤狀態
     board.drawBoard(players);
 
-    // 取得目前所在的 tile 並觸發 landOn()
-    auto tile = board.getTile(newPos);
-    if (tile) {
-        tile->landOn(player);
-    }
+    //// 取得目前所在的 tile 並觸發 landOn()
+    // auto tile = board.getTile(newPos);
+    // if (tile) {
+    //     tile->landOn(player);
+    // }
 }
 
 void Game::checkGameOver() {
@@ -240,4 +294,8 @@ State& operator++(State& state) {
         break;
     }
     return state;
+}
+
+nlohmann::json& Game::playerAction() {
+    return dialogueData["player_action"][getStateString()];
 }

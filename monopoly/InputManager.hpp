@@ -1,6 +1,6 @@
 ﻿#ifndef INPUTMANAGER_HPP
 #define INPUTMANAGER_HPP
-
+#include <cctype>
 #ifdef _WIN32
 #    include <conio.h>
 #else
@@ -10,10 +10,10 @@
 
 class InputManager {
 public:
-    // 取得一個按鍵，不需要按 Enter 鍵
+    // Get a key press without needing to press Enter, and automatically convert to uppercase
     static char getKey() {
 #ifdef _WIN32
-        return _getch();
+        char ch = _getch();
 #else
         struct termios oldt, newt;
         char ch;
@@ -23,9 +23,8 @@ public:
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         ch = getchar();
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-        return ch;
 #endif
+        return std::toupper(ch); // Convert to uppercase
     }
 };
-
 #endif // INPUTMANAGER_HPP

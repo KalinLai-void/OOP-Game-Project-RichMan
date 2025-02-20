@@ -6,14 +6,17 @@
 
 class StartTile : public Tile {
 private:
-    int bonus; // 玩家經過或停留時獲得的獎勵金額
+    int bonus; // The bonus amount players receive when passing or landing on this tile
 
 public:
-    // `StartTile` 構造函數，預設獎勵 $2000
+    // Constructor for `StartTile`, default bonus is $2000
     StartTile(const std::string& n, int b = 2000);
 
-    // 當玩家停在起點時的行為
-    void landOn(std::shared_ptr<Player> player) override;
+    // Behavior when a player lands on the start tile
+    TileAction landOn(std::shared_ptr<Player> player) override;
+
+    // Get the bonus amount
+    int getBonus() const;
 };
 
 #endif // STARTTILE_HPP

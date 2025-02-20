@@ -1,32 +1,38 @@
 ﻿#ifndef PROPERTYTILE_HPP
 #define PROPERTYTILE_HPP
 
+#include "Bank.hpp"
 #include "Tile.hpp"
-#include <memory>
+#include <iostream>
 #include <string>
 
-// 假設你已有 PropertyLevel 定義
-enum class PropertyLevel { LEVEL1 = 1, LEVEL2 = 2, LEVEL3 = 3 };
-
-class Player; // 前向宣告
+enum class PropertyLevel { LEVEL1, LEVEL2, LEVEL3 };
 
 class PropertyTile : public Tile {
+private:
+    long long basePrice;
+    long long baseToll;
+    long long currentPrice;
+    std::shared_ptr<Player> owner;
+    PropertyLevel level;
+
 public:
     PropertyTile(const std::string& n, long long price, long long toll);
-    virtual void landOn(std::shared_ptr<Player> player) override;
+
     long long getToll() const;
     long long getUpgradeCost() const;
     PropertyLevel getPropertyLevel() const;
+    long long getCurrentPrice() const;
 
-private:
+    TileAction landOn(std::shared_ptr<Player> player) override;
+
     void purchase(std::shared_ptr<Player> player);
     void upgrade(std::shared_ptr<Player> player);
     void payToll(std::shared_ptr<Player> player);
+    void sell(std::shared_ptr<Player> player);
 
-    long long basePrice;
-    long long baseToll;
-    std::shared_ptr<Player> owner;
-    PropertyLevel level;
+    void updateCurrentPrice();
+    std::shared_ptr<Player> getPropertyOwner() const;
 };
 
 #endif // PROPERTYTILE_HPP

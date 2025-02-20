@@ -5,19 +5,22 @@
 #include <memory>
 #include <string>
 
+enum class TileAction { NONE, PURCHASE_PROPERTY, OWN, PAY_TOLL, STORE, SPECIAL_EVENT, TRADE, HOSPITAL, JAIL, START };
+
 class Tile {
 protected:
-    std::string name; // 格子名稱
+    std::string name; // Tile name
+
 public:
     Tile(const std::string& n)
         : name(n) {}
     virtual ~Tile() {}
+
     std::string getName() const {
         return name;
     }
 
-    // 當玩家停留在此格子上觸發的行為
-    virtual void landOn(std::shared_ptr<Player> player) = 0;
+    virtual TileAction landOn(std::shared_ptr<Player> player) = 0;
 };
 
 #endif // TILE_HPP

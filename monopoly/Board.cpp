@@ -28,7 +28,7 @@ Board::Board(const GameConfig& config) {
         } else if (boardTiles.type == "start") {
             tiles.push_back(std::make_shared<StartTile>(boardTiles.name, config.getPassingStartBonus()));
         } else {
-            std::cout << "未知的格子類型：" << boardTiles.type << std::endl;
+            std::cout << "Unknown Tile Type：" << boardTiles.type << std::endl;
         }
     }
 
@@ -87,11 +87,11 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 // 清除畫面 (Windows 下 system("cls")，其他平台則 system("clear"))
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
+//#ifdef _WIN32
+//    system("cls");
+//#else
+//    system("clear");
+//#endif
     std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 
     // 更新玩家位置
@@ -186,7 +186,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 
     // === 顯示玩家資訊表格 ===
     std::cout << "+------------+------------+------------------------+\n";
-    std::cout << "| 玩家名稱   | 持有金額   | 手牌                   |\n";
+    std::cout << "| Player Name   | Assets   | Card                   |\n";
     std::cout << "+------------+------------+------------------------+\n";
 
     for (const auto& player : players) {

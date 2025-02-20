@@ -4,9 +4,13 @@
 #include "Tile.hpp"
 
 class HospitalTile : public Tile {
+private:
+    int fee;
+
 public:
     HospitalTile(const std::string& n);
-    void landOn(std::shared_ptr<Player> player) override;
+    TileAction landOn(std::shared_ptr<Player> player) override;
+    void handleHospitalChoice(std::shared_ptr<Player> player);
 };
 
 #endif // HOSPITALTILE_HPP

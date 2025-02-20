@@ -12,7 +12,7 @@
     "OOO"
   ],
   "tileWidth": 12,
-  "animationSecond": 1,
+  "animationSecond": 0,
   "modes": {
     "DEBUG": {
       "playersNum": 4,
@@ -203,9 +203,9 @@
         "Player1",
         "Player2"
       ],
-      "startMoney": 10000,
-      "winMoney": 30000,
-      "passingStartBonus": 1000,
+      "startMoney": 100000,
+      "winMoney": 300000,
+      "passingStartBonus": 10000,
       "mapSize": 8,
       "boardTiles": [
         {

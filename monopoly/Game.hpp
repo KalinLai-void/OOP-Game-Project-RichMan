@@ -4,6 +4,7 @@
 #include "Board.hpp"
 #include "GameConfig.hpp"
 #include "Player.hpp"
+#include "Tile.hpp"
 #include <memory>
 #include <random>
 #include <vector>
@@ -15,6 +16,7 @@ private:
     Board board;
     GameConfig config;
     State currentState;
+    nlohmann::json dialogueData;
 
     std::vector<std::shared_ptr<Player>> players;
     bool gameOver;
@@ -22,6 +24,7 @@ private:
 
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
     void throwDice(std::shared_ptr<Player> player);
+    nlohmann::json& playerAction();
 
 public:
     Game(const GameConfig& config);

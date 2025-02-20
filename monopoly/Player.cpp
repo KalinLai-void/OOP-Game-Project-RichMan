@@ -49,3 +49,7 @@ void Player::updateHospitalStatus() {
         }
     }
 }
+
+void Player::addCard(const Card& card) {
+    cards.push_back(card);
+}

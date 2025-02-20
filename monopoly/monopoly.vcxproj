@@ -130,6 +130,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="CardStore.cpp" />
+    <ClCompile Include="CardStore.hpp" />
     <ClCompile Include="EventTile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfig.cpp" />
@@ -145,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Bank.hpp" />
     <ClInclude Include="Board.hpp" />
+    <ClInclude Include="Card.hpp" />
     <ClInclude Include="EventTile.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameConfig.hpp" />

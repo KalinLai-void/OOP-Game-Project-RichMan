@@ -3,8 +3,27 @@
 using namespace std;
 
 HospitalTile::HospitalTile(const std::string& n)
-    : Tile(n) {}
+    : Tile(n) {
+    fee = 100;
+}
 
-void HospitalTile::landOn(std::shared_ptr<Player> player) {
-    cout << "玩家 " << player->getName() << " 抵達 [" << name << "] (醫院)，若為受傷狀態則需要在這裡停留。" << endl;
+TileAction HospitalTile::landOn(std::shared_ptr<Player> player) {
+    handleHospitalChoice(player);
+    return TileAction::HOSPITAL;
+}
+
+void HospitalTile::handleHospitalChoice(std::shared_ptr<Player> player) {
+    if (player->getMoney() >= fee) {
+        player->adjustMoney(-fee);
+        cout << "You paid a fee of " << fee << " and try to leave the hospital." << endl;
+        // 50% chance to leave the hospital
+        if (rand() % 2 == 0) {
+            player->recoverFromHospital();
+            cout << "You got lucky and left the hospital." << endl;
+        } else {
+            cout << "You are still in the hospital." << endl;
+        }
+    } else {
+        cout << "You do not have enough money to pay the fee and stay in the hospital." << endl;
+    }
 }
