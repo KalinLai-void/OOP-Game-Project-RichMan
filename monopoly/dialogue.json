@@ -1,5 +1,5 @@
 {
-    "input_playrer_num": {
+    "input_player_num": {
         "prompt": "Please enter the number of players (2-4):"
     },
     "player_action": {

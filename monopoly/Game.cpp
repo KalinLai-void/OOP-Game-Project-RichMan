@@ -14,7 +14,6 @@
 #include <random>
 
 using namespace std;
-// using json = nlohmann::json;
 
 std::default_random_engine Game::engine;
 
@@ -34,9 +33,10 @@ Game::Game(const GameConfig& cfg)
 }
 
 void Game::initGame() {
+    cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
-        cout << dialogueData["input_plaer_num"];
+        cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
         cin >> playerCount;
         if (playerCount < 2)
             playerCount = 2;
@@ -44,7 +44,7 @@ void Game::initGame() {
             playerCount = 4;
 
         for (int i = 0; i < playerCount; i++) {
-            cout << "請輸入第 " << (i + 1) << " 位玩家名稱：";
+            cout << "Please enter the name of player " << (i + 1) << ": ";
             std::string name;
             cin >> name;
             auto p = std::make_shared<Player>(name, config.getPlayerIcons()[i], 10000);
@@ -59,9 +59,9 @@ void Game::initGame() {
 
 void Game::start() {
     // 顯示對話
-    cout << "\n" << playerAction()["prompt"] << endl;
+    cout << "\n" << playerAction()["prompt"].get<std::string>() << endl;
     for (const auto& option : playerAction()["options"]) {
-        cout << option["key"] << ": " << option["description"] << endl;
+        cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
 
     // 設定開始狀態
@@ -139,11 +139,11 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     }
     //----------------------------------
     // 顯示對話框
-    cout << "\n" << playerAction()["prompt"] << endl;
+    cout << "\n" << playerAction()["prompt"].get<std::string>() << endl;
 
     // 顯示所有可選的行動
     for (const auto& option : dialogueData["player_action"]["default"]["options"]) {
-        cout << option["key"] << ": " << option["description"] << endl;
+        cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
 
     char key;
@@ -160,7 +160,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             }
         }
         if (!validInput) {
-            cout << dialogueData["invalid_input"]["prompt"] << endl;
+            cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
         }
     }
     //----------------------------------

@@ -2,7 +2,6 @@
 #define GAMECONFIG_HPP
 
 #include "Utils.hpp"
-#include "nlohmann/json.hpp"
 #include <string>
 #include <vector>
 // 定義遊戲模式

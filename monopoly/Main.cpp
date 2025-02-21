@@ -1,6 +1,5 @@
 ﻿#include "Game.hpp"
 #include "GameConfig.hpp"
-#include <nlohmann/json.hpp>
 #include <iostream>
 using namespace std;
 int main() {

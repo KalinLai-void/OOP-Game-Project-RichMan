@@ -1,6 +1,7 @@
 ﻿#ifndef UTILS_HPP
 #define UTILS_HPP
-
+#include <nlohmann/json.hpp>
+#include <iostream>
 #ifdef _WIN32 // 只在 Windows 平台編譯
 #    include <windows.h>
 #endif

@@ -1,8 +1,7 @@
 ﻿#include "Utils.hpp"
-#include <iostream>
-#include <string>
-#include <thread> 
 #include <chrono>
+#include <string>
+#include <thread>
 
 #ifdef _WIN32
 void setConsoleSize(int width, int height) {
@@ -20,25 +19,3 @@ void setConsoleSize(int width, int height) {
 void delayTime(long long s) {
     std::this_thread::sleep_for(std::chrono::seconds(s));
 }
-
-// #ifdef _WIN32
-// void setConsoleSize(int width, int height) {
-//     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-//     // 先取得當前控制台緩衝區大小
-//     CONSOLE_SCREEN_BUFFER_INFO csbi;
-//     GetConsoleScreenBufferInfo(hConsole, &csbi);
-
-//     // 先縮小視窗大小，避免緩衝區縮小失敗
-//     SMALL_RECT minimalRect = {0, 0, 1, 1}; // 設定一個最小的視窗大小
-//     SetConsoleWindowInfo(hConsole, TRUE, &minimalRect);
-
-//     // 設定新的緩衝區大小（確保它大於等於視窗大小）
-//     COORD bufferSize = {static_cast<SHORT>(width), static_cast<SHORT>(height)};
-//     SetConsoleScreenBufferSize(hConsole, bufferSize);
-
-//     // 設定新的視窗大小
-//     SMALL_RECT windowSize = {0, 0, static_cast<SHORT>(width - 1), static_cast<SHORT>(height - 1)};
-//     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-// }
-// #endif
