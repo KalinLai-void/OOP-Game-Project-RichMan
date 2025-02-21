@@ -86,21 +86,21 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 }
 
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
-// 清除畫面 (Windows 下 system("cls")，其他平台則 system("clear"))
-//#ifdef _WIN32
-//    system("cls");
-//#else
-//    system("clear");
-//#endif
+// Clear the screen (system("cls") on Windows, system("clear") on other platforms)
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
     std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 
-    // 更新玩家位置
+    // Update player positions
     for (const auto& player : players) {
-        int pPos = player->getPosition() % 32; // 確保索引不超過 31
+        int pPos = player->getPosition() % 32; // Ensure index does not exceed 31
         int tempIndex = 0, rowOut = 0, colOut = 0;
         bool found = false;
 
-        // 找到該索引對應的 row, col
+        // Find the corresponding row, col for the index
         for (int col = 0; col < mapSize && !found; ++col) {
             if (tempIndex == pPos) {
                 rowOut = 0;
@@ -138,11 +138,11 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
             tempIndex++;
         }
 
-        // 在棋盤上標記玩家位置
+        // Mark player position on the board
         playerBoard[rowOut][colOut] += player->getIcon();
     }
 
-    // 更新房屋等級
+    // Update property levels
     int posIndex = 0;
     for (int col = 0; col < mapSize; ++col)
         updatePropertyLevelBoard(0, col, posIndex++);
@@ -153,7 +153,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     for (int row = mapSize - 2; row > 0; --row)
         updatePropertyLevelBoard(row, 0, posIndex++);
 
-    // 輸出棋盤
+    // Output the board
     std::cout << "+";
     for (int j = 0; j < mapSize; j++) {
         std::cout << std::string(this->tileWidth, '-') << "+";
@@ -184,7 +184,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     }
     std::cout << std::endl;
 
-    // === 顯示玩家資訊表格 ===
+    // === Player info ===
     std::cout << "+------------+------------+------------------------+\n";
     std::cout << "| Player Name   | Assets   | Card                   |\n";
     std::cout << "+------------+------------+------------------------+\n";
@@ -211,13 +211,13 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 
 void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
     if (tiles[posIndex]) {
-        // 嘗試將 Tile 轉型為 PropertyTile
+        // Conter Tile class to PropertyTile class
         std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
 
-        if (propertyTile) { // 確保這是 PropertyTile
+        if (propertyTile) { // make sure it is a property tile
             int level = static_cast<int>(propertyTile->getPropertyLevel());
             if (level > 0) {
-                propertyLevelBoard[row][col] = level; // 例如 L1, L2, L3
+                propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
             }
         }
     }

@@ -127,7 +127,6 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             break;
         case TileAction::HOSPITAL:
             nowPlayerAction = playerAction("default");
-            // cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             break;
         case TileAction::SPECIAL_EVENT:
             nowPlayerAction = playerAction("event");
@@ -148,18 +147,15 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         }
     }
     //----------------------------------
-    // 顯示對話框
-    //cout << playerAction().dump();
     cout << "\n" << playerAction()["option_prompt"].get<std::string>() << endl;
 
-    // 顯示所有可選的行動
+    // Display current tile which key can be pressed
     for (const auto& option : nowPlayerAction["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
-
+    // Check player input
     char key;
 
-    // 檢查玩家輸入是否有效
     bool validInput = false;
     while (!validInput) {
         key = InputManager::getKey();
@@ -223,12 +219,12 @@ void Game::throwDice(std::shared_ptr<Player> player) {
     int d1 = dist(engine);
     int d2 = dist(engine);
     int steps = d1 + d2;
-    cout << "\n擲骰子結果：" << "(" << d1 << ", " << d2 << ") → 前進 " << steps << " 步" << endl;
+    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") → Move forward " << steps << " steps" << endl;
 
     int newPos = (player->getPosition() + steps) % board.getSize();
     player->setPosition(newPos);
 
-    // 顯示更新後的棋盤狀態
+    // Draw the board
     board.drawBoard(players);
 }
 
@@ -241,8 +237,9 @@ void Game::checkGameOver() {
     if (aliveCount <= 1) {
         gameOver = true;
     }
+    // Check if any player has reached the winning money
     for (auto& p : players) {
-        if (p->getMoney() >= 1000000) {
+        if (p->getMoney() >= config.getWinMoney()) {
             gameOver = true;
             break;
         }
@@ -250,7 +247,7 @@ void Game::checkGameOver() {
 }
 
 void Game::endGame() {
-    cout << "\n==== 遊戲結束 ====\n";
+    cout << "\n==== Game Result ====\n";
     std::sort(players.begin(), players.end(), [](auto& a, auto& b) {
         if (a->isBankrupt() && !b->isBankrupt())
             return false;
@@ -259,7 +256,7 @@ void Game::endGame() {
         return a->getMoney() > b->getMoney();
     });
     for (size_t i = 0; i < players.size(); i++) {
-        cout << (i + 1) << ". " << players[i]->getName() << " - 資金：" << players[i]->getMoney() << (players[i]->isBankrupt() ? " (破產)" : "") << endl;
+        cout << (i + 1) << ". " << players[i]->getName() << " - Money: " << players[i]->getMoney() << (players[i]->isBankrupt() ? " (Bankrupt)" : "") << endl;
     }
 }
 
@@ -302,13 +299,10 @@ State& operator++(State& state) {
 }
 
 const nlohmann::json& Game::playerAction() {
-    //cout << "player_action" << getStateString() << endl;
     return dialogueData["player_action"][getStateString()];
 }
 
 const nlohmann::json& Game::playerAction(const string& key) {
-    //cout << "key: " << key << endl;/*
-    //cout << dialogueData["player_action"][getStateString()].dump();*/
     if (key == "")
         return dialogueData["player_action"][getStateString()]["default"];
     return dialogueData["player_action"][getStateString()][key];
