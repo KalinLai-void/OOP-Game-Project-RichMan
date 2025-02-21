@@ -1,62 +1,192 @@
 {
-    "input_player_num": {
-        "prompt": "Please enter the number of players (2-4):"
+  "input_player_num": {
+    "prompt": "Please enter the number of players (2-4):"
+  },
+  "player_action": {
+    "init": {
+      "prompt": "Welcome to Monopoly!",
+      "options": []
     },
-    "player_action": {
-        "init": {
-            "prompt": "Welcome to Monopoly!",
-            "options":[]
+    "start": {
+      "option_prompt": "Please choose an action:",
+      "options": [
+        {
+          "key": "T",
+          "description": "Roll the dice"
         },
-        "start": {
-            "prompt": "Please choose an action:",
-            "options": [
-                { "key": "T", "description": "Roll the dice" },
-                { "key": "I", "description": "View items" }
-            ]
-        },
-        "moved": {
-            "prompt": "Please choose an action:",
-            "options": [
-                { "key": "R", "description": "Buy/Upgrade property" },
-                { "key": "S", "description": "Sell property" },
-                { "key": "I", "description": "View items" },
-                { "key": "O", "description": "PASS" },
-                { "key": "P", "description": "Initiate trade" }
-            ]
-        },
-        "skip_jail": {
-            "prompt": "You have an option to skip this action. Choose what you want to do:",
-            "options": [
-                { "key": "W", "description": "Wait for next turn" }
-            ]
-        },
-        "skip_hospital": {
-            "prompt": "You have an option to skip this action. Choose what you want to do:",
-            "options": [
-                { "key": "W", "description": "Wait for next turn" }
-            ]
-        },
-        "end_turn": {
-            "prompt": "The turn is about to end, you can choose:",
-            "options": [
-                { "key": "E", "description": "End turn" }
-            ]
-        },
-        "sell": {
-            "prompt": "Choose an action:",
-            "options": [
-                { "key": "S", "description": "Sell property" }
-            ]
-        },
-        "default": {
-            "prompt": "Please choose an action:",
-            "options": [                
-                { "key": "T", "description": "Roll the dice" },
-                { "key": "I", "description": "View items" }
-            ]
+        {
+          "key": "I",
+          "description": "View items"
         }
+      ],
+      "default": {
+        "prompt": "",
+        "options": [
+          {
+            "key": "T",
+            "description": "Roll the dice"
+          },
+          {
+            "key": "I",
+            "description": "View items"
+          }
+        ]
+      },
+      "hospital": {
+        "prompt": "You are in the hospital. P",
+        "options": [
+          {
+            "key": "R",
+            "description": "Pay the medical bills and leave."
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      },
+      "jail": {
+        "prompt": "You are in jail.",
+        "options": [
+          {
+            "key": "R",
+            "description": "Pay to roll the dice and escape."
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      }
     },
-    "invalid_input": {
-        "prompt": "Invalid input. Please try again."
+    "moved": {
+      "option_prompt": "Please choose an action:",
+      "options": [
+        {
+          "key": "I",
+          "description": "View items"
+        },
+        {
+          "key": "*",
+          "description": "Press any key to PASS"
+        }
+      ],
+      "default": {
+        "prompt": "",
+        "options": [
+          {
+            "key": "I",
+            "description": "View items"
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      },
+      "event": {
+        "prompt": "Something exciting is about to happen! Press any key to uncover the secret.",
+        "options": [
+          {
+            "key": "*",
+            "description": "Press any key to Continue"
+          }
+        ]
+      },
+      "start_point": {
+        "prompt": "You have landed on the start tile.",
+        "options": [
+          {
+            "key": "*",
+            "description": "Press any key to Continue"
+          }
+        ]
+      },
+      "store": {
+        "prompt": "You have landed on the item shop.",
+        "options": [
+          {
+            "key": "R",
+            "description": "Enter the shop"
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      },
+      "property_unowned": {
+        "prompt": "You have landed on an unowned property. You can choose to buy it or pass.",
+        "options": [
+          {
+            "key": "R",
+            "description": "Buy property"
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      },
+      "property_owned": {
+        "prompt": "You have landed on your own property. You can choose to upgrade, sell, or pass.",
+        "options": [
+          {
+            "key": "R",
+            "description": "Upgrade property"
+          },
+          {
+            "key": "S",
+            "description": "Sell property"
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      },
+      "property_toll": {
+        "prompt": "You have landed on a property owned by another player. You must pay rent or take other actions.",
+        "options": [
+          {
+            "key": "R",
+            "description": "Pay toll"
+          },
+          {
+            "key": "*",
+            "description": "Press any key to PASS"
+          }
+        ]
+      }
+    },
+    "end_turn": {
+      "prompt": "The turn is about to end, you can choose:",
+      "options": [
+        {
+          "key": "E",
+          "description": "End turn"
+        },
+        {
+          "key": "I",
+          "description": "View items"
+        }
+      ]
+    },
+    "default": {
+      "prompt": "Please choose an action:",
+      "options": [
+        {
+          "key": "T",
+          "description": "Roll the dice"
+        },
+        {
+          "key": "I",
+          "description": "View items"
+        }
+      ]
     }
+  },
+  "invalid_input": {
+    "prompt": "Invalid input. Please try again."
+  }
 }

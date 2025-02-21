@@ -1,4 +1,4 @@
-#ifndef STORETILE_HPP
+﻿#ifndef STORETILE_HPP
 #define STORETILE_HPP
 
 #include "CardStore.hpp"
@@ -10,6 +10,7 @@ private:
 
 public:
     StoreTile(const std::string& n);
+    CardStore& getStore();
     TileAction landOn(std::shared_ptr<Player> player) override;
     void enterStore(std::shared_ptr<Player> player);
 };

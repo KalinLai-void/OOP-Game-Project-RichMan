@@ -24,7 +24,8 @@ private:
 
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
     void throwDice(std::shared_ptr<Player> player);
-    nlohmann::json& playerAction();
+    const nlohmann::json& playerAction();
+    const nlohmann::json& playerAction(const std::string& key);
 
 public:
     Game(const GameConfig& config);

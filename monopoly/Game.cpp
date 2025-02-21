@@ -84,7 +84,6 @@ void Game::start() {
             ++currentState;
 
             // moved
-            //  使用 processPlayerAction 處理玩家行動
             processPlayerAction(p, board.getTile(p->getPosition()));
             ++currentState;
 
@@ -104,45 +103,57 @@ void Game::start() {
 void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile) {
     // 執行對應的行動
     TileAction action = TileAction::NONE;
+    nlohmann::json nowPlayerAction = playerAction();
+    //----------------------------------
+    // State::MOVED
     if (currentState == State::MOVED) {
         action = tile->landOn(player);
         switch (action) {
         case TileAction::PURCHASE_PROPERTY:
-            cout << "You can purchase " << tile->getName() << ". Press 'R' to purchase." << endl;
+            nowPlayerAction = playerAction("property_unowned");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            cout << "Property price: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
             break;
         case TileAction::OWN:
-            cout << "You can upgrade or sell " << tile->getName() << ". Press 'R' to upgrade. Press 'S' to sell." << endl;
+            nowPlayerAction = playerAction("property_owned");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             cout << "Upgrade cost: " << static_pointer_cast<PropertyTile>(tile)->getUpgradeCost() << endl;
             cout << "Sell value: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
             break;
         case TileAction::PAY_TOLL:
-            cout << tile->getName() << " is owned by " << static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName()
-                 << ". You need to pay a toll. Press 'R' to pay." << std::endl;
+            nowPlayerAction = playerAction("property_toll");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            cout << "tile owner: " << static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName() << endl;
             break;
         case TileAction::HOSPITAL:
-            cout << "You are in the hospital. Press 'R' to try your luck, or any other key to stay." << endl;
+            nowPlayerAction = playerAction("default");
+            // cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             break;
         case TileAction::SPECIAL_EVENT:
-            cout << "Something exciting is about to happen! Press any key to uncover the secret." << endl;
+            nowPlayerAction = playerAction("event");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             break;
         case TileAction::START:
-            cout << "You are at the start point. You receive a bonus of " << static_pointer_cast<StartTile>(tile)->getBonus() << ". Press any key to continue."
-                 << endl;
+            nowPlayerAction = playerAction("start_point");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            cout << "Receive bonus: " << static_pointer_cast<StartTile>(tile)->getBonus() << endl;
             break;
         case TileAction::STORE:
-            cout << "You are at the store. Press 'R' to entry." << endl;
+            nowPlayerAction = playerAction("store");
+            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             break;
         default:
-            cout << "No specific action available. Press 'T' to throw dice, 'I' for item card, 'P' for player trading." << endl;
+            cout << tile->getName() << endl;
             break;
         }
     }
     //----------------------------------
     // 顯示對話框
-    cout << "\n" << playerAction()["prompt"].get<std::string>() << endl;
+    //cout << playerAction().dump();
+    cout << "\n" << playerAction()["option_prompt"].get<std::string>() << endl;
 
     // 顯示所有可選的行動
-    for (const auto& option : dialogueData["player_action"]["default"]["options"]) {
+    for (const auto& option : nowPlayerAction["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
 
@@ -154,7 +165,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         key = InputManager::getKey();
         cout << key << endl; // 顯示玩家所按的鍵
         for (const auto& option : playerAction()["options"]) {
-            if (option["key"].get<std::string>()[0] == key) {
+            if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
                 validInput = true;
                 break;
             }
@@ -193,16 +204,16 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
         break;
-    case 'O':
-        cout << "PASS" << endl;
-        break;
     case 'T':
         throwDice(player);
         break;
     // input any key to continue
     default:
-        if (action == TileAction::SPECIAL_EVENT)
+        if (action == TileAction::SPECIAL_EVENT) {
             static_pointer_cast<EventTile>(tile)->triggerEvent(player);
+            break;
+        }
+        cout << "PASS" << endl;
         break;
     }
 }
@@ -219,12 +230,6 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     // 顯示更新後的棋盤狀態
     board.drawBoard(players);
-
-    //// 取得目前所在的 tile 並觸發 landOn()
-    // auto tile = board.getTile(newPos);
-    // if (tile) {
-    //     tile->landOn(player);
-    // }
 }
 
 void Game::checkGameOver() {
@@ -296,6 +301,15 @@ State& operator++(State& state) {
     return state;
 }
 
-nlohmann::json& Game::playerAction() {
+const nlohmann::json& Game::playerAction() {
+    //cout << "player_action" << getStateString() << endl;
     return dialogueData["player_action"][getStateString()];
+}
+
+const nlohmann::json& Game::playerAction(const string& key) {
+    //cout << "key: " << key << endl;/*
+    //cout << dialogueData["player_action"][getStateString()].dump();*/
+    if (key == "")
+        return dialogueData["player_action"][getStateString()]["default"];
+    return dialogueData["player_action"][getStateString()][key];
 }
