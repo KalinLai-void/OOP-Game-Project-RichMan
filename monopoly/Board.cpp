@@ -86,12 +86,7 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 }
 
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
-// Clear the screen (system("cls") on Windows, system("clear") on other platforms)
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
+
     std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 
     // Update player positions
@@ -185,12 +180,12 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     std::cout << std::endl;
 
     // === Player info ===
-    std::cout << "+------------+------------+------------------------+\n";
-    std::cout << "| Player Name   | Assets   | Card                   |\n";
-    std::cout << "+------------+------------+------------------------+\n";
+    std::cout << "+----------------+------------+------------------------+\n";
+    std::cout << "| Player Name    | Assets     | Card                    \n";
+    std::cout << "+----------------+------------+------------------------+\n";
 
     for (const auto& player : players) {
-        std::cout << "| " << player->getIcon() << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
+        std::cout << "| " << player->getIcon() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
         // todo: card system
         //     const auto& cards = player->getCards(); // 假設有 getCards() 方法返回 std::vector<std::string>
         //     if (cards.empty()) {
@@ -204,9 +199,10 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         //         }
         //     }
         //     std::cout << std::setw(22 - (cards.empty() ? 1 : (cards.size() * 5))) << " |" << std::endl;
-        std::cout << std::setw(24) << " |" << std::endl;
+        // std::cout << std::setw(24) << " |" << std::endl;
+        std::cout << std::endl;
     }
-    std::cout << "+------------+------------+------------------------+\n";
+    std::cout << "+----------------+------------+------------------------+\n";
 }
 
 void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
@@ -221,4 +217,12 @@ void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
             }
         }
     }
+}
+
+void Board::clearScreen() {
+#ifdef _WIN32
+    system("cls"); // Windows 使用 system("cls")
+#else
+    std::cout << "\033[2J\033[H"; // ANSI Escape Code 清除畫面並移動游標到左上角
+#endif
 }

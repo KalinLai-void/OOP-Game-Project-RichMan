@@ -18,7 +18,7 @@ using namespace std;
 std::default_random_engine Game::engine;
 
 Game::Game(const GameConfig& cfg)
-    : board(cfg), config(cfg), gameOver(false) {
+    : board(cfg), config(cfg) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
     State currentState = State::INIT;
 
@@ -69,8 +69,9 @@ void Game::start() {
     ++currentState;
 
     // 遊戲主迴圈
-    while (!gameOver) {
+    while (currentState != State::FINISH) {
         for (auto& p : players) {
+            Board::clearScreen();
             // board.drawBoard(players);
             cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
@@ -86,14 +87,14 @@ void Game::start() {
             // moved
             processPlayerAction(p, board.getTile(p->getPosition()));
             ++currentState;
+            Board::clearScreen();
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
                 continue;
             }
 
-            checkGameOver();
-            if (gameOver)
+            if (checkGameOver())
                 break;
         }
     }
@@ -209,41 +210,44 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             static_pointer_cast<EventTile>(tile)->triggerEvent(player);
             break;
         }
-        cout << "PASS" << endl;
+        cout << "Action Pass." << endl;
         break;
     }
 }
 
 void Game::throwDice(std::shared_ptr<Player> player) {
+    Board::clearScreen();
     std::uniform_int_distribution<int> dist(1, 6);
     int d1 = dist(engine);
     int d2 = dist(engine);
     int steps = d1 + d2;
-    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") → Move forward " << steps << " steps" << endl;
 
     int newPos = (player->getPosition() + steps) % board.getSize();
     player->setPosition(newPos);
 
     // Draw the board
     board.drawBoard(players);
+    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") → Move forward " << steps << " steps" << endl;
 }
 
-void Game::checkGameOver() {
+bool Game::checkGameOver() {
     int aliveCount = 0;
     for (auto& p : players) {
         if (!p->isBankrupt())
             aliveCount++;
     }
     if (aliveCount <= 1) {
-        gameOver = true;
+        changeState(State::FINISH);
+        return true;
     }
     // Check if any player has reached the winning money
     for (auto& p : players) {
         if (p->getMoney() >= config.getWinMoney()) {
-            gameOver = true;
-            break;
+            changeState(State::FINISH);
+            return true;
         }
     }
+    return false;
 }
 
 void Game::endGame() {

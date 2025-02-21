@@ -21,5 +21,6 @@ public:
     std::shared_ptr<Tile> getTile(int index);
     void drawBoard(std::vector<std::shared_ptr<Player>>& players);
     void updatePropertyLevelBoard(int row, int col, int posIndex);
+    static void clearScreen();
 };
 #endif // BOARD_HPP
