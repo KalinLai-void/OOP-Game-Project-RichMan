@@ -2,11 +2,11 @@
 #define UTILS_HPP
 #include <nlohmann/json.hpp>
 #include <iostream>
-#ifdef _WIN32 // 只在 Windows 平台編譯
+#ifdef _WIN32 // Only compile on Windows platform
 #    include <windows.h>
 #endif
 
-// 設定 Console 視窗大小（Windows 平台）
+// Set the console window size (Windows platform)
 void setConsoleSize(int width, int height);
 void delayTime(long long s);
 #endif // UTILS_HPP

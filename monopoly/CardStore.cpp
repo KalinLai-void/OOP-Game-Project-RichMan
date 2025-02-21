@@ -1,7 +1,6 @@
 ﻿#include "CardStore.hpp"
 
 CardStore::CardStore() {
-    // 初始化卡片清單
     cards.emplace_back("Dice Control Card", 2000, "Choose the number you roll on the dice.");
     cards.emplace_back("Barrier Card", 1500, "Place a barrier on the board to block players.");
     cards.emplace_back("Rocket Card", 3000, "Move instantly to any tile.");

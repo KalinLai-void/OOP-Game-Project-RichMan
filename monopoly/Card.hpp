@@ -7,7 +7,7 @@ class Card {
 private:
     std::string name;
     int price;
-    std::string effect; // 卡片效果描述
+    std::string effect; // Card effect
 
 public:
     Card(const std::string& n, int p, const std::string& e)

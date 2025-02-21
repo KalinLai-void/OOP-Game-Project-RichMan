@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 #ifdef _WIN32
-#    include <windows.h> // 為了 system("cls")
+#    include <windows.h> // For system("cls")
 #endif
 
 Board::Board(const GameConfig& config) {
@@ -28,17 +28,17 @@ Board::Board(const GameConfig& config) {
         } else if (boardTiles.type == "start") {
             tiles.push_back(std::make_shared<StartTile>(boardTiles.name, config.getPassingStartBonus()));
         } else {
-            std::cout << "Unknown Tile Type：" << boardTiles.type << std::endl;
+            std::cout << "Unknown Tile Type: " << boardTiles.type << std::endl;
         }
     }
 
-    // 建立 8x8 的空白棋盤
+    // Create an 8x8 empty board
     board = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, "   "));
     propertyLevelBoard = std::vector<std::vector<int>>(mapSize, std::vector<int>(mapSize, 0));
     propertyLevelIcons = config.getPropertyLevelIcons();
-    int posIndex = 0; // 格子索引 (0~31)
+    int posIndex = 0; // Tile index (0~31)
     for (int col = 0; col < mapSize; ++col) {
-        // 上排
+        // Top
         if (tiles[posIndex]) {
             board[0][col] = tiles[posIndex]->getName();
         } else {
@@ -47,7 +47,7 @@ Board::Board(const GameConfig& config) {
         posIndex++;
     }
     for (int row = 1; row < mapSize; ++row) {
-        // 右排
+        // Right
         if (tiles[posIndex]) {
             board[row][mapSize - 1] = tiles[posIndex]->getName();
         } else {
@@ -56,7 +56,7 @@ Board::Board(const GameConfig& config) {
         posIndex++;
     }
     for (int col = mapSize - 2; col >= 0; --col) {
-        // 下排
+        // Bottom
         if (tiles[posIndex]) {
             board[mapSize - 1][col] = tiles[posIndex]->getName();
         } else {
@@ -65,7 +65,7 @@ Board::Board(const GameConfig& config) {
         posIndex++;
     }
     for (int row = mapSize - 2; row > 0; --row) {
-        // 左排
+        // Left
         if (tiles[posIndex]) {
             board[row][0] = tiles[posIndex]->getName();
         } else {
@@ -207,7 +207,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
 
 void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
     if (tiles[posIndex]) {
-        // Conter Tile class to PropertyTile class
+        // Convert Tile class to PropertyTile class
         std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
 
         if (propertyTile) { // make sure it is a property tile
@@ -221,8 +221,8 @@ void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
 
 void Board::clearScreen() {
 #ifdef _WIN32
-    system("cls"); // Windows 使用 system("cls")
+    system("cls");
 #else
-    std::cout << "\033[2J\033[H"; // ANSI Escape Code 清除畫面並移動游標到左上角
+    std::cout << "\033[2J\033[H"; // ANSI Escape Code to clear the screen and move the cursor to the top-left corner
 #endif
 }

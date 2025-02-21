@@ -58,17 +58,17 @@ void Game::initGame() {
 }
 
 void Game::start() {
-    // 顯示對話
+    // Display dialogue
     cout << "\n" << playerAction()["prompt"].get<std::string>() << endl;
     for (const auto& option : playerAction()["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
 
-    // 設定開始狀態
+    // Set start state
     delayTime(config.getAnimationSecond());
     ++currentState;
 
-    // 遊戲主迴圈
+    // Main game loop
     while (currentState != State::FINISH) {
         for (auto& p : players) {
             Board::clearScreen();
@@ -102,7 +102,6 @@ void Game::start() {
 }
 
 void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile) {
-    // 執行對應的行動
     TileAction action = TileAction::NONE;
     nlohmann::json nowPlayerAction = playerAction();
     //----------------------------------
@@ -160,7 +159,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     bool validInput = false;
     while (!validInput) {
         key = InputManager::getKey();
-        cout << key << endl; // 顯示玩家所按的鍵
+        cout << key << endl;
         for (const auto& option : playerAction()["options"]) {
             if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
                 validInput = true;

@@ -3,17 +3,17 @@
 
 class Bank {
 private:
-    long long totalMoneyInBank; // 銀行總資金
-    static Bank* instance;      // Singleton 實例指標
+    long long totalMoneyInBank; // Total money in the bank
+    static Bank* instance;      // Singleton instance pointer
 
-    // 私有建構子，禁止外部建立
+    // Private constructor to prevent external instantiation
     Bank();
 
 public:
-    // 取得 Singleton 實例
+    // Get the Singleton instance
     static Bank* getInstance();
 
-    // 操作銀行資金
+    // Bank money operations
     void payToPlayer(long long amount);
     void receiveFromPlayer(long long amount);
     long long getTotalMoneyInBank() const;

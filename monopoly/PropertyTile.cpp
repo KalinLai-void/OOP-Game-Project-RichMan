@@ -1,7 +1,7 @@
 ﻿// PropertyTile.cpp
 #include "PropertyTile.hpp"
 #include "Bank.hpp"
-#include "InputManager.hpp" // 使用統一的按鍵管理
+#include "InputManager.hpp"
 #include "Player.hpp"
 #include <iostream>
 #include <string>
