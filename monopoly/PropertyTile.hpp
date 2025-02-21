@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-enum class PropertyLevel { LEVEL1, LEVEL2, LEVEL3 };
+enum class PropertyLevel {EMPTY, LEVEL1, LEVEL2, LEVEL3 };
 
 class PropertyTile : public Tile {
 private:

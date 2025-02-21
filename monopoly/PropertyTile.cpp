@@ -9,7 +9,7 @@
 using namespace std;
 
 PropertyTile::PropertyTile(const std::string& n, long long price, long long toll)
-    : Tile(n), basePrice(price), baseToll(toll), owner(nullptr), level(PropertyLevel::LEVEL1), currentPrice(price) {}
+    : Tile(n), basePrice(price), baseToll(toll), owner(nullptr), level(PropertyLevel::EMPTY), currentPrice(price) {}
 
 long long PropertyTile::getToll() const {
     switch (level) {
@@ -35,6 +35,7 @@ void PropertyTile::purchase(std::shared_ptr<Player> player) {
     if (player->getMoney() >= currentPrice) {
         player->adjustMoney(-currentPrice);
         owner = player;
+        level = PropertyLevel::LEVEL1;
         cout << "Purchase successful! Bought " << name << ", remaining money: " << player->getMoney() << endl;
     } else {
         cout << "Not enough money to purchase." << endl;
