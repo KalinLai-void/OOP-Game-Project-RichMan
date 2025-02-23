@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <random>
-
+#include <sstream>
 using namespace std;
 
 std::default_random_engine Game::engine;
@@ -22,7 +22,7 @@ Game::Game(const GameConfig& cfg)
     engine.seed(static_cast<unsigned>(time(nullptr)));
     State currentState = State::INIT;
 
-    // load dialogue.json
+    // load dialogue.json and commandData.json
     std::ifstream file("dialogue.json");
     if (!file) {
         cerr << "Error: Could not open dialogue.json" << endl;
@@ -30,10 +30,18 @@ Game::Game(const GameConfig& cfg)
     }
     file >> dialogueData;
     file.close();
+
+    std::ifstream file2("command.json");
+    if (!file2) {
+        cerr << "Error: Could not open command.json" << endl;
+        return;
+    }
+    file2 >> commandData;
+    //cout << commandData.dump();
+    file2.close();
 }
 
 void Game::initGame() {
-    cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
         cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
@@ -157,18 +165,32 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     char key;
 
     bool validInput = false;
+    std::string input;
     while (!validInput) {
+        input.clear();
         key = InputManager::getKey();
-        cout << key << endl;
-        for (const auto& option : playerAction()["options"]) {
-            if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
-                validInput = true;
-                break;
+        cout << key;
+        if (key == '/') {
+            std::getline(std::cin, input);
+            validInput = processCommand(player, input);
+            if (!validInput) {
+                cout << commandData["invalid_command"]["prompt"].get<std::string>() << endl;
+            }
+        } else {
+            cout << endl;
+            for (const auto& option : playerAction()["options"]) {
+
+                if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
+                    validInput = true;
+                    break;
+                }
+
+                if (!validInput) {
+                    cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
+                }
             }
         }
-        if (!validInput) {
-            cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
-        }
+        
     }
     //----------------------------------
     switch (key) {
@@ -212,6 +234,122 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         cout << "Action Pass." << endl;
         break;
     }
+}
+
+bool Game::processCommand(std::shared_ptr<Player> player, const std::string& input) {
+    std::istringstream iss(input);
+    std::vector<std::string> tokens;
+    std::string token;
+    while (iss >> token) {
+        tokens.push_back(token);
+    }
+
+    if (tokens.empty()) {
+        std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
+        return false;
+    }
+
+    std::string command = tokens[0];
+
+    // Check if the command exists in JSON
+    if (commandData.contains(command)) {
+        nlohmann::json tmpCommandData = commandData[command];
+        if (command == "move") {
+            if (tokens.size() < 2) {
+                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                return false;
+            }
+            int newPos = std::stoi(tokens[1]);
+            std::cout << tmpCommandData["prompt"].get<std::string>().replace(tmpCommandData["prompt"].get<std::string>().find("{location}"), 9, tokens[1])
+                      << std::endl;
+            player->setPosition(newPos);
+            return true;
+        }
+
+        if (command == "give") {
+            if (tokens.size() < 3) {
+                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                return false;
+            }
+            std::string playerName = tokens[1];
+            int amount = std::stoi(tokens[2]);
+            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            prompt.replace(prompt.find("{playerName}"), 11, playerName);
+            prompt.replace(prompt.find("{money}"), 7, tokens[2]);
+            std::cout << prompt << std::endl;
+            return true;
+        }
+
+        if (command == "card") {
+            if (tokens.size() < 2) {
+                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                return false;
+            }
+            std::string cardName = tokens[1];
+            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            prompt.replace(prompt.find("{card_name}"), 11, cardName);
+            std::cout << prompt << std::endl;
+            return true;
+        }
+
+        if (command == "gamestate") {
+            if (tokens.size() < 2) {
+                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                return false;
+            }
+            std::string newState = tokens[1];
+            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            prompt.replace(prompt.find("{state}"), 7, newState);
+            std::cout << prompt << std::endl;
+            return true;
+        }
+
+        if (command == "list") {
+            std::cout << tmpCommandData["prompt"].get<std::string>() << std::endl;
+            return false;
+        }
+    } else {
+        std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
+        return false;
+    }
+
+    return false;
+    // // 解析輸入
+    // while (iss >> token) {
+    //     tokens.push_back(token);
+    // }
+
+    // if (tokens.empty())
+    //     return false;
+
+    // if (tokens[0] == "move") {
+    //     if (tokens.size() < 2)
+    //         return false;
+    //     int newPos = std::stoi(tokens[1]);
+    //     cout << "移動玩家到 " << newPos << " 格。" << endl;
+    //     player->setPosition(newPos);
+    //     return true;
+    // }
+
+    // if (tokens[0] == "give") { // todo
+    //     if (tokens.size() < 3)
+    //         return false;
+    //     int targetPlayer = std::stoi(tokens[1]);
+    //     int amount = std::stoi(tokens[2]);
+    //     cout << "給玩家 " << targetPlayer << " " << amount << " 元。" << endl;
+    //     // 在這裡實作玩家之間的交易邏輯
+    //     return true;
+    // }
+
+    // if (tokens[0] == "list") {
+    //     cout << "可用指令：" << endl;
+    //     cout << "/move [位置] - 移動到指定位置" << endl;
+    //     cout << "/give [玩家ID] [金額] - 給指定玩家金額" << endl;
+    //     cout << "/list - 顯示可用指令" << endl;
+    //     return true;
+    // }
+
+    // return false; // 指令不匹配
 }
 
 void Game::throwDice(std::shared_ptr<Player> player) {
@@ -306,7 +444,7 @@ const nlohmann::json& Game::playerAction() {
 }
 
 const nlohmann::json& Game::playerAction(const string& key) {
-    if (key == "")
+    if (key == "" || key == "/")
         return dialogueData["player_action"][getStateString()]["default"];
     return dialogueData["player_action"][getStateString()][key];
 }

@@ -17,11 +17,13 @@ private:
     GameConfig config;
     State currentState;
     nlohmann::json dialogueData;
+    nlohmann::json commandData;
 
     std::vector<std::shared_ptr<Player>> players;
     static std::default_random_engine engine;
 
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
+    bool processCommand(std::shared_ptr<Player> player, const std::string& input);
     void throwDice(std::shared_ptr<Player> player);
     const nlohmann::json& playerAction();
     const nlohmann::json& playerAction(const std::string& key);

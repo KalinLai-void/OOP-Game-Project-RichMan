@@ -1,0 +1,35 @@
+{
+  "move": {
+    "description": "Move to a specific position on the board.",
+    "usage": "/move [location] or /move to [0-31]",
+    "examples": ["/move 5", "/move to 10"],
+    "prompt": "Moving player to position {location}."
+  },
+  "list": {
+    "description": "List all available commands.",
+    "usage": "/list",
+    "examples": ["/list"],
+    "prompt": "Available commands: /move, /list, /card [name], /give [playerName] [money], /gamestate [state]."
+  },
+  "card": {
+    "description": "Retrieve a specific card by name.",
+    "usage": "/card [card_name]",
+    "examples": ["/card Lucky", "/card Rocket"],
+    "prompt": "You received the card: {card_name}."
+  },
+  "give": {
+    "description": "Give money to another player.",
+    "usage": "/give [playerName] [money]",
+    "examples": ["/give Alice 500"],
+    "prompt": "{playerName} received {money} dollars from you."
+  },
+  "gamestate": {
+    "description": "Change the game state.",
+    "usage": "/gamestate [state]",
+    "examples": ["/gamestate START", "/gamestate FINISH"],
+    "prompt": "Game state changed to {state}."
+  },
+  "invalid_command": {
+    "prompt": "Invalid command. Type /list to see available commands."
+  }
+}
