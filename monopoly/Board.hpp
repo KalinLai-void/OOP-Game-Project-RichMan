@@ -19,6 +19,7 @@ public:
     Board(const GameConfig& config);
     int getSize() const;
     std::shared_ptr<Tile> getTile(int index);
+    std::vector<std::shared_ptr<Tile>> getTileList();
     void drawBoard(std::vector<std::shared_ptr<Player>>& players);
     void updatePropertyLevelBoard(int row, int col, int posIndex);
     static void clearScreen();

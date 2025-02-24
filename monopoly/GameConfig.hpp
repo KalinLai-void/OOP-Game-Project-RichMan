@@ -2,12 +2,14 @@
 #define GAMECONFIG_HPP
 
 #include "Utils.hpp"
+#include <map>
 #include <string>
 #include <vector>
 // 定義遊戲模式
 enum class GameMode { DEBUG, DUEL, RELEASE, CUSTOM };
 
 struct TileConfig {
+    std::size_t id;
     std::string type;
     std::string name;
     int cost;
@@ -29,6 +31,7 @@ private:
     std::vector<std::string> playerIcons;
     std::vector<TileConfig> boardTiles;
     std::vector<std::string> propertyLevelIcons;
+    std::map<int, std::string> locationMap;
 
     GameConfig() = default; // Private constructor
 
@@ -54,6 +57,8 @@ public:
     // Set and get property level icons
     void setPropertyLevelIcons(const std::vector<std::string>& icons);
     std::vector<std::string> getPropertyLevelIcons() const;
+
+    std::map<int, std::string> getLocationMap() const;
 
     // Set and get money information
     void setStartMoney(int amount);

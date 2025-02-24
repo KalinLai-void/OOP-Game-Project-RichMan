@@ -85,7 +85,12 @@ std::shared_ptr<Tile> Board::getTile(int index) {
     return tiles[index];
 }
 
+std::vector<std::shared_ptr<Tile>> Board::getTileList() {
+    return tiles;
+}
+
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
+    clearScreen();
 
     std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 

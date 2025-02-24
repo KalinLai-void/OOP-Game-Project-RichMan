@@ -25,7 +25,7 @@ void GameConfig::loadConfig() {
         this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
-        this->animationSecond = config["animationSecond"].get<float>();
+        this->animationSecond = config["animationSecond"].get<long long>();
 
         std::string modeStr = (mode == GameMode::DEBUG) ? "DEBUG" : "DUEL";
         auto& modeConfig = config["modes"][modeStr];
@@ -37,8 +37,11 @@ void GameConfig::loadConfig() {
         this->passingStartBonus = modeConfig["passingStartBonus"].get<int>();
         this->mapSize = modeConfig["mapSize"].get<int>();
         this->boardTiles.clear();
+
+        std::size_t id = 0;
         for (const auto& tile : modeConfig["boardTiles"]) {
-            this->boardTiles.push_back({tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
+            this->boardTiles.push_back(
+                {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
         }
 
         // 設定 Windows Console 視窗大小 # TODO: but now failure
@@ -101,6 +104,10 @@ void GameConfig::setPropertyLevelIcons(const std::vector<std::string>& icons) {
 
 std::vector<std::string> GameConfig::getPropertyLevelIcons() const {
     return propertyLevelIcons;
+}
+
+std::map<int, std::string> GameConfig::getLocationMap() const {
+    return locationMap;
 }
 
 void GameConfig::setStartMoney(int amount) {

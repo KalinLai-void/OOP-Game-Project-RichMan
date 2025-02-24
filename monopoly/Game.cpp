@@ -13,14 +13,15 @@
 #include <iostream>
 #include <random>
 #include <sstream>
+#include <unordered_map>
+
 using namespace std;
 
 std::default_random_engine Game::engine;
 
 Game::Game(const GameConfig& cfg)
-    : board(cfg), config(cfg) {
+    : board(cfg), config(cfg), currentState(State::INIT) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
-    State currentState = State::INIT;
 
     // load dialogue.json and commandData.json
     std::ifstream file("dialogue.json");
@@ -37,7 +38,6 @@ Game::Game(const GameConfig& cfg)
         return;
     }
     file2 >> commandData;
-    //cout << commandData.dump();
     file2.close();
 }
 
@@ -79,8 +79,7 @@ void Game::start() {
     // Main game loop
     while (currentState != State::FINISH) {
         for (auto& p : players) {
-            Board::clearScreen();
-            // board.drawBoard(players);
+            board.drawBoard(players);
             cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
                 cout << "You're in the hospital. You can't move." << endl;
@@ -95,7 +94,6 @@ void Game::start() {
             // moved
             processPlayerAction(p, board.getTile(p->getPosition()));
             ++currentState;
-            Board::clearScreen();
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
@@ -176,6 +174,8 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             if (!validInput) {
                 cout << commandData["invalid_command"]["prompt"].get<std::string>() << endl;
             }
+            processPlayerAction(player, tile);
+            return;
         } else {
             cout << endl;
             for (const auto& option : playerAction()["options"]) {
@@ -190,7 +190,6 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
                 }
             }
         }
-        
     }
     //----------------------------------
     switch (key) {
@@ -249,111 +248,110 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
         return false;
     }
 
-    std::string command = tokens[0];
-
     // Check if the command exists in JSON
+    std::string command = tokens[0];
     if (commandData.contains(command)) {
-        nlohmann::json tmpCommandData = commandData[command];
+        nlohmann::json currCommandData = commandData[command];
         if (command == "move") {
             if (tokens.size() < 2) {
-                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
-            int newPos = std::stoi(tokens[1]);
-            std::cout << tmpCommandData["prompt"].get<std::string>().replace(tmpCommandData["prompt"].get<std::string>().find("{location}"), 9, tokens[1])
-                      << std::endl;
+
+            std::string location;
+
+            // Handle "/move to X" format
+            if (tokens.size() == 3 && tokens[1] == "to") {
+                location = tokens[2]; // Extract the actual location
+            } else {
+                location = tokens[1]; // Regular "/move X" case
+            }
+
+            int newPos = -1; // Invalid position by default
+
+            // Check if input is a number (direct position)
+            if (std::all_of(location.begin(), location.end(), ::isdigit)) {
+                newPos = std::stoi(location);
+            }
+
+            // Check if input is a named location (e.g., "USA")
+            std::vector<std::shared_ptr<Tile>> tmpTileList = board.getTileList();
+            auto it = std::find_if(tmpTileList.begin(), tmpTileList.end(), [&](const std::shared_ptr<Tile>& tile) {
+                return tile->getName() == location;
+            });
+            if (it != tmpTileList.end()) {
+                newPos = std::distance(tmpTileList.begin(), it);
+            }
+
+            // If the location is still invalid, return an error
+            if (newPos == -1) {
+                std::cout << "Error: Invalid location. Please enter a valid number (0-31) or a named location (USA, START, etc.).\n";
+                return false;
+            }
+
+            // Replace {location} in the prompt message
+            std::string prompt = currCommandData["prompt"].get<std::string>();
+            size_t pos = prompt.find("{location}");
+            if (pos != std::string::npos) {
+                prompt.replace(pos, std::string("{location}").length(), location);
+            }
+
+            std::cout << prompt << std::endl;
             player->setPosition(newPos);
             return true;
-        }
-
-        if (command == "give") {
+        } else if (command == "give") { // todo
             if (tokens.size() < 3) {
-                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
             std::string playerName = tokens[1];
             int amount = std::stoi(tokens[2]);
-            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{playerName}"), 11, playerName);
             prompt.replace(prompt.find("{money}"), 7, tokens[2]);
             std::cout << prompt << std::endl;
             return true;
-        }
-
-        if (command == "card") {
+        } else if (command == "card") { // todo
             if (tokens.size() < 2) {
-                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
             std::string cardName = tokens[1];
-            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{card_name}"), 11, cardName);
             std::cout << prompt << std::endl;
             return true;
-        }
-
-        if (command == "gamestate") {
+        } else if (command == "gamestate") {
             if (tokens.size() < 2) {
-                std::cout << "Usage: " << tmpCommandData["usage"].get<std::string>() << std::endl;
+                std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
             std::string newState = tokens[1];
-            std::string prompt = tmpCommandData["prompt"].get<std::string>();
+            std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{state}"), 7, newState);
+            setState(newState);
             std::cout << prompt << std::endl;
+            std::cout << "Current state: " << getStateString() << std::endl;
+            return true;
+        } else if (command == "list") {
+            for (const auto& item : commandData.items()) {
+                const std::string& command = item.key(); // Get the JSON key
+                const auto& cmdData = item.value();      // Get the corresponding value
+
+                if (command != "invalid_command") { // Exclude invalid commands
+                    std::cout << "/" << command << " - " << cmdData["description"].get<std::string>() << std::endl;
+                }
+            }
             return true;
         }
-
-        if (command == "list") {
-            std::cout << tmpCommandData["prompt"].get<std::string>() << std::endl;
-            return false;
-        }
     } else {
-        std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
-        return false;
+        return false; // Invalid command
     }
 
     return false;
-    // // 解析輸入
-    // while (iss >> token) {
-    //     tokens.push_back(token);
-    // }
-
-    // if (tokens.empty())
-    //     return false;
-
-    // if (tokens[0] == "move") {
-    //     if (tokens.size() < 2)
-    //         return false;
-    //     int newPos = std::stoi(tokens[1]);
-    //     cout << "移動玩家到 " << newPos << " 格。" << endl;
-    //     player->setPosition(newPos);
-    //     return true;
-    // }
-
-    // if (tokens[0] == "give") { // todo
-    //     if (tokens.size() < 3)
-    //         return false;
-    //     int targetPlayer = std::stoi(tokens[1]);
-    //     int amount = std::stoi(tokens[2]);
-    //     cout << "給玩家 " << targetPlayer << " " << amount << " 元。" << endl;
-    //     // 在這裡實作玩家之間的交易邏輯
-    //     return true;
-    // }
-
-    // if (tokens[0] == "list") {
-    //     cout << "可用指令：" << endl;
-    //     cout << "/move [位置] - 移動到指定位置" << endl;
-    //     cout << "/give [玩家ID] [金額] - 給指定玩家金額" << endl;
-    //     cout << "/list - 顯示可用指令" << endl;
-    //     return true;
-    // }
-
-    // return false; // 指令不匹配
 }
 
 void Game::throwDice(std::shared_ptr<Player> player) {
-    Board::clearScreen();
     std::uniform_int_distribution<int> dist(1, 6);
     int d1 = dist(engine);
     int d2 = dist(engine);
@@ -406,37 +404,46 @@ void Game::changeState(State newState) {
 }
 
 std::string Game::getStateString() {
-    switch (currentState) {
-    case State::INIT:
-        return "init";
-    case State::START:
-        return "start";
-    case State::MOVED:
-        return "moved";
-    case State::FINISH:
-        return "end";
-    default:
-        std::cout << "Unknown state!" << std::endl;
-        return "unknown";
-    }
+    static const std::unordered_map<State, std::string> stateToString = {
+        {  State::INIT,   "init"},
+        { State::START,  "start"},
+        { State::MOVED,  "moved"},
+        {State::FINISH, "finish"}
+    };
+
+    auto it = stateToString.find(currentState);
+    return (it != stateToString.end()) ? it->second : "unknown";
 }
 
 State& operator++(State& state) {
-    switch (state) {
-    case State::INIT:
-        state = State::START;
-        break;
-    case State::START:
-        state = State::MOVED;
-        break;
-    case State::MOVED:
-        state = State::START;
-        break;
-    default:
-        state = State::FINISH;
-        break;
+    static const std::unordered_map<State, State> nextState = {
+        {  State::INIT,  State::START},
+        { State::START,  State::MOVED},
+        { State::MOVED,  State::START},
+        {State::FINISH, State::FINISH}
+    };
+
+    auto it = nextState.find(state);
+    if (it != nextState.end()) {
+        state = it->second;
     }
     return state;
+}
+
+void Game::setState(const std::string& state) {
+    std::string lowerState = state;
+    std::transform(lowerState.begin(), lowerState.end(), lowerState.begin(), ::tolower);
+    if (lowerState == "init") {
+        currentState = State::INIT;
+    } else if (lowerState == "start") {
+        currentState = State::START;
+    } else if (lowerState == "moved") {
+        currentState = State::MOVED;
+    } else if (lowerState == "finish") {
+        currentState = State::FINISH;
+    } else {
+        std::cout << "Unknown state!" << std::endl;
+    }
 }
 
 const nlohmann::json& Game::playerAction() {

@@ -35,6 +35,7 @@ public:
     bool checkGameOver();
     void endGame();
     void changeState(State newState);
+    void setState(const std::string& state);
     std::string getStateString();
 };
 
