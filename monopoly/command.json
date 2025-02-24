@@ -34,6 +34,12 @@
     ],
     "prompt": "Game state changed to {state}."
   },
+  "info": {
+    "description": "Display information about all players.",
+    "usage": "/info",
+    "examples": ["/info"],
+    "prompt": "Displaying information for all players."
+  },
   "refresh": {
     "description": "Refresh the game board.",
     "usage": "/refresh",

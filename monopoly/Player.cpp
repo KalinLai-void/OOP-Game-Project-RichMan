@@ -24,8 +24,12 @@ bool Player::isInHospital() const {
 void Player::setPosition(int pos) {
     position = pos;
 }
-void Player::adjustMoney(long long delta) {
+bool Player::adjustMoney(long long delta) {
+    if (money + delta < 0) {
+        return false;
+    }
     money += delta;
+    return true;
 }
 void Player::setBankrupt(bool b) {
     bankrupt = b;

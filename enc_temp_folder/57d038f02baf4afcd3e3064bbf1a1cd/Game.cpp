@@ -299,7 +299,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             std::cout << prompt << std::endl;
             player->setPosition(newPos);
             return true;
-        } else if (command == "give") {
+        } else if (command == "give") { // todo
             if (tokens.size() < 3) {
                 std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
