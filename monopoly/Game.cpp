@@ -216,7 +216,13 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             static_pointer_cast<PropertyTile>(tile)->sell(player);
         }
     case 'I':
-        cout << "Opening the item card interface (to be implemented)." << endl;
+        std::cout << "Player: " << player->getName() << std::endl;
+        std::cout << "Position: " << player->getPosition() << std::endl;
+        std::cout << "Money: " << player->getMoney() << std::endl;
+        std::cout << "Status: " << (player->isBankrupt() ? "Bankrupt" : "Active") << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        // card
+        std::cout << "Opening the item card interface (to be implemented)." << endl;
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
@@ -368,12 +374,15 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 std::cout << "------------------------" << std::endl;
             }
             return true;
-        } else if (command == "list") {
+        } else if (command == "refresh") {
+            board.drawBoard(players);
+            return true;
+        } else if (command == "list" || command == "help") {
             bool showAll = (tokens.size() > 1 && tokens[1] == "-a");
 
             for (const auto& item : commandData.items()) {
-                const std::string& command = item.key(); // Get the JSON key
-                const auto& cmdData = item.value();      // Get the corresponding value
+                    const std::string& command = item.key(); // Get the JSON key
+                    const auto& cmdData = item.value();      // Get the corresponding value
 
                 if (command != "invalid_command" && command != "list") { // Exclude invalid commands
                     std::cout << "/" << command << " - " << cmdData["description"].get<std::string>() << std::endl;
