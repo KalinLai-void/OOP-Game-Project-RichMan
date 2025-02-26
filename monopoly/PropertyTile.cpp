@@ -83,7 +83,6 @@ void PropertyTile::sell(std::shared_ptr<Player> player) {
     owner = nullptr;
     level = PropertyLevel::LEVEL1;
     updateCurrentPrice();
-    cout << "Sell successful! Sold " << name << " for " << sellPrice << ", current money: " << player->getMoney() << endl;
 }
 
 TileAction PropertyTile::landOn(std::shared_ptr<Player> player) {

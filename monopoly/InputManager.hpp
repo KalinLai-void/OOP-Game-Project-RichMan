@@ -45,12 +45,12 @@ class InputManager {
 public:
     // Get a key press without needing to press Enter, and automatically convert to uppercase
     static char getKey() {
-        char ch;
+        int ch; // 改用 int
         while (true) {
 #    ifdef _WIN32
             ch = _getch();
             if (ch == 0 || ch == 0xE0) {
-                (void)_getch(); // Skip extended code
+                (void)_getch();
                 continue;
             }
 #    else
@@ -62,14 +62,14 @@ public:
             ch = getchar();
             tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
-            if (ch == 27) { // Handle arrow keys and other extra input
-                getchar();  // Skip '['
-                getchar();  // Skip actual key code
+            if (ch == 27) {
+                getchar();
+                getchar();
                 continue;
             }
 #    endif
             if (std::isalnum(ch) || std::ispunct(ch) || ch == ' ') {
-                return std::isalpha(ch) ? std::toupper(static_cast<unsigned char>(ch)) : ch;
+                return std::isalpha(ch) ? std::toupper(ch) : ch;
             }
         }
     }

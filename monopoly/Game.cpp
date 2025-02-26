@@ -89,12 +89,17 @@ void Game::start() {
                 continue;
             }
             // start
-            processPlayerAction(p, board.getTile(p->getPosition()));
-            ++currentState;
-
+            while (currentState == State::START) {
+                processPlayerAction(p, board.getTile(p->getPosition()));
+            }
+            //++currentState;
+            
             // moved
-            processPlayerAction(p, board.getTile(p->getPosition()));
-            ++currentState;
+            while (currentState == State::MOVED) {
+                processPlayerAction(p, board.getTile(p->getPosition()));
+            }
+            
+            //++currentState;
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
@@ -180,21 +185,20 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         } else {
             cout << endl;
             for (const auto& option : playerAction()["options"]) {
-
                 if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
                     validInput = true;
                     break;
                 }
-
-                if (!validInput) {
-                    cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
-                }
+            }
+            if (!validInput) {
+                cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
             }
         }
     }
     //----------------------------------
     switch (key) {
     case 'R':
+        ++currentState;
         switch (action) {
         case TileAction::PURCHASE_PROPERTY:
             static_pointer_cast<PropertyTile>(tile)->purchase(player);
@@ -212,21 +216,33 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             static_pointer_cast<StoreTile>(tile)->enterStore(player);
             break;
         }
+        break;
     case 'S':
+        ++currentState;
         if (action == TileAction::OWN) {
             static_pointer_cast<PropertyTile>(tile)->sell(player);
         }
+        break;
     case 'I':
-        cout << "Opening the item card interface (to be implemented)." << endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "Player: " << player->getName() << std::endl;
+        std::cout << "Position: " << player->getPosition() << std::endl;
+        std::cout << "Money: " << player->getMoney() << std::endl;
+        std::cout << "Status: " << (player->isBankrupt() ? "Bankrupt" : "Active") << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        // card
+        std::cout << "Opening the item card interface (to be implemented)." << endl;
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
         break;
     case 'T':
+        ++currentState;
         throwDice(player);
         break;
     // input any key to continue
     default:
+        ++currentState;
         if (action == TileAction::SPECIAL_EVENT) {
             static_pointer_cast<EventTile>(tile)->triggerEvent(player);
             break;
@@ -369,12 +385,15 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 std::cout << "------------------------" << std::endl;
             }
             return true;
-        } else if (command == "list") {
+        } else if (command == "refresh") {
+            board.drawBoard(players);
+            return true;
+        } else if (command == "list" || command == "help") {
             bool showAll = (tokens.size() > 1 && tokens[1] == "-a");
 
             for (const auto& item : commandData.items()) {
-                const std::string& command = item.key(); // Get the JSON key
-                const auto& cmdData = item.value();      // Get the corresponding value
+                    const std::string& command = item.key(); // Get the JSON key
+                    const auto& cmdData = item.value();      // Get the corresponding value
 
                 if (command != "invalid_command" && command != "list") { // Exclude invalid commands
                     std::cout << "/" << command << " - " << cmdData["description"].get<std::string>() << std::endl;

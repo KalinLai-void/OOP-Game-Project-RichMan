@@ -16,7 +16,7 @@
         },
         {
           "key": "I",
-          "description": "View items"
+          "description": "View Player Info"
         }
       ],
       "default": {
@@ -28,7 +28,7 @@
           },
           {
             "key": "I",
-            "description": "View items"
+            "description": "View Player Info"
           }
         ]
       },
@@ -64,7 +64,7 @@
       "options": [
         {
           "key": "I",
-          "description": "View items"
+          "description": "View Player Info"
         },
         {
           "key": "*",
@@ -76,7 +76,7 @@
         "options": [
           {
             "key": "I",
-            "description": "View items"
+            "description": "View Player Info"
           },
           {
             "key": "*",
@@ -168,7 +168,7 @@
         },
         {
           "key": "I",
-          "description": "View items"
+          "description": "View Player Info"
         }
       ]
     },
@@ -181,7 +181,7 @@
         },
         {
           "key": "I",
-          "description": "View items"
+          "description": "View Player Info"
         }
       ]
     }
