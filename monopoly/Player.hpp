@@ -4,6 +4,7 @@
 #include "Card.hpp"
 #include <string>
 #include <vector>
+#include <memory>
 
 class Player {
 private:
@@ -11,7 +12,7 @@ private:
     std::string icon;
     int position;
     long long money;
-    std::vector<Card> cards; // Cards held by the player
+    std::vector<std::shared_ptr<Card>> cards; // Cards held by the player
     bool bankrupt;           // Whether the player is bankrupt
     bool inHospital;         // Whether the player is in the hospital
     int hospitalRoundLeft;   // Number of rounds left in the hospital
@@ -31,7 +32,7 @@ public:
     void setPosition(int pos);
     bool adjustMoney(long long delta);
     void setBankrupt(bool b);
-    void addCard(const Card& card);
+    void addCard(std::shared_ptr<Card> card);
 
     // Hospital related
     void sendToHospital(int rounds);

@@ -1,4 +1,5 @@
-#include "Player.hpp"
+﻿#include "Player.hpp"
+#include <iostream>
 
 Player::Player(const std::string& n, const std::string& i, long long m)
     : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0) {}
@@ -54,6 +55,6 @@ void Player::updateHospitalStatus() {
     }
 }
 
-void Player::addCard(const Card& card) {
+void Player::addCard(std::shared_ptr<Card> card) {
     cards.push_back(card);
 }

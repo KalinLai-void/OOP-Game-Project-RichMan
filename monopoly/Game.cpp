@@ -7,6 +7,7 @@
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
 #include "Utils.hpp"
+#include "DiceControlCard.hpp"
 #include <algorithm>
 #include <ctime>
 #include <fstream>
