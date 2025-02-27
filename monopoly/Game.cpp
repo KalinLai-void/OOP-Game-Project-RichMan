@@ -231,7 +231,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         std::cout << "Status: " << (player->isBankrupt() ? "Bankrupt" : "Active") << std::endl;
         std::cout << "----------------------------------------" << std::endl;
         // card
-        std::cout << "Opening the item card interface (to be implemented)." << endl;
+        //std::cout << "Opening the item card interface (to be implemented)." << endl;
         player->displayCards(players, board);
         break;
     case 'P':

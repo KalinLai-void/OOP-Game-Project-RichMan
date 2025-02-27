@@ -62,7 +62,6 @@ void Player::addCard(std::shared_ptr<Card> card) {
 void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board) {
     if (cards.empty()) {
         std::cout << name << " has no cards." << std::endl;
-        std::cout << "+-------------------------------------------------+" << std::endl;
         return;
     }
 

@@ -18,19 +18,37 @@ void CardStore::displayStore(std::shared_ptr<Player> player) {
     std::cout << "[0] Exit store" << std::endl;
     std::cout << "Enter the number of the card you want to buy: ";
 
+
     int choice;
-    std::cin >> choice;
 
-    if (choice == 0) {
-        std::cout << "You left the store." << std::endl;
-        return;
+    while (true) {
+        std::string input;
+        input.clear();
+        
+        std::getline(std::cin, input);
+        try {
+            size_t pos;
+            choice = std::stoi(input, &pos);
+            if (choice == 0) {
+                std::cout << "You left the store." << std::endl;
+                return;
+            }
+
+            if (choice > 0 && choice <= static_cast<int>(cards.size())) {
+                purchaseCard(player, cards[choice - 1]);
+                return;
+            } else {
+                std::cout << "Invalid choice. Try again." << std::endl;
+                std::cout << "Enter the number of the card you want to buy: ";
+            }
+
+        } catch (const std::exception&) {
+            std::cout << "Invalid choice. Try again." << std::endl;
+            std::cout << "Enter the number of the card you want to buy: ";
+        }
+ 
     }
 
-    if (choice > 0 && choice <= static_cast<int>(cards.size())) {
-        purchaseCard(player, cards[choice - 1]);
-    } else {
-        std::cout << "Invalid choice. Try again." << std::endl;
-    }
 }
 
 void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card) {
