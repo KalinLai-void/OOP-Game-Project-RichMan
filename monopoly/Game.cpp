@@ -420,6 +420,12 @@ void Game::throwDice(std::shared_ptr<Player> player) {
     std::uniform_int_distribution<int> dist(1, 6);
     int d1 = dist(engine);
     int d2 = dist(engine);
+    int diceControl = player->getDiceControl();
+    if (diceControl > 0) {
+        d1 = diceControl;
+        player->setDiceControl(0);
+    }
+
     int steps = d1 + d2;
 
     int newPos = (player->getPosition() + steps) % board.getSize();

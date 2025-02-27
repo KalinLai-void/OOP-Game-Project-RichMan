@@ -108,3 +108,11 @@ void Player::useCard(int index, std::vector<std::shared_ptr<Player>>& players, B
         std::cout << "Invalid selection.\n";
     }
 }
+
+void Player::setDiceControl(int step) {
+    diceControl = step;
+}
+
+int Player::getDiceControl() const{
+    return diceControl;
+}

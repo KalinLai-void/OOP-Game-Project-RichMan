@@ -16,6 +16,8 @@ private:
     bool bankrupt;           // Whether the player is bankrupt
     bool inHospital;         // Whether the player is in the hospital
     int hospitalRoundLeft;   // Number of rounds left in the hospital
+    int diceControl;
+
 public:
     Player(const std::string& n, const std::string& i, long long m);
 
@@ -25,14 +27,17 @@ public:
 
     long long getMoney() const;
     int getPosition() const;
+    int getDiceControl() const;
     bool isBankrupt() const;
     bool isInHospital() const;
+    
 
     // Update Player status
     void setPosition(int pos);
     bool adjustMoney(long long delta);
     void setBankrupt(bool b);
     void addCard(std::shared_ptr<Card> card);
+    void setDiceControl(int step);
 
     // Hospital related
     void sendToHospital(int rounds);

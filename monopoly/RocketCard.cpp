@@ -16,19 +16,29 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
             idx++;
         }
     }
-    
- 
-
     int choice;
-    while (true) {
-        std::cin >> choice;
-        
-        if (choice >=1 && choice <= static_cast<int>(availablePlayers.size())) {
-            break;
-        }
 
-        std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
+    while (true) {
+        std::string input;
+        input.clear();
+
+        std::getline(std::cin, input);
+        try {
+            size_t pos;
+            choice = std::stoi(input, &pos);
+            if (choice >= 1 && choice <= static_cast<int>(availablePlayers.size())) {
+                break;
+            } else {
+                std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
+                
+            }
+
+        } catch (const std::exception&) {
+            std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
+            
+        }
     }
+
 
     std::shared_ptr<Player> targetPlayer = availablePlayers[choice - 1];
     

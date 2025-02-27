@@ -4,18 +4,23 @@
 #include <vector>
 
 void DiceControlCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
+    std::cout << "Choose the number you roll (1-6): ";
     int chosenRoll;
     while (true) {
-        std::cout << "Choose the number you roll (1-12): ";
-        std::cin >> chosenRoll;
- 
-        if (chosenRoll >= 1 && chosenRoll <= 12) {
-            int newPos = (curPlayer->getPosition() + chosenRoll) % board.getSize();
-            curPlayer->setPosition(newPos);
-            board.drawBoard(players);
-            return;
+        std::string input;
+        
+        std::getline(std::cin, input);
+        try {
+            size_t pos;
+            chosenRoll = std::stoi(input, &pos);
+            if (chosenRoll >= 1 && chosenRoll <= 6) {
+                curPlayer->setDiceControl(chosenRoll);
+                return;
+            } else {
+                std::cout << "Invalid input. Please enter a number between 1 and 6." << std::endl;
+            }
+        } catch (const std::exception&){
+            std::cout << "Invalid input. Please enter a number between 1 and 6." << std::endl;
         }
-        std::cout << "Invalid input. Please enter a number between 1 and 12." << std::endl;
-
     }
 }
