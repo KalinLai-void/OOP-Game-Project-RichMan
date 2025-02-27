@@ -10,7 +10,7 @@ public:
     DiceControlCard()
         : Card("Dice Control Card", 2000, "Choose the number you roll on the dice.") {}
 
-    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) override;
+    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) override;
 };
 
 #endif // !DICECONTROL_CARD_HPP

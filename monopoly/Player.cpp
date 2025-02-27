@@ -62,6 +62,7 @@ void Player::addCard(std::shared_ptr<Card> card) {
 void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board) {
     if (cards.empty()) {
         std::cout << name << " has no cards." << std::endl;
+        std::cout << "+-------------------------------------------------+" << std::endl;
         return;
     }
 
@@ -75,7 +76,7 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
     }
 
     std::cout << "+-------------------------------------------------+" << std::endl;
-    std::cout << "[0] Exit item interface" << std::endl;
+    std::cout << "[0] to exit" << std::endl << std::endl;
     std::cout << "Enter the number of the card to use: ";
 
     std::string inputString;

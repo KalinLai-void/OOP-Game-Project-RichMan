@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+//#include "Board.hpp"
 
 class Player; // Forward declaration to prevent circular dependency
 class Board;
@@ -30,7 +31,7 @@ public:
         return effect;
     }
 
-    virtual void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) = 0;
+    virtual void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) = 0;
 };
 
 #endif // CARD_HPP

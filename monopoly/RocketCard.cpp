@@ -1,20 +1,52 @@
 ﻿#include "RocketCard.hpp"
 #include <iostream>
 
-void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) {
-    std::string str;
-    int stepsForward;
-    size_t pos;
-    while (true) {
-        std::cout << "Choose the number you roll (1-32): ";
-        std::getline(std::cin, str);
-
-        stepsForward = std::stoi(str, &pos);
-
-        if (pos == str.size() && stepsForward >= 1 && stepsForward <= 32) {
-            player->setPosition(stepsForward);
-            return;
-        }
-        std::cout << "Invalid input. Please enter a number between 1 and 31." << std::endl;
+void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
+    if (players.size() < 2) {
+        std::cout << "There are no other player to send to the hospital!" << std::endl;
+        return;
     }
+    std::cout << std::endl << "Choose a player to send to the hospital (Enter the number):";
+    int idx = 1;
+    std::vector<std::shared_ptr<Player>> availablePlayers;
+    for (auto& player : players) {
+        if (player != curPlayer) {
+            std::cout << idx << ". " << player->getName() << std::endl;
+            availablePlayers.push_back(player);
+            idx++;
+        }
+    }
+    
+ 
+
+    int choice;
+    while (true) {
+        std::cin >> choice;
+        
+        if (choice >=1 && choice <= static_cast<int>(availablePlayers.size())) {
+            break;
+        }
+
+        std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
+    }
+
+    std::shared_ptr<Player> targetPlayer = availablePlayers[choice - 1];
+    
+    // Move to nerarest Hospital.
+    TileAction action = TileAction::NONE;
+    int step = 1;
+    while (true) {
+        int newPos = (targetPlayer->getPosition() + step) % board.getSize();
+        targetPlayer->setPosition(newPos);
+        action = board.getTile(targetPlayer->getPosition())->landOn(targetPlayer);
+        if (action == TileAction::HOSPITAL) {
+            break;
+        }
+    }
+    targetPlayer->sendToHospital(2);
+
+    board.drawBoard(players);
+    
+    std::cout << targetPlayer->getName() << " was hit by Rocket and sent to the hospital for 2 turns!" << std::endl;
+    std::cout << "It's " << curPlayer->getName() << "'s turn." << std::endl;
 }
