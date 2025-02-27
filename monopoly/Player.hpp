@@ -2,10 +2,13 @@
 #define PLAYER_HPP
 
 #include "Card.hpp"
+#include <memory>
 #include <string>
 #include <vector>
 
-class Player {
+class MiniGameManager;
+
+class Player : public std::enable_shared_from_this<Player> {
 private:
     std::string name;
     std::string icon;
@@ -37,6 +40,10 @@ public:
     void sendToHospital(int rounds);
     void recoverFromHospital();
     void updateHospitalStatus();
+
+    // MiniGame related
+    void startMiniGame(MiniGameManager& manager);
+    void endMiniGame(MiniGameManager& manager);
 };
 
 #endif // PLAYER_HPP

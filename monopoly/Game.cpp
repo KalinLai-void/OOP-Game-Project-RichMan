@@ -3,6 +3,7 @@
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
+#include "MiniGameManager.hpp"
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
@@ -63,6 +64,7 @@ void Game::initGame() {
             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
         }
     }
+    miniGameManager = std::make_shared<MiniGameManager>();
 }
 
 void Game::start() {
@@ -92,17 +94,21 @@ void Game::start() {
                 processPlayerAction(p, board.getTile(p->getPosition()));
             }
             //++currentState;
-            
+
             // moved
             while (currentState == State::MOVED) {
                 processPlayerAction(p, board.getTile(p->getPosition()));
             }
-            
+
             //++currentState;
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
                 continue;
+            }
+
+            if (true) {
+                p->startMiniGame(*miniGameManager);
             }
 
             if (checkGameOver())
@@ -391,8 +397,8 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             bool showAll = (tokens.size() > 1 && tokens[1] == "-a");
 
             for (const auto& item : commandData.items()) {
-                    const std::string& command = item.key(); // Get the JSON key
-                    const auto& cmdData = item.value();      // Get the corresponding value
+                const std::string& command = item.key(); // Get the JSON key
+                const auto& cmdData = item.value();      // Get the corresponding value
 
                 if (command != "invalid_command" && command != "list") { // Exclude invalid commands
                     std::cout << "/" << command << " - " << cmdData["description"].get<std::string>() << std::endl;
