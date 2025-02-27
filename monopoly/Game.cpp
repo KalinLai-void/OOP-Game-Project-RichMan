@@ -326,8 +326,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
+
             std::string playerName = tokens[1];
             int amount;
+
             try {
                 amount = std::stoi(tokens[2]);
             } catch (const std::invalid_argument& e) {
@@ -358,6 +360,55 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 std::cout << "Error: Not enough money." << std::endl;
             }
             return true;
+        } else if (command == "get") {
+            if (tokens.size() < 2) {
+                std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
+                return false;
+            }
+
+            std::string playerName;
+            int amount;
+
+            if (tokens.size() == 2) {
+                playerName = player->getName();
+                try {
+                    amount = std::stoi(tokens[1]);
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
+                    return false;
+                } catch (const std::out_of_range& e) {
+                    std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
+                    return false;
+                }
+            } else {
+                playerName = tokens[1];
+                try {
+                    amount = std::stoi(tokens[2]);
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
+                    return false;
+                } catch (const std::out_of_range& e) {
+                    std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
+                    return false;
+                }
+            }
+
+            auto it = std::find_if(players.begin(), players.end(), [&](const std::shared_ptr<Player>& p) {
+                return p->getName() == playerName;
+            });
+
+            if (it != players.end()) {
+                (*it)->addMoney(amount);
+
+                std::string prompt = currCommandData["prompt"].get<std::string>();
+                prompt.replace(prompt.find("{playerName}"), 12, playerName);
+                prompt.replace(prompt.find("{money}"), 7, std::to_string(amount));
+                std::cout << prompt << std::endl;
+                return true;
+            } else {
+                std::cout << "Error: Player not found." << std::endl;
+                return false;
+            }
         } else if (command == "card") { // todo
             if (tokens.size() < 2) {
                 std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
