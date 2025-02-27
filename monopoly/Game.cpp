@@ -232,6 +232,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         std::cout << "----------------------------------------" << std::endl;
         // card
         std::cout << "Opening the item card interface (to be implemented)." << endl;
+        player->displayCards(players, board);
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;

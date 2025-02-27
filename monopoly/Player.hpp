@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-class Player {
+class Player : public std::enable_shared_from_this<Player> {
 private:
     std::string name;
     std::string icon;
@@ -38,6 +38,9 @@ public:
     void sendToHospital(int rounds);
     void recoverFromHospital();
     void updateHospitalStatus();
+
+    void displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board);
+    void useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board);
 };
 
 #endif // PLAYER_HPP

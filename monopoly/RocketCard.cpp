@@ -1,7 +1,7 @@
 ﻿#include "RocketCard.hpp"
 #include <iostream>
 
-void RocketCard::useEffect(std::shared_ptr<Player> player) {
+void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) {
     std::string str;
     int stepsForward;
     size_t pos;

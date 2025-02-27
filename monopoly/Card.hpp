@@ -1,10 +1,12 @@
 ﻿#ifndef CARD_HPP
 #define CARD_HPP
 
+#include <vector>
 #include <string>
 #include <memory>
 
 class Player; // Forward declaration to prevent circular dependency
+class Board;
 
 class Card {
 private:
@@ -16,7 +18,7 @@ public:
     Card(const std::string& n, int p, const std::string& e)
         : name(n), price(p), effect(e) {}
 
-    virtual ~Card() {};
+    virtual ~Card() = default;
 
     std::string getName() const {
         return name;
@@ -28,7 +30,7 @@ public:
         return effect;
     }
 
-    virtual void useEffect(std::shared_ptr<Player> player) = 0;
+    virtual void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) = 0;
 };
 
 #endif // CARD_HPP

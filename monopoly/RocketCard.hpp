@@ -9,7 +9,7 @@ public:
     RocketCard()
         : Card("Rocket Card", 3000, "Move instantly to any tile.") {}
 
-    void useEffect(std::shared_ptr<Player> player) override;
+    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) override;
 
 };
 

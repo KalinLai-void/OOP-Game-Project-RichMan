@@ -1,19 +1,18 @@
 ﻿#include "DiceControlCard.hpp"
 #include "InputManager.hpp"
 #include <iostream>
+#include <vector>
 
-void DiceControlCard::useEffect(std::shared_ptr<Player> player) {
-    std::string str;
+void DiceControlCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> player, Board& board) {
     int chosenRoll;
-    size_t pos;
     while (true) {
         std::cout << "Choose the number you roll (1-12): ";
-        std::getline(std::cin, str);
+        std::cin >> chosenRoll;
 
-        chosenRoll = std::stoi(str, &pos);
-
-        if (pos == str.size() && chosenRoll >= 1 && chosenRoll <= 12) {
-            player->setPosition(chosenRoll);
+        if (chosenRoll >= 1 && chosenRoll <= 12) {
+            int newPos = (player->getPosition() + chosenRoll) % board.getSize();
+            player->setPosition(newPos);
+            board.drawBoard(players);
             return;
         }
         std::cout << "Invalid input. Please enter a number between 1 and 12." << std::endl;
