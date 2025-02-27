@@ -5,7 +5,13 @@
     "[C]",
     "[D]"
   ],
-  "propertyLevelIcons":[
+  "playerIconColors": [
+    "\u001b[31m",
+    "\u001b[32m",
+    "\u001b[33m",
+    "\u001b[34m"
+  ],
+  "propertyLevelIcons": [
     " ",
     "O",
     "OO",

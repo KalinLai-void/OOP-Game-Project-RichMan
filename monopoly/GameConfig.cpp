@@ -22,7 +22,12 @@ void GameConfig::loadConfig() {
     file.close();
 
     try {
-        this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
+        auto icons = config["playerIcons"].get<std::vector<std::string>>();
+        auto colors = config["playerIconColors"].get<std::vector<std::string>>();
+        this->playerIcons.clear();
+        for (size_t i = 0; i < icons.size(); ++i) {
+            this->playerIcons.push_back({icons[i], colors[i]});
+        }
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
         this->animationSecond = config["animationSecond"].get<long long>();
@@ -86,7 +91,7 @@ std::vector<std::string> GameConfig::getPlayerNames() const {
     return playersName;
 }
 
-void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
+void GameConfig::setPlayerIcons(const std::vector<PlayerIcon>& icons) {
     if (icons.size() == playersNum) {
         playerIcons = icons;
     } else {
@@ -94,7 +99,7 @@ void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
     }
 }
 
-std::vector<std::string> GameConfig::getPlayerIcons() const {
+std::vector<PlayerIcon> GameConfig::getPlayerIcons() const {
     return playerIcons;
 }
 

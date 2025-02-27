@@ -60,6 +60,9 @@
     <ClCompile Include="MinigameManager.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerIcon.hpp">
+      <Filter>標頭檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp">

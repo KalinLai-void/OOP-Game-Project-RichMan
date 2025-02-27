@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "Card.hpp"
+#include "PlayerIcon.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -11,7 +12,7 @@ class MiniGameManager;
 class Player : public std::enable_shared_from_this<Player> {
 private:
     std::string name;
-    std::string icon;
+    PlayerIcon icon;
     int position;
     long long money;
     std::vector<Card> cards; // Cards held by the player
@@ -19,11 +20,12 @@ private:
     bool inHospital;         // Whether the player is in the hospital
     int hospitalRoundLeft;   // Number of rounds left in the hospital
 public:
-    Player(const std::string& n, const std::string& i, long long m);
+    Player(const std::string& n, const PlayerIcon& i, long long m);
 
     // Accessors
     std::string getName() const;
     std::string getIcon() const;
+    std::string getIconWithColor() const;
 
     long long getMoney() const;
     int getPosition() const;

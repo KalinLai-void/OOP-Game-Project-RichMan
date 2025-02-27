@@ -1,30 +1,43 @@
 ﻿#include "Player.hpp"
 #include "MiniGameManager.hpp"
 #include "iostream"
-Player::Player(const std::string& n, const std::string& i, long long m)
+
+Player::Player(const std::string& n, const PlayerIcon& i, long long m)
     : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0) {}
 
 std::string Player::getName() const {
     return name;
 }
+
 std::string Player::getIcon() const {
-    return icon;
+    return icon.icon;
 }
+
+std::string Player::getIconWithColor() const {
+    std::string iconWithColor = icon.color + icon.icon + "\033[0m";
+    return iconWithColor;
+}
+
 long long Player::getMoney() const {
     return money;
 }
+
 int Player::getPosition() const {
     return position;
 }
+
 bool Player::isBankrupt() const {
     return bankrupt;
 }
+
 bool Player::isInHospital() const {
     return inHospital;
 }
+
 void Player::setPosition(int pos) {
     position = pos;
 }
+
 /**
  * Adds a specified amount to the player's balance.
  *

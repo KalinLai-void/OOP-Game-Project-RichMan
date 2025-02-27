@@ -107,10 +107,6 @@ void Game::start() {
                 continue;
             }
 
-            if (true) {
-                p->startMiniGame(*miniGameManager);
-            }
-
             if (checkGameOver())
                 break;
         }

@@ -140,6 +140,7 @@
     <ClCompile Include="Bank.cpp" />
     <ClCompile Include="MinigameManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIcon.hpp" />
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="StartTile.cpp" />
     <ClCompile Include="StoreTile.cpp" />

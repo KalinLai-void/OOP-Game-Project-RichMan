@@ -139,7 +139,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         }
 
         // Mark player position on the board
-        playerBoard[rowOut][colOut] += player->getIcon();
+        playerBoard[rowOut][colOut] += player->getIconWithColor();
     }
 
     // Update property levels
@@ -168,7 +168,8 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         // player icon
         std::cout << "\n| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(this->tileWidth - 2) << playerBoard[i][j] << " | ";
+            const std::string& cell = playerBoard[i][j];
+            std::cout << std::left << std::setw(this->tileWidth + (cell.length() - stripAnsi(cell).length() - 2)) << cell << " | ";
         }
         // property level
         std::cout << "\n| ";
@@ -190,7 +191,7 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     std::cout << "+----------------+------------+------------------------+\n";
 
     for (const auto& player : players) {
-        std::cout << "| " << player->getIcon() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
+        std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
         // todo: card system
         //     const auto& cards = player->getCards(); // 假設有 getCards() 方法返回 std::vector<std::string>
         //     if (cards.empty()) {

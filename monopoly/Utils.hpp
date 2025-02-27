@@ -9,4 +9,6 @@
 // Set the console window size (Windows platform)
 void setConsoleSize(int width, int height);
 void delayTime(long long s);
+std::string stripAnsi(const std::string& text);
+
 #endif // UTILS_HPP
