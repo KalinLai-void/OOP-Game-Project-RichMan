@@ -14,7 +14,7 @@ TileAction HospitalTile::landOn(std::shared_ptr<Player> player) {
 
 void HospitalTile::handleHospitalChoice(std::shared_ptr<Player> player) {
     if (player->getMoney() >= fee) {
-        player->adjustMoney(-fee);
+        player->deductMoney(fee);
         cout << "You paid a fee of " << fee << " and try to leave the hospital." << endl;
         // 50% chance to leave the hospital
         if (rand() % 2 == 0) {

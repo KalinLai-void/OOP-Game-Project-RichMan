@@ -32,7 +32,8 @@ public:
 
     // Update Player status
     void setPosition(int pos);
-    bool adjustMoney(long long delta);
+    bool addMoney(long long amount);
+    bool deductMoney(long long amount);
     void setBankrupt(bool b);
     void addCard(const Card& card);
 

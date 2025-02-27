@@ -33,7 +33,7 @@ PropertyLevel PropertyTile::getPropertyLevel() const {
 
 void PropertyTile::purchase(std::shared_ptr<Player> player) {
     if (player->getMoney() >= currentPrice) {
-        player->adjustMoney(-currentPrice);
+        player->deductMoney(currentPrice);
         owner = player;
         level = PropertyLevel::LEVEL1;
         cout << "Purchase successful! Bought " << name << ", remaining money: " << player->getMoney() << endl;
@@ -48,7 +48,7 @@ void PropertyTile::upgrade(std::shared_ptr<Player> player) {
         return;
     }
     if (player->getMoney() >= getUpgradeCost()) {
-        player->adjustMoney(-getUpgradeCost());
+        player->deductMoney(getUpgradeCost());
         if (level == PropertyLevel::LEVEL1)
             level = PropertyLevel::LEVEL2;
         else if (level == PropertyLevel::LEVEL2)
@@ -63,8 +63,8 @@ void PropertyTile::upgrade(std::shared_ptr<Player> player) {
 void PropertyTile::payToll(std::shared_ptr<Player> player) {
     long long fee = getToll();
     if (player->getMoney() >= fee) {
-        player->adjustMoney(-fee);
-        owner->adjustMoney(fee);
+        player->deductMoney(fee);
+        owner->addMoney(fee);
         cout << "Payment successful! Paid " << fee << " dollars." << endl;
     } else {
         cout << "Not enough money, " << player->getName() << " is bankrupt!" << endl;
@@ -79,7 +79,7 @@ void PropertyTile::sell(std::shared_ptr<Player> player) {
     }
 
     long long sellPrice = currentPrice;
-    player->adjustMoney(sellPrice);
+    player->addMoney(sellPrice);
     owner = nullptr;
     level = PropertyLevel::LEVEL1;
     updateCurrentPrice();

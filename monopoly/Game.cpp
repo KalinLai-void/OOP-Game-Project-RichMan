@@ -341,9 +341,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             auto it = std::find_if(players.begin(), players.end(), [&](const std::shared_ptr<Player>& p) {
                 return p->getName() == playerName;
             });
-            if (player->adjustMoney(-amount)) {
+            if (player->deductMoney(amount)) {
                 if (it != players.end()) {
-                    (*it)->adjustMoney(amount);
+                    (*it)->addMoney(amount);
 
                     std::string prompt = currCommandData["prompt"].get<std::string>();
                     prompt.replace(prompt.find("{playerName}"), 12, playerName);

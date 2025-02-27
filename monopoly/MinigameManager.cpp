@@ -15,13 +15,13 @@ void delayMilliseconds(int ms);
 void clearScreen();
 
 // -----------------------------------------
-// Embedded classes for "CardGame" and "HorseRacing"
+// Embedded classes for "DragonGateGame" and "HorseRacing"
 // -----------------------------------------
-class CardGame {
+class DragonGateGame {
 public:
     // Returns the amount of coins won (could be 0 or a positive value)
     long long playGame() {
-        std::cout << "\nStarting Card Game!" << std::endl;
+        std::cout << "\nStarting Dragon Gate Game!" << std::endl;
 
         long long totalReward = 0;
         int firstCard = rand() % 13 + 1;
@@ -52,6 +52,7 @@ public:
         std::cout << "Third card: " << thirdCard << std::endl;
 
         bool guessCorrect = false;
+        bool hitPillar = (thirdCard == firstCard || thirdCard == secondCard);
         if (firstCard == secondCard) {
             // Guess "Higher" or "Lower"
             if ((thirdCard > firstCard && choice == 1) || (thirdCard < firstCard && choice == 2)) {
@@ -64,7 +65,10 @@ public:
             }
         }
 
-        if (guessCorrect) {
+        if (hitPillar) {
+            std::cout << "Oh no! The third card is equal to one of the first two cards. You lose double!" << std::endl;
+            totalReward = -2000;
+        } else if (guessCorrect) {
             std::cout << "Congratulations! You won 1000 coins!" << std::endl;
             totalReward = 1000;
         } else {
@@ -139,7 +143,7 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     // Or you can directly call a specific game, depending on your needs
     std::cout << "\n========================\n"
               << "MiniGame Menu\n"
-              << "1. Card Game\n"
+              << "1. Dragon Gate Game\n"
               << "2. Horse Racing Game\n"
               << "3. Return\n"
               << "========================\n"
@@ -155,10 +159,10 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     switch (choice) {
     case 1:
     {
-        CardGame cardGame;
-        long long reward = cardGame.playGame();
+        DragonGateGame dragonGateGame;
+        long long reward = dragonGateGame.playGame();
         if (reward > 0) {
-            player->adjustMoney(reward);
+            player->addMoney(reward);
         }
         break;
     }
@@ -174,9 +178,9 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
         }
         long long result = horseRacing.playGame(bet);
         if (result < 0) {
-            player->adjustMoney(-result); // result is negative, deduct -result
+            player->deductMoney(result);
         } else {
-            player->adjustMoney(result);
+            player->addMoney(result);
         }
         break;
     }
@@ -194,7 +198,7 @@ void MiniGameManager::endMiniGame(std::shared_ptr<Player> player) {
 
 void MiniGameManager::listMiniGames() const {
     std::cout << "Available mini-games: \n"
-              << "1) Card Game\n"
+              << "1) Dragon Gate Game\n"
               << "2) Horse Racing Game\n"
               << "...\n";
     // You can list more mini-games here
@@ -218,6 +222,7 @@ void delayMilliseconds(int ms) {
 // -----------------------------------------
 // Main function as the entry point of the program
 // -----------------------------------------
+#ifdef UNIT_TEST
 int main() {
     // Initialize random seed
     srand(static_cast<unsigned int>(time(nullptr)));
@@ -230,13 +235,13 @@ int main() {
 
     // Main loop: player can repeatedly enter different mini-games until they choose to exit
     while (true) {
-        std::cout << "\n========== Main Menu ==========\n"
+        std::cout << "\n============= Main Menu =============\n"
                   << "Player: " << player->getName() << " (Balance: " << player->getMoney() << ")\n"
                   << "1) Start Mini-Game\n"
                   << "2) End Mini-Game (Test)\n"
                   << "3) List Available Mini-Games\n"
                   << "4) Exit Program\n"
-                  << "==========================\n"
+                  << "=====================================\n"
                   << "Please choose (1~4): ";
 
         int c;
@@ -261,3 +266,4 @@ int main() {
 
     return 0;
 }
+#endif
