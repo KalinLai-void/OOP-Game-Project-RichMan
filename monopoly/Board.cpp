@@ -163,13 +163,15 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         // tile name
         std::cout << "| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(this->tileWidth - 2) << board[i][j] << " | ";
+            const std::string& cell = board[i][j];
+            std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
         }
         // player icon
         std::cout << "\n| ";
+
         for (int j = 0; j < mapSize; j++) {
             const std::string& cell = playerBoard[i][j];
-            std::cout << std::left << std::setw(this->tileWidth + (cell.length() - stripAnsi(cell).length() - 2)) << cell << " | ";
+            std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
         }
         // property level
         std::cout << "\n| ";
