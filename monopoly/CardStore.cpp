@@ -1,4 +1,4 @@
-#include "CardStore.hpp"
+﻿#include "CardStore.hpp"
 #include "RocketCard.hpp"
 CardStore::CardStore() {
     cards.push_back(std::make_shared<DiceControlCard>());
@@ -53,7 +53,7 @@ void CardStore::displayStore(std::shared_ptr<Player> player) {
 
 void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card) {
     if (player->getMoney() >= card->getPrice()) {
-        player->adjustMoney(-card->getPrice());
+        player->deductMoney(card->getPrice());
         Bank::getInstance()->receiveFromPlayer(card->getPrice());
         player->addCard(card);
         std::cout << "You bought [" << card->getName() << "] for $" << card->getPrice() << "!" << std::endl;
