@@ -1,6 +1,7 @@
 ﻿#ifndef GAMECONFIG_HPP
 #define GAMECONFIG_HPP
 
+#include "PlayerIcon.hpp"
 #include "Utils.hpp"
 #include <map>
 #include <string>
@@ -28,7 +29,7 @@ private:
     int tileWidth = 12;
     long long animationSecond = 0;
     std::vector<std::string> playersName;
-    std::vector<std::string> playerIcons;
+    std::vector<PlayerIcon> playerIcons;
     std::vector<TileConfig> boardTiles;
     std::vector<std::string> propertyLevelIcons;
     std::map<int, std::string> locationMap;
@@ -51,8 +52,8 @@ public:
     std::vector<std::string> getPlayerNames() const;
 
     // Set and get player icons
-    void setPlayerIcons(const std::vector<std::string>& icons);
-    std::vector<std::string> getPlayerIcons() const;
+    void setPlayerIcons(const std::vector<PlayerIcon>& icons);
+    std::vector<PlayerIcon> getPlayerIcons() const;
 
     // Set and get property level icons
     void setPropertyLevelIcons(const std::vector<std::string>& icons);

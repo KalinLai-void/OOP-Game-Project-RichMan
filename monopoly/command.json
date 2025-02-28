@@ -23,6 +23,12 @@
     "examples": ["/give Alice 500"],
     "prompt": "{playerName} received {money} dollars from you."
   },
+  "get": {
+    "description": "Get money from the system.",
+    "usage": "/get [playerName] [money] or /get [money]",
+    "examples": ["/get Bob 100", "/get 100"],
+    "prompt": "{playerName} received {money} dollars from the system."
+  },
   "gamestate": {
     "description": "Change the game state.",
     "usage": "/gamestate [state]",

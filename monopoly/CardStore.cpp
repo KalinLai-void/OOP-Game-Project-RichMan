@@ -1,4 +1,4 @@
-﻿#include "CardStore.hpp"
+#include "CardStore.hpp"
 #include "RocketCard.hpp"
 CardStore::CardStore() {
     cards.push_back(std::make_shared<DiceControlCard>());

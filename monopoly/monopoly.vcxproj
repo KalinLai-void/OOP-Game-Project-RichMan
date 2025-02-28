@@ -140,7 +140,9 @@
     <ClCompile Include="HospitalTile.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Bank.cpp" />
+    <ClCompile Include="MinigameManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIcon.hpp" />
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="RocketCard.cpp" />
     <ClCompile Include="StartTile.cpp" />
@@ -157,6 +159,7 @@
     <ClInclude Include="GameConfig.hpp" />
     <ClInclude Include="HospitalTile.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="MiniGameManager.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PropertyTile.hpp" />
     <ClInclude Include="RocketCard.hpp" />

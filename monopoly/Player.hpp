@@ -1,15 +1,19 @@
-﻿#ifndef PLAYER_HPP
+#ifndef PLAYER_HPP
 #define PLAYER_HPP
 
 #include "Card.hpp"
+#include "PlayerIcon.hpp"
+#include <memory>
 #include <string>
 #include <vector>
 #include <memory>
 
+class MiniGameManager;
+
 class Player : public std::enable_shared_from_this<Player> {
 private:
     std::string name;
-    std::string icon;
+    PlayerIcon icon;
     int position;
     long long money;
     std::vector<std::shared_ptr<Card>> cards; // Cards held by the player
@@ -19,11 +23,12 @@ private:
     int diceControl;
 
 public:
-    Player(const std::string& n, const std::string& i, long long m);
+    Player(const std::string& n, const PlayerIcon& i, long long m);
 
     // Accessors
     std::string getName() const;
     std::string getIcon() const;
+    std::string getIconWithColor() const;
 
     long long getMoney() const;
     int getPosition() const;
@@ -34,7 +39,8 @@ public:
 
     // Update Player status
     void setPosition(int pos);
-    bool adjustMoney(long long delta);
+    bool addMoney(long long amount);
+    bool deductMoney(long long amount);
     void setBankrupt(bool b);
     void addCard(std::shared_ptr<Card> card);
     void setDiceControl(int step);
@@ -43,6 +49,10 @@ public:
     void sendToHospital(int rounds);
     void recoverFromHospital();
     void updateHospitalStatus();
+
+    // MiniGame related
+    void startMiniGame(MiniGameManager& manager);
+    void endMiniGame(MiniGameManager& manager);
 
     void displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board);
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board);

@@ -5,7 +5,13 @@
     "[C]",
     "[D]"
   ],
-  "propertyLevelIcons":[
+  "playerIconColors": [
+    "\u001b[31m",
+    "\u001b[32m",
+    "\u001b[33m",
+    "\u001b[34m"
+  ],
+  "propertyLevelIcons": [
     " ",
     "O",
     "OO",
@@ -24,178 +30,7 @@
       ],
       "startMoney": 100000,
       "winMoney": 300000,
-      "passingStartBonus": 10000,
-      "mapSize": 8,
-      "boardTiles": [
-        {
-          "type": "start",
-          "name": "Start",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "USA",
-          "price": 2000,
-          "toll": 200
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "France",
-          "price": 3000,
-          "toll": 300
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Japan",
-          "price": 5000,
-          "toll": 500
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Germany",
-          "price": 8000,
-          "toll": 800
-        },
-        {
-          "type": "property",
-          "name": "UK",
-          "price": 8500,
-          "toll": 850
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Canada",
-          "price": 9000,
-          "toll": 900
-        },
-        {
-          "type": "property",
-          "name": "Australia",
-          "price": 9500,
-          "toll": 950
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Italy",
-          "price": 10000,
-          "toll": 1000
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Spain",
-          "price": 11000,
-          "toll": 1100
-        },
-        {
-          "type": "property",
-          "name": "China",
-          "price": 11500,
-          "toll": 1150
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Korea",
-          "price": 12000,
-          "toll": 1200
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Brazil",
-          "price": 12500,
-          "toll": 1250
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Russia",
-          "price": 13000,
-          "toll": 1300
-        },
-        {
-          "type": "property",
-          "name": "India",
-          "price": 13500,
-          "toll": 1350
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Africa",
-          "price": 14000,
-          "toll": 1400
-        }
-      ]
+      "passingStartBonus": 10000
     },
     "DUEL": {
       "playersNum": 2,
@@ -205,178 +40,178 @@
       ],
       "startMoney": 100000,
       "winMoney": 300000,
-      "passingStartBonus": 10000,
-      "mapSize": 8,
-      "boardTiles": [
-        {
-          "type": "start",
-          "name": "Start",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "USA",
-          "price": 2000,
-          "toll": 200
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "France",
-          "price": 3000,
-          "toll": 300
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Japan",
-          "price": 5000,
-          "toll": 500
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Germany",
-          "price": 8000,
-          "toll": 800
-        },
-        {
-          "type": "property",
-          "name": "UK",
-          "price": 8500,
-          "toll": 850
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Canada",
-          "price": 9000,
-          "toll": 900
-        },
-        {
-          "type": "property",
-          "name": "Australia",
-          "price": 9500,
-          "toll": 950
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Italy",
-          "price": 10000,
-          "toll": 1000
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Spain",
-          "price": 11000,
-          "toll": 1100
-        },
-        {
-          "type": "property",
-          "name": "China",
-          "price": 11500,
-          "toll": 1150
-        },
-        {
-          "type": "event",
-          "name": "Fate",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Korea",
-          "price": 12000,
-          "toll": 1200
-        },
-        {
-          "type": "store",
-          "name": "Item Shop",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Brazil",
-          "price": 12500,
-          "toll": 1250
-        },
-        {
-          "type": "hospital",
-          "name": "Hospital",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Russia",
-          "price": 13000,
-          "toll": 1300
-        },
-        {
-          "type": "property",
-          "name": "India",
-          "price": 13500,
-          "toll": 1350
-        },
-        {
-          "type": "event",
-          "name": "Chance",
-          "price": 0,
-          "toll": 0
-        },
-        {
-          "type": "property",
-          "name": "Africa",
-          "price": 14000,
-          "toll": 1400
-        }
-      ]
+      "passingStartBonus": 10000
     }
-  }
+  },
+  "mapSize": 8,
+  "boardTiles": [
+    {
+      "type": "start",
+      "name": "Start",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "USA",
+      "price": 2000,
+      "toll": 200
+    },
+    {
+      "type": "event",
+      "name": "\u001b[96mFate\u001b[0m",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "France",
+      "price": 3000,
+      "toll": 300
+    },
+    {
+      "type": "store",
+      "name": "Item Shop",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "Japan",
+      "price": 5000,
+      "toll": 500
+    },
+    {
+      "type": "property",
+      "name": "Mexico",
+      "price": 6000,
+      "toll": 600
+    },
+    {
+      "type": "property",
+      "name": "Sweden",
+      "price": 7000,
+      "toll": 700
+    },
+    {
+      "type": "property",
+      "name": "Germany",
+      "price": 8000,
+      "toll": 800
+    },
+    {
+      "type": "property",
+      "name": "UK",
+      "price": 8500,
+      "toll": 850
+    },
+    {
+      "type": "event",
+      "name": "\u001b[96mChance\u001b[0m",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "Canada",
+      "price": 9000,
+      "toll": 900
+    },
+    {
+      "type": "property",
+      "name": "Australia",
+      "price": 9500,
+      "toll": 950
+    },
+    {
+      "type": "property",
+      "name": "Egypt",
+      "price": 9800,
+      "toll": 980
+    },
+    {
+      "type": "property",
+      "name": "Italy",
+      "price": 10000,
+      "toll": 1000
+    },
+    {
+      "type": "hospital",
+      "name": "Hospital",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "event",
+      "name": "\u001b[96mFate\u001b[0m",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "Spain",
+      "price": 11000,
+      "toll": 1100
+    },
+    {
+      "type": "property",
+      "name": "China",
+      "price": 11500,
+      "toll": 1150
+    },
+    {
+      "type": "property",
+      "name": "Turkey",
+      "price": 12200,
+      "toll": 1220
+    },
+    {
+      "type": "property",
+      "name": "Korea",
+      "price": 12000,
+      "toll": 1200
+    },
+    {
+      "type": "property",
+      "name": "Brazil",
+      "price": 12500,
+      "toll": 1250
+    },
+    {
+      "type": "property",
+      "name": "Uganda",
+      "price": 12700,
+      "toll": 1270
+    },
+    {
+      "type": "property",
+      "name": "Russia",
+      "price": 13000,
+      "toll": 1300
+    },
+    {
+      "type": "event",
+      "name": "\u001b[96mChance\u001b[0m",
+      "price": 0,
+      "toll": 0
+    },
+    {
+      "type": "property",
+      "name": "India",
+      "price": 13500,
+      "toll": 1350
+    },
+    {
+      "type": "property",
+      "name": "England",
+      "price": 13800,
+      "toll": 1380
+    },
+    {
+      "type": "property",
+      "name": "Africa",
+      "price": 14000,
+      "toll": 1400
+    }
+  ]
 }

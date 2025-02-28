@@ -22,11 +22,26 @@ void GameConfig::loadConfig() {
     file.close();
 
     try {
-        this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
+        auto icons = config["playerIcons"].get<std::vector<std::string>>();
+        auto colors = config["playerIconColors"].get<std::vector<std::string>>();
+        this->playerIcons.clear();
+        for (size_t i = 0; i < icons.size(); ++i) {
+            this->playerIcons.push_back({icons[i], colors[i]});
+        }
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
         this->animationSecond = config["animationSecond"].get<long long>();
+        this->mapSize = config["mapSize"].get<int>();
+        this->boardTiles.clear();
+        std::size_t id = 0;
+        for (const auto& tile : config["boardTiles"]) {
+            this->boardTiles.push_back(
+                {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
+        }
 
+        // -----------------------------
+        // Mode Specific Configurations
+        // ----------------------------
         std::string modeStr = (mode == GameMode::DEBUG) ? "DEBUG" : "DUEL";
         auto& modeConfig = config["modes"][modeStr];
 
@@ -35,14 +50,6 @@ void GameConfig::loadConfig() {
         this->startMoney = modeConfig["startMoney"].get<int>();
         this->winMoney = modeConfig["winMoney"].get<int>();
         this->passingStartBonus = modeConfig["passingStartBonus"].get<int>();
-        this->mapSize = modeConfig["mapSize"].get<int>();
-        this->boardTiles.clear();
-
-        std::size_t id = 0;
-        for (const auto& tile : modeConfig["boardTiles"]) {
-            this->boardTiles.push_back(
-                {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
-        }
 
         // 設定 Windows Console 視窗大小 # TODO: but now failure
         // int consoleWidth = 1000;
@@ -86,7 +93,7 @@ std::vector<std::string> GameConfig::getPlayerNames() const {
     return playersName;
 }
 
-void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
+void GameConfig::setPlayerIcons(const std::vector<PlayerIcon>& icons) {
     if (icons.size() == playersNum) {
         playerIcons = icons;
     } else {
@@ -94,7 +101,7 @@ void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
     }
 }
 
-std::vector<std::string> GameConfig::getPlayerIcons() const {
+std::vector<PlayerIcon> GameConfig::getPlayerIcons() const {
     return playerIcons;
 }
 

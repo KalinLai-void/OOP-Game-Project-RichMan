@@ -11,6 +11,9 @@
 
 enum class State { INIT, START, MOVED, FINISH };
 State& operator++(State& state);
+
+class MiniGameManager;
+
 class Game {
 private:
     Board board;
@@ -21,6 +24,7 @@ private:
 
     std::vector<std::shared_ptr<Player>> players;
     static std::default_random_engine engine;
+    std::shared_ptr<MiniGameManager> miniGameManager;
 
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
     bool processCommand(std::shared_ptr<Player> player, const std::string& input);

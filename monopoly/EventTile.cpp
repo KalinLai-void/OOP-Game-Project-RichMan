@@ -24,13 +24,13 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
     switch (eventType) {
     case 1:
         cout << "Lucky event: Received a bank reward of 5000!" << endl;
-        player->adjustMoney(5000);
+        player->addMoney(5000);
         Bank::getInstance()->payToPlayer(5000);
         break;
     case 2:
         cout << "Unlucky event: Fined 3000!" << endl;
         if (player->getMoney() >= 3000) {
-            player->adjustMoney(-3000);
+            player->deductMoney(3000);
             Bank::getInstance()->receiveFromPlayer(3000);
         } else {
             player->setBankrupt(true);
