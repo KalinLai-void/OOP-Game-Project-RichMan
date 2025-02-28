@@ -1,4 +1,4 @@
-#include "Player.hpp"
+﻿#include "Player.hpp"
 #include "MiniGameManager.hpp"
 #include "iostream"
 
@@ -126,8 +126,7 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
     }
 
     std::cout << "+-------------------------------------------------+" << std::endl;
-    std::cout << "[0] to exit" << std::endl << std::endl;
-    std::cout << "Enter the number of the card to use: ";
+    std::cout << "Enter the number of the card to use (or 0 to exit): ";
 
     std::string inputString;
     size_t pos=0;

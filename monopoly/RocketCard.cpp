@@ -6,7 +6,7 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
         std::cout << "There are no other player to send to the hospital!" << std::endl;
         return;
     }
-    std::cout << std::endl << "Choose a player to send to the hospital (Enter the number):";
+    std::cout << std::endl << "Choose a player to send to the hospital :" << std::endl;
     int idx = 1;
     std::vector<std::shared_ptr<Player>> availablePlayers;
     for (auto& player : players) {
@@ -16,25 +16,22 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
             idx++;
         }
     }
+    std::cout << "Choose a player (1-" << static_cast<int>(availablePlayers.size()) << "): ";
     int choice;
-
+    
     while (true) {
         std::string input;
-        input.clear();
-
-        std::getline(std::cin, input);
+        std::cin >> input;
         try {
             size_t pos;
             choice = std::stoi(input, &pos);
-            if (choice >= 1 && choice <= static_cast<int>(availablePlayers.size())) {
-                break;
-            } else {
-                std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
-                
+            if (pos!=input.size() || choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
+                throw std::invalid_argument("Invalid input");
             }
+            break;
 
         } catch (const std::exception&) {
-            std::cout << "Invalid input. Please enter a number between 1 and ." << static_cast<int>(availablePlayers.size()) << std::endl;
+            std::cout << "Invalid input. Please choose a player (1-" << static_cast<int>(availablePlayers.size()) << "): ";
             
         }
     }
