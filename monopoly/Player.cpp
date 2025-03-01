@@ -1,9 +1,10 @@
 ﻿#include "Player.hpp"
 #include "MiniGameManager.hpp"
 #include "iostream"
+#include "iomanip"
 
 Player::Player(const std::string& n, const PlayerIcon& i, long long m)
-    : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0) {}
+    : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0), diceControl(0) {}
 
 std::string Player::getName() const {
     return name;
@@ -115,31 +116,55 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
         std::cout << name << " has no cards." << std::endl;
         return;
     }
+    
 
+    std::vector<int> colWidth = {5, 23, 45};
     std::cout << std::endl << name << "'s Cards:" << std::endl;
-    std::cout << "+-------------------------------------------------+" << std::endl;
-    std::cout << "| No. | Card Name  | Effect                       |" << std::endl;
-    std::cout << "+-------------------------------------------------+" << std::endl;
+    
+    // Print top border
+    std::cout << "+" << std::setfill('-') << std::setw(colWidth[0] + 1) << '-' << std::setw(colWidth[1] + 1) << '-' << std::setw(colWidth[2] + 1) << '-' << "+"
+              << std::setfill(' ') << std::endl;
+    
+    // Print column headers
+    std::cout << "| " << std::left << std::setw(colWidth[0] - 1) << "No."
+              << "| " << std::setw(colWidth[1] - 1) << "Card Name"
+              << "| " << std::setw(colWidth[2] - 1) << "Effect" << " |" << std::endl;
 
+    // Print separator below headers
+    std::cout << "+" << std::setfill('-') << std::setw(colWidth[0] + 1) << '-' << std::setw(colWidth[1] + 1) << '-' << std::setw(colWidth[2] + 1) << '-' << "+"
+              << std::setfill(' ') << std::endl;
+
+    // Print each card in table format
     for (size_t i = 0; i < cards.size(); i++) {
-        std::cout << "| " << i + 1 << "   | " << cards[i]->getName() << " | " << cards[i]->getEffect() << " |" << std::endl;
+        std::cout << "| " << std::left << std::setw(colWidth[0] - 1) << i+1 << "| " << std::setw(colWidth[1] - 1) << cards[i]->getName()
+                  << "| " << std::setw(colWidth[2] - 1) << cards[i]->getEffect() << " |" << std::endl;
     }
 
-    std::cout << "+-------------------------------------------------+" << std::endl;
+    // Print bottom border
+    std::cout << "+" << std::setfill('-') << std::setw(colWidth[0] + 1) << '-' << std::setw(colWidth[1] + 1) << '-' << std::setw(colWidth[2] + 1) << '-' << "+"
+              << std::setfill(' ') << std::endl;
+
     std::cout << "Enter the number of the card to use (or 0 to exit): ";
-
-    std::string inputString;
-    size_t pos=0;
-    int choice=1;
+    int choice;
     while (true) {
-        std::cin >> choice;
 
-        if (choice < 0 || choice > static_cast<int>(cards.size())) {
-            std::cout << "Invalid input. Enter a number between 1 and " << cards.size() << " (or 0 to exit): ";
-
-        } else {
+        std::string input;
+        try {
+            std::cin >> input;
+            size_t pos;
+            choice = std::stoi(input, &pos);
+            if (pos != input.size() || choice < 1 || choice > static_cast<int>(cards.size())) {
+                if (choice == 0) {
+                    return;
+                }
+                throw std::invalid_argument("Invalid input");
+            }
             break;
-        }
+        } catch (std::exception&) {
+            std::cout << "Invalid input. Enter a number between 1 and " << cards.size() << " (or 0 to exit): ";
+       }
+
+
     }
 
     if (choice > 0) {

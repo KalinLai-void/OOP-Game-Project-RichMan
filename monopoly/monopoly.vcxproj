@@ -133,7 +133,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CardStore.cpp" />
     <ClCompile Include="CardStore.hpp" />
-    <ClCompile Include="DestoryPropertyCard.cpp" />
+    <ClCompile Include="DestroyPropertyCard.cpp" />
     <ClCompile Include="DiceControlCard.cpp" />
     <ClCompile Include="EventTile.cpp" />
     <ClCompile Include="Game.cpp" />
