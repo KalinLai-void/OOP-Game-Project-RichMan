@@ -69,6 +69,9 @@
     <ClCompile Include="RocketCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="DestroyPropertyCard.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp">
@@ -120,6 +123,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="RocketCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="DestroyPropertyCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

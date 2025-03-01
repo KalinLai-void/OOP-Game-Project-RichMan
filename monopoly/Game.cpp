@@ -1,5 +1,6 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
+#include "DiceControlCard.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
@@ -8,7 +9,6 @@
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
 #include "Utils.hpp"
-#include "DiceControlCard.hpp"
 #include <algorithm>
 #include <ctime>
 #include <fstream>
@@ -233,7 +233,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         std::cout << "Status: " << (player->isBankrupt() ? "Bankrupt" : "Active") << std::endl;
         std::cout << "----------------------------------------" << std::endl;
         // card
-        //std::cout << "Opening the item card interface (to be implemented)." << endl;
+        // std::cout << "Opening the item card interface (to be implemented)." << endl;
         player->displayCards(players, board);
         break;
     case 'P':
@@ -416,6 +416,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{card_name}"), 11, cardName);
             std::cout << prompt << std::endl;
+            return true;
+        } else if (command == "minigame") {
+            miniGameManager->startMiniGame(player);
             return true;
         } else if (command == "gamestate") {
             if (tokens.size() < 2) {
