@@ -1,4 +1,4 @@
-// MiniGameManager.cpp
+﻿// MiniGameManager.cpp
 
 #include "MiniGameManager.hpp"
 #include "Player.hpp"
@@ -120,7 +120,7 @@ public:
         }
 
         // Find the winning horse
-        int winner = std::max_element(speeds.begin(), speeds.end()) - speeds.begin();
+        int winner = static_cast<int>(std::max_element(speeds.begin(), speeds.end()) - speeds.begin());
         std::cout << "The winning horse is: " << horses[winner] << "!" << std::endl;
 
         if (choice - 1 == winner) {

@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-HospitalTile::HospitalTile(const std::string& n)
-    : Tile(n) {
+HospitalTile::HospitalTile(const size_t id, const std::string& n)
+    : Tile(id, n) {
     fee = 100;
 }
 

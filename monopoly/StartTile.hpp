@@ -10,7 +10,7 @@ private:
 
 public:
     // Constructor for `StartTile`, default bonus is $2000
-    StartTile(const std::string& n, int b = 2000);
+    StartTile(const size_t id, const std::string& n, int b = 2000);
 
     // Behavior when a player lands on the start tile
     TileAction landOn(std::shared_ptr<Player> player) override;

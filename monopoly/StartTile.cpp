@@ -1,7 +1,7 @@
 ﻿#include "StartTile.hpp"
 
-StartTile::StartTile(const std::string& n, int b)
-    : Tile(n), bonus(b) {}
+StartTile::StartTile(const size_t id, const std::string& n, int b)
+    : Tile(id, n), bonus(b) {}
 
 TileAction StartTile::landOn(std::shared_ptr<Player> player) {
     player->addMoney(bonus);

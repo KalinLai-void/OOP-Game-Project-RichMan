@@ -8,7 +8,7 @@ private:
     int fee;
 
 public:
-    HospitalTile(const std::string& n);
+    HospitalTile(const size_t id, const std::string& n);
     TileAction landOn(std::shared_ptr<Player> player) override;
     void handleHospitalChoice(std::shared_ptr<Player> player);
 };

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-enum class PropertyLevel {EMPTY, LEVEL1, LEVEL2, LEVEL3 };
+enum class PropertyLevel { EMPTY, LEVEL1, LEVEL2, LEVEL3 };
 
 class PropertyTile : public Tile {
 private:
@@ -17,7 +17,7 @@ private:
     PropertyLevel level;
 
 public:
-    PropertyTile(const std::string& n, long long price, long long toll);
+    PropertyTile(const size_t id, const std::string& n, long long price, long long toll);
 
     long long getToll() const;
     long long getUpgradeCost() const;

@@ -18,19 +18,28 @@ Board::Board(const GameConfig& config) {
     this->tileWidth = config.getTileWidth();
     for (const auto& boardTiles : config.getBoardTiles()) {
         if (boardTiles.type == "property") {
-            tiles.push_back(std::make_shared<PropertyTile>(boardTiles.name, boardTiles.cost, boardTiles.rent));
+            tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
         } else if (boardTiles.type == "event") {
-            tiles.push_back(std::make_shared<EventTile>(boardTiles.name));
+            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name));
         } else if (boardTiles.type == "store") {
-            tiles.push_back(std::make_shared<StoreTile>(boardTiles.name));
+            tiles.push_back(std::make_shared<StoreTile>(boardTiles.id, boardTiles.name));
         } else if (boardTiles.type == "hospital") {
-            tiles.push_back(std::make_shared<HospitalTile>(boardTiles.name));
+            tiles.push_back(std::make_shared<HospitalTile>(boardTiles.id, boardTiles.name));
         } else if (boardTiles.type == "start") {
-            tiles.push_back(std::make_shared<StartTile>(boardTiles.name, config.getPassingStartBonus()));
+            tiles.push_back(std::make_shared<StartTile>(boardTiles.id, boardTiles.name, config.getPassingStartBonus()));
         } else {
-            std::cout << "Unknown Tile Type: " << boardTiles.type << std::endl;
+            std::cout << "Unknown Tile Type: " << boardTiles.id << " " << boardTiles.type << std::endl;
         }
     }
+    int hospitalPositions = 0;
+    auto it = std::find_if(tiles.begin(), tiles.end(), [](const std::shared_ptr<Tile>& tile) {
+        return tile->getName() == "Hospital";
+    });
+    if (it != tiles.end()) {
+        hospitalPositions = static_cast<int>(std::distance(tiles.begin(), it));
+    }
+
+    std::cout << "Hospital positions: " << hospitalPositions << std::endl;
 
     // Create an 8x8 empty board
     board = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, "   "));
@@ -40,7 +49,7 @@ Board::Board(const GameConfig& config) {
     for (int col = 0; col < mapSize; ++col) {
         // Top
         if (tiles[posIndex]) {
-            board[0][col] = tiles[posIndex]->getName();
+            board[0][col] = tiles[posIndex]->getNameWithId();
         } else {
             board[0][col] = "P" + std::to_string(posIndex);
         }
@@ -49,7 +58,7 @@ Board::Board(const GameConfig& config) {
     for (int row = 1; row < mapSize; ++row) {
         // Right
         if (tiles[posIndex]) {
-            board[row][mapSize - 1] = tiles[posIndex]->getName();
+            board[row][mapSize - 1] = tiles[posIndex]->getNameWithId();
         } else {
             board[row][mapSize - 1] = "P" + std::to_string(posIndex);
         }
@@ -58,7 +67,7 @@ Board::Board(const GameConfig& config) {
     for (int col = mapSize - 2; col >= 0; --col) {
         // Bottom
         if (tiles[posIndex]) {
-            board[mapSize - 1][col] = tiles[posIndex]->getName();
+            board[mapSize - 1][col] = tiles[posIndex]->getNameWithId();
         } else {
             board[mapSize - 1][col] = "P" + std::to_string(posIndex);
         }
@@ -67,7 +76,7 @@ Board::Board(const GameConfig& config) {
     for (int row = mapSize - 2; row > 0; --row) {
         // Left
         if (tiles[posIndex]) {
-            board[row][0] = tiles[posIndex]->getName();
+            board[row][0] = tiles[posIndex]->getNameWithId();
         } else {
             board[row][0] = "P" + std::to_string(posIndex);
         }
@@ -222,7 +231,6 @@ void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
             int level = static_cast<int>(propertyTile->getPropertyLevel());
 
             propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
-
         }
     }
 }

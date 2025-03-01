@@ -9,15 +9,24 @@ enum class TileAction { NONE, PURCHASE_PROPERTY, OWN, PAY_TOLL, STORE, SPECIAL_E
 
 class Tile {
 protected:
+    std::size_t id;   // Tile ID
     std::string name; // Tile name
 
 public:
-    Tile(const std::string& n)
-        : name(n) {}
+    Tile(const size_t id, const std::string& n)
+        : id(id), name(n) {}
     virtual ~Tile() {}
 
     std::string getName() const {
         return name;
+    }
+
+    std::string getNameWithId() const {
+        return std::to_string(id) + " " + name;
+    }
+
+    size_t getId() const {
+        return id;
     }
 
     virtual TileAction landOn(std::shared_ptr<Player> player) = 0;

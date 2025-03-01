@@ -8,8 +8,8 @@
 
 using namespace std;
 
-EventTile::EventTile(const std::string& n)
-    : Tile(n) {}
+EventTile::EventTile(const size_t id, const std::string& n)
+    : Tile(id, n) {}
 
 TileAction EventTile::landOn(std::shared_ptr<Player> player) {
     return TileAction::SPECIAL_EVENT;

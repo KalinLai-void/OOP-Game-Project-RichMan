@@ -8,8 +8,8 @@
 
 using namespace std;
 
-PropertyTile::PropertyTile(const std::string& n, long long price, long long toll)
-    : Tile(n), basePrice(price), baseToll(toll), owner(nullptr), level(PropertyLevel::EMPTY), currentPrice(price) {}
+PropertyTile::PropertyTile(const size_t id, const std::string& n, long long price, long long toll)
+    : Tile(id, n), basePrice(price), baseToll(toll), owner(nullptr), level(PropertyLevel::EMPTY), currentPrice(price) {}
 
 long long PropertyTile::getToll() const {
     switch (level) {
@@ -64,13 +64,13 @@ void PropertyTile::downgrade() {
     if (level == PropertyLevel::LEVEL1) {
         level = PropertyLevel::EMPTY;
         owner = nullptr;
-    } else if (level == PropertyLevel::LEVEL2){
+    } else if (level == PropertyLevel::LEVEL2) {
         level = PropertyLevel::LEVEL1;
     } else if (level == PropertyLevel::LEVEL3) {
         level = PropertyLevel::LEVEL2;
     }
     updateCurrentPrice();
-    return;    
+    return;
 }
 
 void PropertyTile::payToll(std::shared_ptr<Player> player) {

@@ -300,7 +300,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 return tile->getName() == location;
             });
             if (it != tmpTileList.end()) {
-                newPos = std::distance(tmpTileList.begin(), it);
+                newPos = static_cast<int>(std::distance(tmpTileList.begin(), it));
             }
 
             // If the location is still invalid, return an error
@@ -330,10 +330,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 
             try {
                 amount = std::stoi(tokens[2]);
-            } catch (const std::invalid_argument& e) {
+            } catch (const std::invalid_argument&) {
                 std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                 return false;
-            } catch (const std::out_of_range& e) {
+            } catch (const std::out_of_range&) {
                 std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                 return false;
             }
@@ -371,10 +371,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 playerName = player->getName();
                 try {
                     amount = std::stoi(tokens[1]);
-                } catch (const std::invalid_argument& e) {
+                } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                     return false;
-                } catch (const std::out_of_range& e) {
+                } catch (const std::out_of_range&) {
                     std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                     return false;
                 }
@@ -382,10 +382,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 playerName = tokens[1];
                 try {
                     amount = std::stoi(tokens[2]);
-                } catch (const std::invalid_argument& e) {
+                } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                     return false;
-                } catch (const std::out_of_range& e) {
+                } catch (const std::out_of_range&) {
                     std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                     return false;
                 }
