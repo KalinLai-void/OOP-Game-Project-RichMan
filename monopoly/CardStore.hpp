@@ -5,6 +5,8 @@
 #include "Card.hpp"
 #include "Player.hpp"
 #include "DiceControlCard.hpp"
+#include "RocketCard.hpp"
+#include "DestroyPropertyCard.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -17,6 +19,7 @@ public:
     CardStore();
     void displayStore(std::shared_ptr<Player> player);
     void purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card);
+    std::vector<std::shared_ptr<Card>> getCards() const;
 };
 
 #endif // CARDSTORE_HPP

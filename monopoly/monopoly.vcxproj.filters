@@ -128,6 +128,9 @@
     <ClInclude Include="DestroyPropertyCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="BarrierCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

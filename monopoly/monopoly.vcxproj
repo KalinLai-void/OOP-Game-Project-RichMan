@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp" />
+    <ClInclude Include="BarrierCard.hpp" />
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="Card.hpp" />
     <ClInclude Include="DestroyPropertyCard.hpp" />

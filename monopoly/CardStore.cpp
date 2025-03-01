@@ -1,14 +1,11 @@
 ﻿#include "CardStore.hpp"
-#include "RocketCard.hpp"
-#include "DestroyPropertyCard.hpp"
+
 CardStore::CardStore() {
     cards.push_back(std::make_shared<DiceControlCard>());
     cards.push_back(std::make_shared<RocketCard>());
     cards.push_back(std::make_shared<DestroyPropertyCard>());
     /*
-    cards.emplace_back("Dice Control Card", 2000, "Choose the number you roll on the dice.");
     cards.emplace_back("Barrier Card", 1500, "Place a barrier on the board to block players.");
-    cards.emplace_back("Rocket Card", 3000, "Move instantly to any tile.");
     */
 }
 
@@ -61,4 +58,8 @@ void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Car
     } else {
         std::cout << "You don't have enough money to buy [" << card->getName() << "]." << std::endl;
     }
+}
+
+std::vector<std::shared_ptr<Card>> CardStore::getCards() const {
+    return cards;
 }
