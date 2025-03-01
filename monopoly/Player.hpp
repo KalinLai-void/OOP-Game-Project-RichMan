@@ -50,8 +50,8 @@ public:
     void updateHospitalStatus();
 
     // MiniGame related
-    void startMiniGame(MiniGameManager& manager);
-    void endMiniGame(MiniGameManager& manager);
+    void startMiniGame();
+    void endMiniGame();
 
     void displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board);
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board);

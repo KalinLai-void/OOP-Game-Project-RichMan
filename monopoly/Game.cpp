@@ -1,10 +1,10 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
+#include "MiniGameManager.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
-#include "MiniGameManager.hpp"
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
@@ -65,7 +65,6 @@ void Game::initGame() {
             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
         }
     }
-    miniGameManager = std::make_shared<MiniGameManager>();
 }
 
 void Game::start() {
@@ -418,7 +417,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             std::cout << prompt << std::endl;
             return true;
         } else if (command == "minigame") {
-            miniGameManager->startMiniGame(player);
+            MiniGameManager::startMiniGame(player);
             return true;
         } else if (command == "gamestate") {
             if (tokens.size() < 2) {

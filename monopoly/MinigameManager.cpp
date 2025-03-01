@@ -1,6 +1,4 @@
-﻿// MiniGameManager.cpp
-
-#include "MiniGameManager.hpp"
+﻿#include "MiniGameManager.hpp"
 #include "Player.hpp"
 #include <algorithm>
 #include <chrono>
@@ -196,7 +194,7 @@ void MiniGameManager::endMiniGame(std::shared_ptr<Player> player) {
     // Implement mini-game end logic here
 }
 
-void MiniGameManager::listMiniGames() const {
+void MiniGameManager::listMiniGames() {
     std::cout << "Available mini-games: \n"
               << "1) Dragon Gate Game\n"
               << "2) Horse Racing Game\n"

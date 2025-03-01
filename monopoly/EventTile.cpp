@@ -1,6 +1,7 @@
 ﻿// filepath: /c:/Code/monopoly/monopoly/EventTile.cpp
 #include "EventTile.hpp"
 #include "Bank.hpp"
+#include "MiniGameManager.hpp"
 #include "Player.hpp"
 #include <ctime>
 #include <iostream>
@@ -57,7 +58,10 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
                 cout << "Not enough money, bankrupt!" << endl;
             }
             break;
-
+        case 5:
+            cout << "You have entered the playground!\nGet ready to play a mini-game." << endl;
+            MiniGameManager::startMiniGame(player);
+            break;
         default:
             cout << "No event triggered." << endl;
             break;
@@ -78,7 +82,7 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
                 cout << "Not enough money, bankrupt!" << endl;
             }
             break;
-        case 4:
+        case 3:
             cout << "Traffic Violation Fine!\nPay a $" << value << " fine, or roll the dice—if you roll a 6, the fine is waived." << endl;
             if (player->rollDice() != 6) {
                 if (player->getMoney() >= value) {
@@ -91,10 +95,13 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
                 cout << "Lucky! You rolled a 6 and avoided the fine!" << endl;
             }
             break;
-        case 5:
+        case 4:
             cout << "Advance to [Start]!\nMove directly to [Start] and collect $" << value << "." << endl;
-            player->sendToStart(); //todo
+            player->sendToStart(); // todo
             break;
+        case 5:
+            cout << "You have entered the playground!\nGet ready to play a mini-game." << endl;
+            MiniGameManager::startMiniGame(player);
         default:
             cout << "No event triggered." << endl;
             break;

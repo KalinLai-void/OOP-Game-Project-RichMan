@@ -106,12 +106,11 @@ void Player::addCard(std::shared_ptr<Card> card) {
     cards.push_back(card);
 }
 
-void Player::startMiniGame(MiniGameManager& manager) {
-    manager.startMiniGame(shared_from_this());
+void Player::startMiniGame() {
+    MiniGameManager::startMiniGame(shared_from_this());
 }
-
-void Player::endMiniGame(MiniGameManager& manager) {
-    manager.endMiniGame(shared_from_this());
+void Player::endMiniGame() {
+    MiniGameManager::endMiniGame(shared_from_this());
 }
 
 void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board) {
