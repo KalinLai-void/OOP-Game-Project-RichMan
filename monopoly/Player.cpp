@@ -1,4 +1,4 @@
-﻿#include "Player.hpp"
+#include "Player.hpp"
 #include "MiniGameManager.hpp"
 #include "iostream"
 #include "iomanip"
@@ -80,6 +80,10 @@ void Player::setBankrupt(bool b) {
     bankrupt = b;
 }
 
+void Player::sendToStart() {
+    position = 0;
+}
+
 void Player::sendToHospital(int rounds) {
     inHospital = true;
     hospitalRoundLeft = rounds;
@@ -103,12 +107,11 @@ void Player::addCard(std::shared_ptr<Card> card) {
     cards.push_back(card);
 }
 
-void Player::startMiniGame(MiniGameManager& manager) {
-    manager.startMiniGame(shared_from_this());
+void Player::startMiniGame() {
+    MiniGameManager::startMiniGame(shared_from_this());
 }
-
-void Player::endMiniGame(MiniGameManager& manager) {
-    manager.endMiniGame(shared_from_this());
+void Player::endMiniGame() {
+    MiniGameManager::endMiniGame(shared_from_this());
 }
 
 void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board) {
@@ -168,7 +171,7 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
     }
 
     if (choice > 0) {
-        useCard(choice - 1, players, board); 
+        useCard(choice - 1, players, board);
     } else {
         std::cout << "Exited without using a card.\n";
     }
@@ -177,8 +180,8 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
 void Player::useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board) {
     if (index >= 0 && index < static_cast<int>(cards.size())) {
         std::cout << "Using " << cards[index]->getName() << "!\n";
-        cards[index]->useEffect(players, enable_shared_from_this::shared_from_this(), board); 
-        cards.erase(cards.begin() + index);                          
+        cards[index]->useEffect(players, enable_shared_from_this::shared_from_this(), board);
+        cards.erase(cards.begin() + index);
     } else {
         std::cout << "Invalid selection.\n";
     }
@@ -188,6 +191,16 @@ void Player::setDiceControl(int step) {
     diceControl = step;
 }
 
-int Player::getDiceControl() const{
+int Player::getDiceControl() const {
     return diceControl;
+}
+
+int Player::rollDice() {
+    if (diceControl != 0) {
+        int result = diceControl;
+        diceControl = 0; // Reset dice control after use
+        return result;
+    } else {
+        return rand() % 6 + 1; // Roll a standard 6-sided die
+    }
 }

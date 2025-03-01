@@ -1,14 +1,14 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
+#include "DiceControlCard.hpp"
+#include "MiniGameManager.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
-#include "MiniGameManager.hpp"
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
 #include "Utils.hpp"
-#include "DiceControlCard.hpp"
 #include <algorithm>
 #include <ctime>
 #include <fstream>
@@ -65,7 +65,6 @@ void Game::initGame() {
             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
         }
     }
-    miniGameManager = std::make_shared<MiniGameManager>();
 }
 
 void Game::start() {
@@ -233,7 +232,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         std::cout << "Status: " << (player->isBankrupt() ? "Bankrupt" : "Active") << std::endl;
         std::cout << "----------------------------------------" << std::endl;
         // card
-        //std::cout << "Opening the item card interface (to be implemented)." << endl;
+        // std::cout << "Opening the item card interface (to be implemented)." << endl;
         player->displayCards(players, board);
         break;
     case 'P':
@@ -270,7 +269,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 
     // Check if the command exists in JSON
     std::string command = tokens[0];
-    if (commandData.contains(command)) {
+    if (commandData.contains(command) || command == "test") {
         nlohmann::json currCommandData = commandData[command];
         if (command == "move") {
             if (tokens.size() < 2) {
@@ -300,7 +299,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 return tile->getName() == location;
             });
             if (it != tmpTileList.end()) {
-                newPos = std::distance(tmpTileList.begin(), it);
+                newPos = static_cast<int>(std::distance(tmpTileList.begin(), it));
             }
 
             // If the location is still invalid, return an error
@@ -330,10 +329,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 
             try {
                 amount = std::stoi(tokens[2]);
-            } catch (const std::invalid_argument& e) {
+            } catch (const std::invalid_argument&) {
                 std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                 return false;
-            } catch (const std::out_of_range& e) {
+            } catch (const std::out_of_range&) {
                 std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                 return false;
             }
@@ -371,10 +370,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 playerName = player->getName();
                 try {
                     amount = std::stoi(tokens[1]);
-                } catch (const std::invalid_argument& e) {
+                } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                     return false;
-                } catch (const std::out_of_range& e) {
+                } catch (const std::out_of_range&) {
                     std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                     return false;
                 }
@@ -382,10 +381,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 playerName = tokens[1];
                 try {
                     amount = std::stoi(tokens[2]);
-                } catch (const std::invalid_argument& e) {
+                } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid amount. Please enter a valid number." << std::endl;
                     return false;
-                } catch (const std::out_of_range& e) {
+                } catch (const std::out_of_range&) {
                     std::cout << "Error: Amount out of range. Please enter a valid number." << std::endl;
                     return false;
                 }
@@ -416,6 +415,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{card_name}"), 11, cardName);
             std::cout << prompt << std::endl;
+            return true;
+        } else if (command == "minigame") {
+            MiniGameManager::startMiniGame(player);
             return true;
         } else if (command == "gamestate") {
             if (tokens.size() < 2) {
@@ -463,6 +465,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                     }
                 }
             }
+            return true;
+        } else if (command == "test") {
+            player->sendToStart();
             return true;
         }
     }

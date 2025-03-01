@@ -57,7 +57,7 @@ Release/
 *.tmp
 *.bak
 *.swp
-tmp.*
+tmp*
 
 # Ignore testing output and code coverage data
 /tests/output/

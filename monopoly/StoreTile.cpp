@@ -5,8 +5,8 @@
 
 using namespace std;
 
-StoreTile::StoreTile(const std::string& n)
-    : Tile(n) {}
+StoreTile::StoreTile(const size_t id, const std::string& n)
+    : Tile(id, n) {}
 
 CardStore& StoreTile::getStore() {
     return store;

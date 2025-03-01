@@ -1,6 +1,4 @@
-// MiniGameManager.cpp
-
-#include "MiniGameManager.hpp"
+﻿#include "MiniGameManager.hpp"
 #include "Player.hpp"
 #include <algorithm>
 #include <chrono>
@@ -120,7 +118,7 @@ public:
         }
 
         // Find the winning horse
-        int winner = std::max_element(speeds.begin(), speeds.end()) - speeds.begin();
+        int winner = static_cast<int>(std::max_element(speeds.begin(), speeds.end()) - speeds.begin());
         std::cout << "The winning horse is: " << horses[winner] << "!" << std::endl;
 
         if (choice - 1 == winner) {
@@ -196,7 +194,7 @@ void MiniGameManager::endMiniGame(std::shared_ptr<Player> player) {
     // Implement mini-game end logic here
 }
 
-void MiniGameManager::listMiniGames() const {
+void MiniGameManager::listMiniGames() {
     std::cout << "Available mini-games: \n"
               << "1) Dragon Gate Game\n"
               << "2) Horse Racing Game\n"

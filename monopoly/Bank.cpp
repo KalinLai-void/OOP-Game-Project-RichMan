@@ -1,4 +1,4 @@
-#include "Bank.hpp"
+﻿#include "Bank.hpp"
 
 Bank* Bank::instance = nullptr;
 
@@ -12,12 +12,13 @@ Bank* Bank::getInstance() {
     return instance;
 }
 
-void Bank::payToPlayer(long long amount) {
+void Bank::payToPlayer(std::shared_ptr<Player> player, long long amount) {
     totalMoneyInBank -= amount;
+    player->addMoney(amount);
 }
-
-void Bank::receiveFromPlayer(long long amount) {
+void Bank::receiveFromPlayer(std::shared_ptr<Player> player, long long amount) {
     totalMoneyInBank += amount;
+    player->deductMoney(amount);
 }
 
 long long Bank::getTotalMoneyInBank() const {
