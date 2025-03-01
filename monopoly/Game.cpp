@@ -411,10 +411,41 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 std::cout << "Usage: " << currCommandData["usage"].get<std::string>() << std::endl;
                 return false;
             }
-            std::string cardName = tokens[1];
-            std::string prompt = currCommandData["prompt"].get<std::string>();
-            prompt.replace(prompt.find("{card_name}"), 11, cardName);
-            std::cout << prompt << std::endl;
+
+            std::string cardName = "";
+            for (int i = 1; i < tokens.size(); i++) {
+                if (i > 1)
+                    cardName += " ";
+                cardName += tokens[i];
+                std::cout << cardName << std::endl;
+            }
+            
+            CardStore cardStore;
+
+            std::shared_ptr<Card> targetCard = nullptr;
+            for (const auto& card : cardStore.getCards()) {
+                if (card->getName() == cardName) {
+                    targetCard = card;
+                    break;
+                }
+            }
+
+            if (!targetCard) {
+                std::string prompt = currCommandData["prompt"].get<std::string>();
+                prompt.replace(prompt.find("{card_name}"), 11, cardName);
+                std::cout << prompt << std::endl << std::endl;
+
+                std::cout << "Available cards name:" << std::endl;
+                std::vector<std::shared_ptr<Card>> availableCards = cardStore.getCards();
+                for (int i = 0; i < availableCards.size(); i++) {
+                    std::cout << i + 1 << ". " << availableCards[i]->getName() << std::endl;
+                }
+                return false;
+            }
+
+
+
+            player->addCard(targetCard);
             return true;
         } else if (command == "minigame") {
             MiniGameManager::startMiniGame(player);
@@ -486,7 +517,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    int newPos = (player->getPosition() + steps) % board.getSize();
+    int newPos = (player->getPosition() + 4) % board.getSize();
     player->setPosition(newPos);
 
     // Draw the board
