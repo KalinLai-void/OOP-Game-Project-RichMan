@@ -28,6 +28,7 @@ public:
 
     void purchase(std::shared_ptr<Player> player);
     void upgrade(std::shared_ptr<Player> player);
+    void downgrade();
     void payToll(std::shared_ptr<Player> player);
     void sell(std::shared_ptr<Player> player);
 

@@ -220,9 +220,9 @@ void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
 
         if (propertyTile) { // make sure it is a property tile
             int level = static_cast<int>(propertyTile->getPropertyLevel());
-            if (level > 0) {
-                propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
-            }
+
+            propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+
         }
     }
 }

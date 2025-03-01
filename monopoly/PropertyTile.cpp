@@ -60,6 +60,19 @@ void PropertyTile::upgrade(std::shared_ptr<Player> player) {
     }
 }
 
+void PropertyTile::downgrade() {
+    if (level == PropertyLevel::LEVEL1) {
+        level = PropertyLevel::EMPTY;
+        owner = nullptr;
+    } else if (level == PropertyLevel::LEVEL2){
+        level = PropertyLevel::LEVEL1;
+    } else if (level == PropertyLevel::LEVEL3) {
+        level = PropertyLevel::LEVEL2;
+    }
+    updateCurrentPrice();
+    return;    
+}
+
 void PropertyTile::payToll(std::shared_ptr<Player> player) {
     long long fee = getToll();
     if (player->getMoney() >= fee) {
