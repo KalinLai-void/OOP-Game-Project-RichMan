@@ -517,7 +517,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    int newPos = (player->getPosition() + 4) % board.getSize();
+    int newPos = (player->getPosition() + steps) % board.getSize();
     player->setPosition(newPos);
 
     // Draw the board
