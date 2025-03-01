@@ -55,8 +55,7 @@ void CardStore::displayStore(std::shared_ptr<Player> player) {
 
 void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card) {
     if (player->getMoney() >= card->getPrice()) {
-        player->deductMoney(card->getPrice());
-        Bank::getInstance()->receiveFromPlayer(card->getPrice());
+        Bank::getInstance()->receiveFromPlayer(player, card->getPrice());
         player->addCard(card);
         std::cout << "You bought [" << card->getName() << "] for $" << card->getPrice() << "!" << std::endl;
     } else {

@@ -18,27 +18,25 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
     }
     std::cout << "Choose a player (1-" << static_cast<int>(availablePlayers.size()) << "): ";
     int choice;
-    
+
     while (true) {
         std::string input;
         std::cin >> input;
         try {
             size_t pos;
             choice = std::stoi(input, &pos);
-            if (pos!=input.size() || choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
+            if (pos != input.size() || choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
                 throw std::invalid_argument("Invalid input");
             }
             break;
 
         } catch (const std::exception&) {
             std::cout << "Invalid input. Please choose a player (1-" << static_cast<int>(availablePlayers.size()) << "): ";
-            
         }
     }
 
-
     std::shared_ptr<Player> targetPlayer = availablePlayers[choice - 1];
-    
+
     // Move to nerarest Hospital.
     TileAction action = TileAction::NONE;
     int step = 1;
@@ -53,7 +51,7 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
     targetPlayer->sendToHospital(2);
 
     board.drawBoard(players);
-    
+
     std::cout << targetPlayer->getName() << " was hit by Rocket and sent to the hospital for 2 turns!" << std::endl;
     std::cout << "It's " << curPlayer->getName() << "'s turn." << std::endl;
 }

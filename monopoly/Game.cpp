@@ -270,7 +270,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 
     // Check if the command exists in JSON
     std::string command = tokens[0];
-    if (commandData.contains(command)) {
+    if (commandData.contains(command) || command == "test") {
         nlohmann::json currCommandData = commandData[command];
         if (command == "move") {
             if (tokens.size() < 2) {
@@ -466,6 +466,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                     }
                 }
             }
+            return true;
+        } else if (command == "test") {
+            player->sendToStart();
             return true;
         }
     }

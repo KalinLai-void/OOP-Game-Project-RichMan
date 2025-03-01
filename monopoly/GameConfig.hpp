@@ -33,6 +33,7 @@ private:
     std::vector<TileConfig> boardTiles;
     std::vector<std::string> propertyLevelIcons;
     std::map<int, std::string> locationMap;
+    std::map<std::string, std::pair<int, int>> eventValueRange;
 
     GameConfig() = default; // Private constructor
 
@@ -74,6 +75,10 @@ public:
     // Set and get board tile information
     void setBoardTiles(const std::vector<TileConfig>& tiles);
     std::vector<TileConfig> getBoardTiles() const;
+
+    // Set and get event value range
+    void setEventValueRange(const std::map<std::string, std::pair<int, int>>& range);
+    std::map<std::string, std::pair<int, int>> getEventValueRange() const;
 
     int getMapSize() const;
 

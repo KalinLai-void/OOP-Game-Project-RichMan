@@ -19,6 +19,16 @@
   ],
   "tileWidth": 14,
   "animationSecond": 0,
+  "eventValueRange": {
+    "FATE": [
+      500,
+      1000
+    ],
+    "CHANCE": [
+      2000,
+      5000
+    ]
+  },
   "modes": {
     "DEBUG": {
       "playersNum": 4,
@@ -61,7 +71,7 @@
     },
     {
       "index": 2,
-      "type": "event",
+      "type": "fate",
       "name": "\u001b[96mFate\u001b[0m",
       "price": 0,
       "toll": 0
@@ -117,7 +127,7 @@
     },
     {
       "index": 10,
-      "type": "event",
+      "type": "chance",
       "name": "\u001b[96mChance\u001b[0m",
       "price": 0,
       "toll": 0
@@ -159,7 +169,7 @@
     },
     {
       "index": 16,
-      "type": "event",
+      "type": "fate",
       "name": "\u001b[96mFate\u001b[0m",
       "price": 0,
       "toll": 0
@@ -215,7 +225,7 @@
     },
     {
       "index": 24,
-      "type": "event",
+      "type": "chance",
       "name": "\u001b[96mChance\u001b[0m",
       "price": 0,
       "toll": 0

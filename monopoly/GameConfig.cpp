@@ -38,7 +38,10 @@ void GameConfig::loadConfig() {
             this->boardTiles.push_back(
                 {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
         }
-
+        this->eventValueRange.clear();
+        for (const auto& event : config["eventValueRange"].items()) {
+            this->eventValueRange[event.key()] = {event.value()[0].get<int>(), event.value()[1].get<int>()};
+        }
         // -----------------------------
         // Mode Specific Configurations
         // ----------------------------
@@ -155,6 +158,14 @@ void GameConfig::setBoardTiles(const std::vector<TileConfig>& tiles) {
 
 std::vector<TileConfig> GameConfig::getBoardTiles() const {
     return boardTiles;
+}
+
+void GameConfig::setEventValueRange(const std::map<std::string, std::pair<int, int>>& range) {
+    this->eventValueRange = range;
+}
+
+std::map<std::string, std::pair<int, int>> GameConfig::getEventValueRange() const {
+    return eventValueRange;
 }
 
 int GameConfig::getMapSize() const {

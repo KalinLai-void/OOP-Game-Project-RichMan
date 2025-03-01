@@ -19,8 +19,10 @@ Board::Board(const GameConfig& config) {
     for (const auto& boardTiles : config.getBoardTiles()) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
-        } else if (boardTiles.type == "event") {
-            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name));
+        } else if (boardTiles.type == "fate") {
+            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange()));
+        } else if (boardTiles.type == "chance") {
+            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::CHANCE, config.getEventValueRange()));
         } else if (boardTiles.type == "store") {
             tiles.push_back(std::make_shared<StoreTile>(boardTiles.id, boardTiles.name));
         } else if (boardTiles.type == "hospital") {
@@ -31,15 +33,6 @@ Board::Board(const GameConfig& config) {
             std::cout << "Unknown Tile Type: " << boardTiles.id << " " << boardTiles.type << std::endl;
         }
     }
-    int hospitalPositions = 0;
-    auto it = std::find_if(tiles.begin(), tiles.end(), [](const std::shared_ptr<Tile>& tile) {
-        return tile->getName() == "Hospital";
-    });
-    if (it != tiles.end()) {
-        hospitalPositions = static_cast<int>(std::distance(tiles.begin(), it));
-    }
-
-    std::cout << "Hospital positions: " << hospitalPositions << std::endl;
 
     // Create an 8x8 empty board
     board = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, "   "));
@@ -96,6 +89,29 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 
 std::vector<std::shared_ptr<Tile>> Board::getTileList() {
     return tiles;
+}
+
+template <typename T>
+std::vector<int> Board::findAllTilePositions() {
+    std::vector<int> positions;
+    for (size_t i = 0; i < tiles.size(); ++i) {
+        if (std::dynamic_pointer_cast<T>(tiles[i])) { // Check if it's of type T
+            positions.push_back(static_cast<int>(i)); // Store index
+        }
+    }
+    return positions;
+}
+
+template <typename T>
+int Board::findNextTilePosition() {
+
+    auto it = std::find_if(tiles.begin(), tiles.end(), [](const std::shared_ptr<Tile>& tile) {
+        return std::dynamic_pointer_cast<T>(tile) != nullptr;
+    });
+    if (it != tiles.end()) {
+        return static_cast<int>(std::distance(tiles.begin(), it));
+    }
+    return -1;
 }
 
 void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
@@ -195,7 +211,6 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
         std::cout << "\n";
     }
     std::cout << std::endl;
-
     // === Player info ===
     std::cout << "+----------------+------------+------------------------+\n";
     std::cout << "| Player Name    | Assets     | Card                    \n";

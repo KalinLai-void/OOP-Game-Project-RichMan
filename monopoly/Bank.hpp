@@ -1,6 +1,6 @@
 ﻿#ifndef BANK_HPP
 #define BANK_HPP
-
+#include "Player.hpp"
 class Bank {
 private:
     long long totalMoneyInBank; // Total money in the bank
@@ -14,8 +14,8 @@ public:
     static Bank* getInstance();
 
     // Bank money operations
-    void payToPlayer(long long amount);
-    void receiveFromPlayer(long long amount);
+    void payToPlayer(std::shared_ptr<Player> player, long long amount);
+    void receiveFromPlayer(std::shared_ptr<Player> player, long long amount);
     long long getTotalMoneyInBank() const;
 };
 
