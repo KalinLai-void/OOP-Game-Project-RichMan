@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BarrierCard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CardStore.cpp" />
     <ClCompile Include="CardStore.hpp" />

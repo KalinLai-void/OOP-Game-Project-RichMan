@@ -515,8 +515,9 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    int newPos = (player->getPosition() + steps) % board.getSize();
-    player->setPosition(newPos);
+    /*int newPos = (player->getPosition() + steps) % board.getSize();
+    player->setPosition(newPos);*/
+    movePlayer(player, steps);
 
     // Draw the board
     board.drawBoard(players);
@@ -612,4 +613,28 @@ const nlohmann::json& Game::playerAction(const string& key) {
     if (key == "" || key == "/")
         return dialogueData["player_action"][getStateString()]["default"];
     return dialogueData["player_action"][getStateString()][key];
+}
+
+void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
+    int currentPos = player->getPosition();
+    int boardSize = board.getSize();
+    int newPos = currentPos;
+    std::shared_ptr<Tile> nextTile = nullptr;
+    // Check each step in the path for barriers
+    for (int i = 1; i < steps; i++) {
+        int nextPos = (currentPos + i) % boardSize;
+        nextTile = board.getTile(nextPos);
+
+        if (nextTile->isBlocked()) {
+            std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
+            
+            break;
+        }
+        newPos = nextPos;
+    }
+
+    // Update player position
+    player->setPosition(newPos);
+    nextTile->setBlock(false);
+
 }

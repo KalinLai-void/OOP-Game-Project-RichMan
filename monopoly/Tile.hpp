@@ -11,10 +11,11 @@ class Tile {
 protected:
     std::size_t id;   // Tile ID
     std::string name; // Tile name
+    bool blocked;
 
 public:
     Tile(const size_t id, const std::string& n)
-        : id(id), name(n) {}
+        : id(id), name(n), blocked(false) {}
     virtual ~Tile() {}
 
     std::string getName() const {
@@ -27,6 +28,12 @@ public:
 
     size_t getId() const {
         return id;
+    }
+    void setBlock(bool b) {
+        blocked = b;
+    }
+    bool isBlocked() const {
+        return blocked;
     }
 
     virtual TileAction landOn(std::shared_ptr<Player> player) = 0;

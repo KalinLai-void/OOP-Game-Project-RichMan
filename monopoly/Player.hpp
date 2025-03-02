@@ -1,4 +1,4 @@
-#ifndef PLAYER_HPP
+﻿#ifndef PLAYER_HPP
 #define PLAYER_HPP
 
 #include "Card.hpp"
@@ -56,6 +56,7 @@ public:
     void displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board);
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board);
     int rollDice();
+
 };
 
 #endif // PLAYER_HPP
