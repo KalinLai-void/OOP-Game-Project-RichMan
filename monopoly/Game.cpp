@@ -1,4 +1,4 @@
-﻿#include "Game.hpp"
+#include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
 #include "MiniGameManager.hpp"
