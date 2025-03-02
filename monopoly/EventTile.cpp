@@ -124,3 +124,7 @@ int EventTile::getRandomValue100Multiple(EventType type) {
         return getRandomValue100Multiple(eventValueRange["CHANCE"].first, eventValueRange["CHANCE"].second);
     }
 }
+
+EventType EventTile::getEventType() {
+    return type;
+}

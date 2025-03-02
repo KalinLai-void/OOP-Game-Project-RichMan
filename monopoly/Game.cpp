@@ -1,4 +1,4 @@
-﻿#include "Game.hpp"
+#include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
 #include "MiniGameManager.hpp"
@@ -417,7 +417,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 if (i > 1)
                     cardName += " ";
                 cardName += tokens[i];
-                std::cout << cardName << std::endl;
             }
             
             CardStore cardStore;
@@ -431,9 +430,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             if (!targetCard) {
-                std::string prompt = currCommandData["prompt"].get<std::string>();
-                prompt.replace(prompt.find("{card_name}"), 11, cardName);
-                std::cout << prompt << std::endl << std::endl;
 
                 std::cout << "Available cards name:" << std::endl;
                 std::vector<std::shared_ptr<Card>> availableCards = cardStore.getCards();
@@ -444,8 +440,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
 
-
             player->addCard(targetCard);
+            std::string prompt = currCommandData["prompt"].get<std::string>();
+            prompt.replace(prompt.find("{card_name}"), 11, cardName);
+            std::cout << prompt << std::endl << std::endl;
             return true;
         } else if (command == "minigame") {
             MiniGameManager::startMiniGame(player);
@@ -517,8 +515,9 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    int newPos = (player->getPosition() + steps) % board.getSize();
-    player->setPosition(newPos);
+    /*int newPos = (player->getPosition() + steps) % board.getSize();
+    player->setPosition(newPos);*/
+    movePlayer(player, steps);
 
     // Draw the board
     board.drawBoard(players);
@@ -614,4 +613,28 @@ const nlohmann::json& Game::playerAction(const string& key) {
     if (key == "" || key == "/")
         return dialogueData["player_action"][getStateString()]["default"];
     return dialogueData["player_action"][getStateString()][key];
+}
+
+void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
+    int currentPos = player->getPosition();
+    int boardSize = board.getSize();
+    int newPos = currentPos;
+    std::shared_ptr<Tile> nextTile = nullptr;
+    // Check each step in the path for barriers
+    for (int i = 1; i < steps; i++) {
+        int nextPos = (currentPos + i) % boardSize;
+        nextTile = board.getTile(nextPos);
+
+        if (nextTile->isBlocked()) {
+            std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
+            
+            break;
+        }
+        newPos = nextPos;
+    }
+
+    // Update player position
+    player->setPosition(newPos);
+    nextTile->setBlock(false);
+
 }

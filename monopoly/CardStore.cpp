@@ -4,6 +4,8 @@ CardStore::CardStore() {
     cards.push_back(std::make_shared<DiceControlCard>());
     cards.push_back(std::make_shared<RocketCard>());
     cards.push_back(std::make_shared<DestroyPropertyCard>());
+    cards.push_back(std::make_shared<DrawFateCard>());
+    cards.push_back(std::make_shared<BarrierCard>());
     /*
     cards.emplace_back("Barrier Card", 1500, "Place a barrier on the board to block players.");
     */

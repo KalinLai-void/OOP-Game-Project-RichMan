@@ -26,6 +26,7 @@ private:
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile);
     bool processCommand(std::shared_ptr<Player> player, const std::string& input);
     void throwDice(std::shared_ptr<Player> player);
+    void movePlayer(std::shared_ptr<Player> player, int steps);
     const nlohmann::json& playerAction();
     const nlohmann::json& playerAction(const std::string& key);
 

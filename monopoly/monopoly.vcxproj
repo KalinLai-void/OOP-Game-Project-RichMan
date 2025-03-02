@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BarrierCard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CardStore.cpp" />
     <ClCompile Include="CardStore.hpp" />
     <ClCompile Include="DestroyPropertyCard.cpp" />
     <ClCompile Include="DiceControlCard.cpp" />
+    <ClCompile Include="DrawFateCard.cpp" />
     <ClCompile Include="EventTile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameConfig.cpp" />
@@ -157,6 +159,7 @@
     <ClInclude Include="Card.hpp" />
     <ClInclude Include="DestroyPropertyCard.hpp" />
     <ClInclude Include="DiceControlCard.hpp" />
+    <ClInclude Include="DrawFateCard.hpp" />
     <ClInclude Include="EventTile.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameConfig.hpp" />

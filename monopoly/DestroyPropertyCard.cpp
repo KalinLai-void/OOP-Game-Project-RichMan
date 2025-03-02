@@ -1,5 +1,5 @@
 ﻿#include "DestroyPropertyCard.hpp"
-#include "Tile.hpp"
+
 
 void DestroyPropertyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
     if (players.size() < 2) {
