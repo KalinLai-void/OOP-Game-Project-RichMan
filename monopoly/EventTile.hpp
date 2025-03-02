@@ -16,5 +16,6 @@ public:
     void triggerEvent(std::shared_ptr<Player> player);
     int getRandomValue100Multiple(int min, int amx);
     int getRandomValue100Multiple(EventType type);
+    EventType getEventType();
 };
 #endif // EVENTTILE_HPP

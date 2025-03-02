@@ -7,6 +7,7 @@
 #include "DiceControlCard.hpp"
 #include "RocketCard.hpp"
 #include "DestroyPropertyCard.hpp"
+#include "DrawFateCard.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>

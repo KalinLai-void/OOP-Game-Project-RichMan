@@ -4,6 +4,7 @@
 #include "Card.hpp"
 #include "Player.hpp"
 #include "Board.hpp"
+#include "Tile.hpp"
 #include "PropertyTile.hpp"
 class  DestroyPropertyCard : public Card{
 public:

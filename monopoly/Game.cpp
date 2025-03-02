@@ -417,7 +417,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 if (i > 1)
                     cardName += " ";
                 cardName += tokens[i];
-                std::cout << cardName << std::endl;
             }
             
             CardStore cardStore;
@@ -431,9 +430,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             if (!targetCard) {
-                std::string prompt = currCommandData["prompt"].get<std::string>();
-                prompt.replace(prompt.find("{card_name}"), 11, cardName);
-                std::cout << prompt << std::endl << std::endl;
 
                 std::cout << "Available cards name:" << std::endl;
                 std::vector<std::shared_ptr<Card>> availableCards = cardStore.getCards();
@@ -444,8 +440,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
 
-
             player->addCard(targetCard);
+            std::string prompt = currCommandData["prompt"].get<std::string>();
+            prompt.replace(prompt.find("{card_name}"), 11, cardName);
+            std::cout << prompt << std::endl << std::endl;
             return true;
         } else if (command == "minigame") {
             MiniGameManager::startMiniGame(player);
@@ -517,7 +515,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    int newPos = (player->getPosition() + 4) % board.getSize();
+    int newPos = (player->getPosition() + steps) % board.getSize();
     player->setPosition(newPos);
 
     // Draw the board
