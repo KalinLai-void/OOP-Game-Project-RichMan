@@ -1,5 +1,6 @@
 ﻿#include "Game.hpp"
 #include "GameConfig.hpp"
+#include "SingletonManager.hpp"
 #include <iostream>
 using namespace std;
 int main() {
@@ -12,5 +13,6 @@ int main() {
     game.initGame();
     game.start();
 
+    SingletonManager::destroyAll(); // Destroy all singleton instances
     return 0;
 }

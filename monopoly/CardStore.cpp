@@ -1,4 +1,7 @@
 ﻿#include "CardStore.hpp"
+#include <limits>
+
+CardStore* CardStore::instance = nullptr;
 
 CardStore::CardStore() {
     cards.push_back(std::make_shared<DiceControlCard>());
@@ -6,26 +9,38 @@ CardStore::CardStore() {
     cards.push_back(std::make_shared<DestroyPropertyCard>());
     cards.push_back(std::make_shared<DrawFateCard>());
     cards.push_back(std::make_shared<BarrierCard>());
-    /*
-    cards.emplace_back("Barrier Card", 1500, "Place a barrier on the board to block players.");
-    */
+
+    SingletonManager::registerDestructor(CardStore::destroyInstance);
+}
+
+CardStore* CardStore::getInstance() {
+    if (instance == nullptr) {
+        instance = new CardStore();
+    }
+    return instance;
+}
+
+void CardStore::destroyInstance() {
+    if (instance) {
+        delete instance;
+        instance = nullptr;
+    }
 }
 
 void CardStore::displayStore(std::shared_ptr<Player> player) {
     std::cout << "=== Welcome to the Card Store ===" << std::endl;
     for (size_t i = 0; i < cards.size(); ++i) {
-        std::cout << "[" << i + 1 << "] " << cards[i]->getName() << " - Price: $" << cards[i]->getPrice() << " - Effect: " << cards[i]->getEffect() << std::endl;
+        std::cout << "[" << i + 1 << "] " << cards[i]->getName() << " - Price: $" << cards[i]->getPrice() << " - Effect: " << cards[i]->getEffect()
+                  << std::endl;
     }
     std::cout << "[0] Exit store" << std::endl;
     std::cout << "Enter the number of the card you want to buy: ";
 
-
     int choice;
-
     while (true) {
         std::string input;
         input.clear();
-        
+
         std::getline(std::cin, input);
         try {
             size_t pos;
@@ -47,9 +62,7 @@ void CardStore::displayStore(std::shared_ptr<Player> player) {
             std::cout << "Invalid choice. Try again." << std::endl;
             std::cout << "Enter the number of the card you want to buy: ";
         }
- 
     }
-
 }
 
 void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card) {
@@ -58,7 +71,8 @@ void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Car
         player->addCard(card);
         std::cout << "You bought [" << card->getName() << "] for $" << card->getPrice() << "!" << std::endl;
     } else {
-        std::cout << "You don't have enough money to buy [" << card->getName() << "]." << std::endl;
+        std::cout << "You don't have enough money to buy [" << card->getName() << "]. Your balance: $" << player->getMoney() << ", but the card costs $"
+                  << card->getPrice() << "." << std::endl;
     }
 }
 

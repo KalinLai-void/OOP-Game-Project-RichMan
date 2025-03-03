@@ -1,4 +1,4 @@
-#include "Game.hpp"
+﻿#include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
 #include "EventTile.hpp"
@@ -423,10 +423,8 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 cardName += tokens[i];
             }
 
-            CardStore cardStore;
-
             std::shared_ptr<Card> targetCard = nullptr;
-            for (const auto& card : cardStore.getCards()) {
+            for (const auto& card : CardStore::getInstance()->getCards()) {
                 if (card->getName() == cardName) {
                     targetCard = card;
                     break;
@@ -436,7 +434,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             if (!targetCard) {
 
                 std::cout << "Available cards name:" << std::endl;
-                std::vector<std::shared_ptr<Card>> availableCards = cardStore.getCards();
+                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance()->getCards();
                 for (int i = 0; i < availableCards.size(); i++) {
                     std::cout << i + 1 << ". " << availableCards[i]->getName() << std::endl;
                 }
@@ -524,7 +522,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     // Draw the board
     board.drawBoard(players);
-    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") → Move forward " << steps << " steps" << endl;
+    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
 }
 
 bool Game::checkGameOver() {

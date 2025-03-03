@@ -148,6 +148,7 @@
     <ClCompile Include="PlayerIcon.hpp" />
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="RocketCard.cpp" />
+    <ClCompile Include="SingletonManager.cpp" />
     <ClCompile Include="StartTile.cpp" />
     <ClCompile Include="StoreTile.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PropertyTile.hpp" />
     <ClInclude Include="RocketCard.hpp" />
+    <ClInclude Include="SingletonManager.hpp" />
     <ClInclude Include="StartTile.hpp" />
     <ClInclude Include="StoreTile.hpp" />
     <ClInclude Include="Tile.hpp" />
