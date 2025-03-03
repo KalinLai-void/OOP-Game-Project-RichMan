@@ -1,10 +1,10 @@
 #include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
-#include "MiniGameManager.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
+#include "MiniGameManager.hpp"
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
@@ -316,7 +316,11 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             std::cout << prompt << std::endl;
+
+            // Move the player to the new position
+            setState("moved");
             player->setPosition(newPos);
+            processPlayerAction(player, board.getTile(newPos));
             return true;
         } else if (command == "give") {
             if (tokens.size() < 3) {
@@ -418,7 +422,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                     cardName += " ";
                 cardName += tokens[i];
             }
-            
+
             CardStore cardStore;
 
             std::shared_ptr<Card> targetCard = nullptr;
@@ -438,7 +442,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                 }
                 return false;
             }
-
 
             player->addCard(targetCard);
             std::string prompt = currCommandData["prompt"].get<std::string>();
@@ -627,7 +630,7 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
 
         if (nextTile->isBlocked()) {
             std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
-            
+
             break;
         }
         newPos = nextPos;
@@ -636,5 +639,4 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
     // Update player position
     player->setPosition(newPos);
     nextTile->setBlock(false);
-
 }
