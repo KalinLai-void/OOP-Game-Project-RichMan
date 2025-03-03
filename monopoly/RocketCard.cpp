@@ -1,7 +1,7 @@
 ﻿#include "RocketCard.hpp"
 #include <iostream>
 
-void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
+void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     if (players.size() < 2) {
         std::cout << "There are no other player to send to the hospital!" << std::endl;
         return;
@@ -41,16 +41,16 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
     TileAction action = TileAction::NONE;
     int step = 1;
     while (true) {
-        int newPos = (targetPlayer->getPosition() + step) % board.getSize();
+        int newPos = (targetPlayer->getPosition() + step) % Board::getInstance()->getSize();
         targetPlayer->setPosition(newPos);
-        action = board.getTile(targetPlayer->getPosition())->landOn(targetPlayer);
+        action = Board::getInstance()->getTile(targetPlayer->getPosition())->landOn(targetPlayer);
         if (action == TileAction::HOSPITAL) {
             break;
         }
     }
     targetPlayer->sendToHospital(2);
 
-    board.drawBoard(players);
+    Board::getInstance()->drawBoard(players);
 
     std::cout << targetPlayer->getName() << " was hit by Rocket and sent to the hospital for 2 turns!" << std::endl;
     std::cout << "It's " << curPlayer->getName() << "'s turn." << std::endl;

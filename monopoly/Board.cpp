@@ -1,4 +1,4 @@
-﻿#include "Board.hpp"
+#include "Board.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "PropertyTile.hpp"
