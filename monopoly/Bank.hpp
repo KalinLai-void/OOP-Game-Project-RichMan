@@ -1,7 +1,6 @@
 ﻿#ifndef BANK_HPP
 #define BANK_HPP
 #include "Player.hpp"
-#include "SingletonManager.hpp"
 class Bank {
 private:
     long long totalMoneyInBank; // Total money in the bank

@@ -9,7 +9,6 @@
 #include "DrawFateCard.hpp"
 #include "Player.hpp"
 #include "RocketCard.hpp"
-#include "SingletonManager.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>

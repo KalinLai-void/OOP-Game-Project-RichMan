@@ -1,5 +1,5 @@
 ﻿#include "Bank.hpp"
-
+#include "SingletonManager.hpp"
 Bank* Bank::instance = nullptr;
 
 Bank::Bank()

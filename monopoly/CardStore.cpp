@@ -1,4 +1,5 @@
 ﻿#include "CardStore.hpp"
+#include "SingletonManager.hpp"
 #include <limits>
 
 CardStore* CardStore::instance = nullptr;

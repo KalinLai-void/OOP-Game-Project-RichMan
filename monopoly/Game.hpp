@@ -14,7 +14,7 @@ State& operator++(State& state);
 
 class Game {
 private:
-    Board board;
+    Board* board;
     GameConfig config;
     State currentState;
     nlohmann::json dialogueData;
