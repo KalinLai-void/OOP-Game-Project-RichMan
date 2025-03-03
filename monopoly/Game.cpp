@@ -131,7 +131,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     TileAction action = TileAction::NONE;
     nlohmann::json nowPlayerAction = playerAction();
     //----------------------------------
-    // State::MOVED
+    // State::MOVED, get the action to be performed on the current tile
     if (currentState == State::MOVED) {
         action = tile->landOn(player);
         switch (action) {
@@ -173,12 +173,14 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         }
     }
     //----------------------------------
+    // Player input
     cout << "\n" << playerAction()["option_prompt"].get<std::string>() << endl;
 
     // Display current tile which key can be pressed
     for (const auto& option : nowPlayerAction["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
+
     // Check player input
     char key;
 
@@ -210,6 +212,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         }
     }
     //----------------------------------
+    // Process the player action based on the input key
     switch (key) {
     case 'R':
         ++currentState;
