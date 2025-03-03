@@ -1,7 +1,7 @@
-﻿#include "DestroyPropertyCard.hpp"
+﻿#include "DestroyCard.hpp"
 
 
-void DestroyPropertyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
+void DestroyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     if (players.size() < 2) {
         std::cout << "There are no other players to destroy properties from!" << std::endl;
         return;

@@ -5,10 +5,10 @@
 CardStore* CardStore::instance = nullptr;
 
 CardStore::CardStore() {
-    cards.push_back(std::make_shared<DiceControlCard>());
+    cards.push_back(std::make_shared<DiceCard>());
     cards.push_back(std::make_shared<RocketCard>());
-    cards.push_back(std::make_shared<DestroyPropertyCard>());
-    cards.push_back(std::make_shared<DrawFateCard>());
+    cards.push_back(std::make_shared<DestroyCard>());
+    cards.push_back(std::make_shared<FateCard>());
     cards.push_back(std::make_shared<BarrierCard>());
 
     SingletonManager::registerDestructor(CardStore::destroyInstance);

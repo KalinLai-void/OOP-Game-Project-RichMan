@@ -1,6 +1,6 @@
-﻿#include "DrawFateCard.hpp"
+﻿#include "FateCard.hpp"
 
-void DrawFateCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
+void FateCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     std::cout << curPlayer->getName() << " used Draw Fate Card! A fate event will occur..." << std::endl;
     
     std::shared_ptr<EventTile> targetTile = nullptr;

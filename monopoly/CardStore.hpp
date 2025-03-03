@@ -4,9 +4,9 @@
 #include "Bank.hpp"
 #include "BarrierCard.hpp"
 #include "Card.hpp"
-#include "DestroyPropertyCard.hpp"
-#include "DiceControlCard.hpp"
-#include "DrawFateCard.hpp"
+#include "DestroyCard.hpp"
+#include "DiceCard.hpp"
+#include "FateCard.hpp"
 #include "Player.hpp"
 #include "RocketCard.hpp"
 #include <iostream>
