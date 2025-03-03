@@ -20,6 +20,11 @@ Board::Board(const GameConfig& config) {
     // this->mapSize = config.getMapSize();
     this->mapSize = 8;
     this->tileWidth = config.getTileWidth();
+}
+
+void Board::init(const GameConfig& config) {
+    // Clear existing tiles
+    tiles.clear();
     for (const auto& boardTiles : config.getBoardTiles()) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
@@ -88,18 +93,11 @@ Board* Board::getInstance(const GameConfig& config) {
     return instance;
 }
 
-//Board* Board::getInstance() {
-//    if (instance == nullptr) {
-//        return nullptr;
-//    }
-//    return instance;
-//}
-
-Board& Board::getInstance() {
+Board* Board::getInstance() {
     if (instance == nullptr) {
         throw std::runtime_error("Board instance is not initialized!");
     }
-    return *instance;
+    return instance;
 }
 
 void Board::destroyInstance() {

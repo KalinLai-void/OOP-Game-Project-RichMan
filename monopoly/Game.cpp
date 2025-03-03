@@ -23,7 +23,7 @@ std::default_random_engine Game::engine;
 std::shared_ptr<Game> Game::instance = nullptr;
 
 Game::Game(const GameConfig& cfg)
-    : board(Board::getInstance(cfg)), config(cfg), currentState(State::INIT), gameForceControl(false) {
+    : config(cfg), currentState(State::INIT), gameForceControl(false) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
 
     // load dialogue.json and commandData.json
@@ -52,6 +52,9 @@ std::shared_ptr<Game> Game::getInstance(const GameConfig& config) {
 }
 
 void Game::initGame() {
+    board = Board::getInstance(config);
+    board->init(config);
+    players.clear();
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
         cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
@@ -82,13 +85,12 @@ void Game::start() {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
 
-    // Set start state
     delayTime(config.getAnimationSecond());
-    ++currentState;
-
+    setState("start");
     // Main game loop
-    while (currentState != State::FINISH || !gameForceControl) {
+    while (isRoundState()) {
         for (auto& p : players) {
+            setState("start");
             board->drawBoard(players);
             cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
@@ -97,47 +99,25 @@ void Game::start() {
                 delayTime(config.getAnimationSecond());
                 continue;
             }
-            // start
-            while (currentState == State::START) {
+            // Player Round
+            while (this->isActivateState()) {
                 processPlayerAction(p, board->getTile(p->getPosition()));
             }
-            //++currentState;
-
-            // moved
-            while (currentState == State::MOVED) {
-                processPlayerAction(p, board->getTile(p->getPosition()));
-            }
-
-            //++currentState;
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
                 continue;
             }
 
-            if (checkGameOver())
+            checkGameOver();
+            if (!isRoundState()) {
                 break;
+            }
         }
     }
-    if (gameForceControl) {
-        switch (currentState) {
-        case State::INIT:
-
-            cout << "Game is forced to start." << endl;
-            break;
-        case State::START:
-            cout << "Game is forced to start." << endl;
-            break;
-        case State::MOVED:
-            cout << "Game is forced to moved state." << endl;
-            break;
-        case State::FINISH:
-            cout << "Game is forced to finish." << endl;
-            break;
-        default:
-            cout << "Unknown state." << endl;
-            break;
-        }
+    if (currentState == State::INIT) {
+        this->initGame();
+        this->start();
     }
     if (currentState == State::FINISH) {
         endGame();
@@ -145,6 +125,9 @@ void Game::start() {
 }
 
 void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile) {
+    if (!isActivateState()) {
+        return;
+    }
     TileAction action = TileAction::NONE;
     nlohmann::json nowPlayerAction = playerAction();
     //----------------------------------
@@ -487,6 +470,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             std::string newState = tokens[1];
             std::string prompt = currCommandData["prompt"].get<std::string>();
             prompt.replace(prompt.find("{state}"), 7, newState);
+            gameForceControl = true;
             setState(newState);
             std::cout << prompt << std::endl;
             std::cout << "Current state: " << getStateString() << std::endl;
@@ -555,7 +539,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
     cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
 }
 
-bool Game::checkGameOver() {
+void Game::checkGameOver() {
     int aliveCount = 0;
     for (auto& p : players) {
         if (!p->isBankrupt())
@@ -563,16 +547,13 @@ bool Game::checkGameOver() {
     }
     if (aliveCount <= 1) {
         changeState(State::FINISH);
-        return true;
     }
     // Check if any player has reached the winning money
     for (auto& p : players) {
         if (p->getMoney() >= config.getWinMoney()) {
             changeState(State::FINISH);
-            return true;
         }
     }
-    return false;
 }
 
 void Game::endGame() {
@@ -593,24 +574,13 @@ void Game::changeState(State newState) {
     currentState = newState;
 }
 
-std::string Game::getStateString() {
-    static const std::unordered_map<State, std::string> stateToString = {
-        {  State::INIT,   "init"},
-        { State::START,  "start"},
-        { State::MOVED,  "moved"},
-        {State::FINISH, "finish"}
-    };
-
-    auto it = stateToString.find(currentState);
-    return (it != stateToString.end()) ? it->second : "unknown";
-}
-
 State& operator++(State& state) {
     static const std::unordered_map<State, State> nextState = {
-        {  State::INIT,  State::START},
-        { State::START,  State::MOVED},
-        { State::MOVED,  State::START},
-        {State::FINISH, State::FINISH}
+        {     State::INIT,     State::START},
+        {    State::START,     State::MOVED},
+        {    State::MOVED, State::ROUND_END},
+        {State::ROUND_END,     State::START},
+        {   State::FINISH,    State::FINISH}
     };
 
     auto it = nextState.find(state);
@@ -629,6 +599,8 @@ void Game::setState(const std::string& state) {
         currentState = State::START;
     } else if (lowerState == "moved") {
         currentState = State::MOVED;
+    } else if (lowerState == "round_end") {
+        currentState = State::ROUND_END;
     } else if (lowerState == "finish") {
         currentState = State::FINISH;
     } else {
@@ -666,4 +638,24 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
 
     // Update player position
     player->setPosition(newPos);
+}
+
+std::string Game::getStateString() {
+    static const std::unordered_map<State, std::string> stateToString = {
+        {     State::INIT,      "init"},
+        {    State::START,     "start"},
+        {    State::MOVED,     "moved"},
+        {State::ROUND_END, "round_end"},
+        {   State::FINISH,    "finish"}
+    };
+
+    auto it = stateToString.find(currentState);
+    return (it != stateToString.end()) ? it->second : "unknown";
+}
+
+bool Game::isActivateState() const {
+    return currentState == State::START || currentState == State::MOVED;
+}
+bool Game::isRoundState() const {
+    return currentState == State::START || currentState == State::MOVED || currentState == State::ROUND_END;
 }

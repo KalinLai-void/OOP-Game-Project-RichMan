@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-enum class State { INIT, START, MOVED, FINISH };
+enum class State { INIT, START, MOVED, ROUND_END, FINISH };
 State& operator++(State& state);
 
 class Game {
@@ -38,11 +38,13 @@ public:
 
     void initGame();
     void start();
-    bool checkGameOver();
+    void checkGameOver();
     void endGame();
     void changeState(State newState);
     void setState(const std::string& state);
     std::string getStateString();
+    bool isActivateState() const;
+    bool isRoundState() const;
 };
 
 #endif // GAME_HPP

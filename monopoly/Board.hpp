@@ -57,13 +57,14 @@ private:
 
 public:
     static Board* getInstance(const GameConfig& config);
-    static Board& getInstance();
+    static Board* getInstance();
 
     static void destroyInstance();
 
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
 
+    void init(const GameConfig& config);
     int getSize() const;
     std::shared_ptr<Tile> getTile(int index);
     std::vector<std::shared_ptr<Tile>> getTileList();
