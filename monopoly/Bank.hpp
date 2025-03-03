@@ -12,6 +12,7 @@ private:
 public:
     // Get the Singleton instance
     static Bank* getInstance();
+    static void destroyInstance();
 
     // Bank money operations
     void payToPlayer(std::shared_ptr<Player> player, long long amount);

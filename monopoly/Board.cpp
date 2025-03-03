@@ -2,6 +2,7 @@
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "PropertyTile.hpp"
+#include "SingletonManager.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
 #include <iomanip>
@@ -12,7 +13,10 @@
 #    include <windows.h> // For system("cls")
 #endif
 
+Board* Board::instance = nullptr;
+
 Board::Board(const GameConfig& config) {
+    SingletonManager::registerDestructor(CardStore::destroyInstance);
     // this->mapSize = config.getMapSize();
     this->mapSize = 8;
     this->tileWidth = config.getTileWidth();
@@ -74,6 +78,34 @@ Board::Board(const GameConfig& config) {
             board[row][0] = "P" + std::to_string(posIndex);
         }
         posIndex++;
+    }
+}
+
+Board* Board::getInstance(const GameConfig& config) {
+    if (instance == nullptr) {
+        instance = new Board(config);
+    }
+    return instance;
+}
+
+//Board* Board::getInstance() {
+//    if (instance == nullptr) {
+//        return nullptr;
+//    }
+//    return instance;
+//}
+
+Board& Board::getInstance() {
+    if (instance == nullptr) {
+        throw std::runtime_error("Board instance is not initialized!");
+    }
+    return *instance;
+}
+
+void Board::destroyInstance() {
+    if (instance) {
+        delete instance;
+        instance = nullptr;
     }
 }
 

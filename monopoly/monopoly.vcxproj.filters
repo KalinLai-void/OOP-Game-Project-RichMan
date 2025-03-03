@@ -78,6 +78,9 @@
     <ClCompile Include="BarrierCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="SingletonManager.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp">
@@ -138,6 +141,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="DrawFateCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonManager.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

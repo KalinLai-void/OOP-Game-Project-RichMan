@@ -1,10 +1,10 @@
-#include "Game.hpp"
+﻿#include "Game.hpp"
 #include "Bank.hpp"
 #include "DiceControlCard.hpp"
-#include "MiniGameManager.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
+#include "MiniGameManager.hpp"
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
@@ -22,7 +22,7 @@ using namespace std;
 std::default_random_engine Game::engine;
 
 Game::Game(const GameConfig& cfg)
-    : board(cfg), config(cfg), currentState(State::INIT) {
+    : board(Board::getInstance(cfg)), config(cfg), currentState(State::INIT) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
 
     // load dialogue.json and commandData.json
@@ -81,7 +81,7 @@ void Game::start() {
     // Main game loop
     while (currentState != State::FINISH) {
         for (auto& p : players) {
-            board.drawBoard(players);
+            board->drawBoard(players);
             cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
                 cout << "You're in the hospital. You can't move." << endl;
@@ -91,13 +91,13 @@ void Game::start() {
             }
             // start
             while (currentState == State::START) {
-                processPlayerAction(p, board.getTile(p->getPosition()));
+                processPlayerAction(p, board->getTile(p->getPosition()));
             }
             //++currentState;
 
             // moved
             while (currentState == State::MOVED) {
-                processPlayerAction(p, board.getTile(p->getPosition()));
+                processPlayerAction(p, board->getTile(p->getPosition()));
             }
 
             //++currentState;
@@ -233,7 +233,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         std::cout << "----------------------------------------" << std::endl;
         // card
         // std::cout << "Opening the item card interface (to be implemented)." << endl;
-        player->displayCards(players, board);
+        player->displayCards(players, *board);
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
@@ -294,7 +294,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             // Check if input is a named location (e.g., "USA")
-            std::vector<std::shared_ptr<Tile>> tmpTileList = board.getTileList();
+            std::vector<std::shared_ptr<Tile>> tmpTileList = board->getTileList();
             auto it = std::find_if(tmpTileList.begin(), tmpTileList.end(), [&](const std::shared_ptr<Tile>& tile) {
                 return tile->getName() == location;
             });
@@ -316,7 +316,11 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             std::cout << prompt << std::endl;
+
+            // Move the player to the new position
+            setState("moved");
             player->setPosition(newPos);
+            processPlayerAction(player, board->getTile(newPos));
             return true;
         } else if (command == "give") {
             if (tokens.size() < 3) {
@@ -418,11 +422,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                     cardName += " ";
                 cardName += tokens[i];
             }
-            
-            CardStore cardStore;
 
             std::shared_ptr<Card> targetCard = nullptr;
-            for (const auto& card : cardStore.getCards()) {
+            for (const auto& card : CardStore::getInstance()->getCards()) {
                 if (card->getName() == cardName) {
                     targetCard = card;
                     break;
@@ -432,13 +434,12 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             if (!targetCard) {
 
                 std::cout << "Available cards name:" << std::endl;
-                std::vector<std::shared_ptr<Card>> availableCards = cardStore.getCards();
+                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance()->getCards();
                 for (int i = 0; i < availableCards.size(); i++) {
                     std::cout << i + 1 << ". " << availableCards[i]->getName() << std::endl;
                 }
                 return false;
             }
-
 
             player->addCard(targetCard);
             std::string prompt = currCommandData["prompt"].get<std::string>();
@@ -471,7 +472,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
             return true;
         } else if (command == "refresh") {
-            board.drawBoard(players);
+            board->drawBoard(players);
             return true;
         } else if (command == "list" || command == "help") {
             bool showAll = (tokens.size() > 1 && tokens[1] == "-a");
@@ -515,13 +516,13 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
     int steps = d1 + d2;
 
-    /*int newPos = (player->getPosition() + steps) % board.getSize();
+    /*int newPos = (player->getPosition() + steps) % board->getSize();
     player->setPosition(newPos);*/
     movePlayer(player, steps);
 
     // Draw the board
-    board.drawBoard(players);
-    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") → Move forward " << steps << " steps" << endl;
+    board->drawBoard(players);
+    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
 }
 
 bool Game::checkGameOver() {
@@ -617,17 +618,17 @@ const nlohmann::json& Game::playerAction(const string& key) {
 
 void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
     int currentPos = player->getPosition();
-    int boardSize = board.getSize();
+    int boardSize = board->getSize();
     int newPos = currentPos;
     std::shared_ptr<Tile> nextTile = nullptr;
     // Check each step in the path for barriers
-    for (int i = 1; i < steps; i++) {
+    for (int i = 1; i <= steps; i++) {
         int nextPos = (currentPos + i) % boardSize;
-        nextTile = board.getTile(nextPos);
+        nextTile = board->getTile(nextPos);
 
         if (nextTile->isBlocked()) {
             std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
-            
+            nextTile->setBlock(false);
             break;
         }
         newPos = nextPos;
@@ -635,6 +636,4 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
 
     // Update player position
     player->setPosition(newPos);
-    nextTile->setBlock(false);
-
 }
