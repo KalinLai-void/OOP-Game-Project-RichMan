@@ -9,10 +9,12 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    Game game(GameConfig::getInstance());
-    game.initGame();
-    game.start();
+    // Game game(GameConfig::getInstance());
+    std::shared_ptr<Game> game = Game::getInstance(GameConfig::getInstance());
+    game->initGame();
+    game->start();
 
+    // End of the game
     SingletonManager::destroyAll(); // Destroy all singleton instances
     return 0;
 }

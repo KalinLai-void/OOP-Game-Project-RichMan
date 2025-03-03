@@ -19,6 +19,7 @@ private:
     State currentState;
     nlohmann::json dialogueData;
     nlohmann::json commandData;
+    bool gameForceControl;
 
     std::vector<std::shared_ptr<Player>> players;
     static std::default_random_engine engine;
@@ -29,9 +30,12 @@ private:
     void movePlayer(std::shared_ptr<Player> player, int steps);
     const nlohmann::json& playerAction();
     const nlohmann::json& playerAction(const std::string& key);
+    Game(const GameConfig& config);
+    static std::shared_ptr<Game> instance;
 
 public:
-    Game(const GameConfig& config);
+    static std::shared_ptr<Game> getInstance(const GameConfig& config);
+
     void initGame();
     void start();
     bool checkGameOver();

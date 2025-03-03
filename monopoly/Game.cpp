@@ -20,9 +20,10 @@
 using namespace std;
 
 std::default_random_engine Game::engine;
+std::shared_ptr<Game> Game::instance = nullptr;
 
 Game::Game(const GameConfig& cfg)
-    : board(Board::getInstance(cfg)), config(cfg), currentState(State::INIT) {
+    : board(Board::getInstance(cfg)), config(cfg), currentState(State::INIT), gameForceControl(false) {
     engine.seed(static_cast<unsigned>(time(nullptr)));
 
     // load dialogue.json and commandData.json
@@ -41,6 +42,13 @@ Game::Game(const GameConfig& cfg)
     }
     file2 >> commandData;
     file2.close();
+}
+
+std::shared_ptr<Game> Game::getInstance(const GameConfig& config) {
+    if (instance == nullptr) {
+        instance = std::shared_ptr<Game>(new Game(config));
+    }
+    return instance;
 }
 
 void Game::initGame() {
@@ -79,7 +87,7 @@ void Game::start() {
     ++currentState;
 
     // Main game loop
-    while (currentState != State::FINISH) {
+    while (currentState != State::FINISH || !gameForceControl) {
         for (auto& p : players) {
             board->drawBoard(players);
             cout << "It's " << p->getName() << "'s turn." << endl;
@@ -111,7 +119,29 @@ void Game::start() {
                 break;
         }
     }
-    endGame();
+    if (gameForceControl) {
+        switch (currentState) {
+        case State::INIT:
+
+            cout << "Game is forced to start." << endl;
+            break;
+        case State::START:
+            cout << "Game is forced to start." << endl;
+            break;
+        case State::MOVED:
+            cout << "Game is forced to moved state." << endl;
+            break;
+        case State::FINISH:
+            cout << "Game is forced to finish." << endl;
+            break;
+        default:
+            cout << "Unknown state." << endl;
+            break;
+        }
+    }
+    if (currentState == State::FINISH) {
+        endGame();
+    }
 }
 
 void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile) {
