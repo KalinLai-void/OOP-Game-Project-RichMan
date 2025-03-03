@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-enum class State { INIT, START, MOVED, FINISH };
+enum class State { INIT, START, MOVED, ROUND_END, FINISH };
 State& operator++(State& state);
 
 class Game {
@@ -19,6 +19,7 @@ private:
     State currentState;
     nlohmann::json dialogueData;
     nlohmann::json commandData;
+    bool gameForceControl;
 
     std::vector<std::shared_ptr<Player>> players;
     static std::default_random_engine engine;
@@ -29,16 +30,21 @@ private:
     void movePlayer(std::shared_ptr<Player> player, int steps);
     const nlohmann::json& playerAction();
     const nlohmann::json& playerAction(const std::string& key);
+    Game(const GameConfig& config);
+    static std::shared_ptr<Game> instance;
 
 public:
-    Game(const GameConfig& config);
+    static std::shared_ptr<Game> getInstance(const GameConfig& config);
+
     void initGame();
     void start();
-    bool checkGameOver();
+    void checkGameOver();
     void endGame();
     void changeState(State newState);
     void setState(const std::string& state);
     std::string getStateString();
+    bool isActivateState() const;
+    bool isRoundState() const;
 };
 
 #endif // GAME_HPP
