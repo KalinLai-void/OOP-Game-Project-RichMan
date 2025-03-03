@@ -3,7 +3,6 @@
 
 #include "Card.hpp"
 #include "Player.hpp"
-#include "Board.hpp"
 #include "Tile.hpp"
 #include "PropertyTile.hpp"
 class  DestroyPropertyCard : public Card{
@@ -11,7 +10,7 @@ public:
     DestroyPropertyCard()
         : Card("Destory Property Card", 2500, "Destory another player's property.") {}
 
-    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) override;
+    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) override;
 };
 
 

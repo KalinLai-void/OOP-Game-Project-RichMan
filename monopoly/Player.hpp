@@ -1,12 +1,13 @@
 ﻿#ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "Card.hpp"
+//#include "Card.hpp"
 #include "PlayerIcon.hpp"
 #include <memory>
 #include <string>
 #include <vector>
 
+class Card;
 class MiniGameManager;
 
 class Player : public std::enable_shared_from_this<Player> {
@@ -53,8 +54,8 @@ public:
     void startMiniGame();
     void endMiniGame();
 
-    void displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board);
-    void useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board);
+    void displayCards(std::vector<std::shared_ptr<Player>>& players);
+    void useCard(int index, std::vector<std::shared_ptr<Player>>& players);
     int rollDice();
 
 };

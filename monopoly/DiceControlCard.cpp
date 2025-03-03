@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-void DiceControlCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
+void DiceControlCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     std::cout << "Choose the number you roll (1-6): ";
     int chosenRoll;
     while (true) {

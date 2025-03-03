@@ -1,7 +1,7 @@
 ﻿#include "DestroyPropertyCard.hpp"
 
 
-void DestroyPropertyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) {
+void DestroyPropertyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     if (players.size() < 2) {
         std::cout << "There are no other players to destroy properties from!" << std::endl;
         return;
@@ -42,7 +42,7 @@ void DestroyPropertyCard::useEffect(std::vector<std::shared_ptr<Player>>& player
 
     // Get all property player owned
     std::vector<std::shared_ptr<PropertyTile>> playerProperties;
-    for (auto& tile : board.getTileList()) {
+    for (auto& tile : Board::getInstance()->getTileList()) {
         std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tile);
         if (propertyTile && propertyTile->getPropertyOwner() == targetPlayer) {
             playerProperties.push_back(propertyTile);

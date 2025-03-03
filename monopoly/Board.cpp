@@ -95,11 +95,11 @@ Board* Board::getInstance(const GameConfig& config) {
 //    return instance;
 //}
 
-Board& Board::getInstance() {
+Board* Board::getInstance() {
     if (instance == nullptr) {
         throw std::runtime_error("Board instance is not initialized!");
     }
-    return *instance;
+    return instance;
 }
 
 void Board::destroyInstance() {

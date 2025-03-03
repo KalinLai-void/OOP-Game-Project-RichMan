@@ -57,7 +57,7 @@ private:
 
 public:
     static Board* getInstance(const GameConfig& config);
-    static Board& getInstance();
+    static Board* getInstance();
 
     static void destroyInstance();
 

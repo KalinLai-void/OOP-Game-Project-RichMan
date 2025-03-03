@@ -2,7 +2,6 @@
 #define DRAW_FATE_CARD_HPP
 
 #include "Card.hpp"
-#include "Board.hpp"
 #include "EventTile.hpp"
 #include "Tile.hpp"
 #include <memory>
@@ -12,7 +11,7 @@ public:
     DrawFateCard()
         : Card("Draw Fate Card", 1000, "Trigger a Fate event.") {}
 
-    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer, Board& board) override;
+    void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) override;
 
 };
 

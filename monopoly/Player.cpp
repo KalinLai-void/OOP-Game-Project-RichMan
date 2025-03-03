@@ -1,4 +1,5 @@
 ﻿#include "Player.hpp"
+#include "Card.hpp"
 #include "MiniGameManager.hpp"
 #include "iostream"
 #include "iomanip"
@@ -114,13 +115,12 @@ void Player::endMiniGame() {
     MiniGameManager::endMiniGame(shared_from_this());
 }
 
-void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& board) {
+void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
     if (cards.empty()) {
         std::cout << name << " has no cards." << std::endl;
         return;
     }
     
-
     std::vector<int> colWidth = {5, 23, 45};
     std::cout << std::endl << name << "'s Cards:" << std::endl;
     
@@ -171,16 +171,16 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players, Board& 
     }
 
     if (choice > 0) {
-        useCard(choice - 1, players, board);
+        useCard(choice - 1, players);
     } else {
         std::cout << "Exited without using a card.\n";
     }
 }
 
-void Player::useCard(int index, std::vector<std::shared_ptr<Player>>& players, Board& board) {
+void Player::useCard(int index, std::vector<std::shared_ptr<Player>>& players) {
     if (index >= 0 && index < static_cast<int>(cards.size())) {
         std::cout << "Using " << cards[index]->getName() << "!\n";
-        cards[index]->useEffect(players, enable_shared_from_this::shared_from_this(), board);
+        cards[index]->useEffect(players, enable_shared_from_this::shared_from_this());
         cards.erase(cards.begin() + index);
     } else {
         std::cout << "Invalid selection.\n";
