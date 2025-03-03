@@ -522,24 +522,25 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 }
 
 void Game::throwDice(std::shared_ptr<Player> player) {
-    std::uniform_int_distribution<int> dist(1, 6);
-    int d1 = dist(engine);
-    int d2 = dist(engine);
+    int steps;
     int diceControl = player->getDiceControl();
     if (diceControl > 0) {
-        d1 = diceControl;
+        steps = diceControl;
+        movePlayer(player, steps);
         player->setDiceControl(0);
+        board->drawBoard(players);
+        std::cout << "\n Dice control activated: Move " << steps << " steps" << endl;
+        
+    } else {
+        std::uniform_int_distribution<int> dist(1, 6);
+        int d1 = dist(engine);
+        int d2 = dist(engine);
+
+        steps = d1 + d2;
+        board->drawBoard(players);
+        movePlayer(player, steps);
+        cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
     }
-
-    int steps = d1 + d2;
-
-    /*int newPos = (player->getPosition() + steps) % board->getSize();
-    player->setPosition(newPos);*/
-    movePlayer(player, steps);
-
-    // Draw the board
-    board->drawBoard(players);
-    cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
 }
 
 void Game::checkGameOver() {

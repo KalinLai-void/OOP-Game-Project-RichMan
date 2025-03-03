@@ -4,12 +4,13 @@
 void BarrierCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     std::cout << curPlayer->getName() << " used Barrier Card! Select a tile to place a barrier." << std::endl;
 
-    // Display tiles
     std::vector<std::shared_ptr<Tile>> tiles = Board::getInstance()->getTileList();
-    
-    for (size_t i = 1; i < tiles.size(); i++) {
-        std::cout << i << ". " << tiles[i]->getName() << (tiles[i]->isBlocked() ? " [Blocked]" : "") << std::endl;
-    }
+
+
+    //// Display tiles
+    //for (size_t i = 1; i < tiles.size(); i++) {
+    //    std::cout << i << ". " << tiles[i]->getName() << (tiles[i]->isBlocked() ? " [Blocked]" : "") << std::endl;
+    //}
 
     // Select a tile
     std::cout << "Enter the tile number to put the barrier (0 to cancel): ";

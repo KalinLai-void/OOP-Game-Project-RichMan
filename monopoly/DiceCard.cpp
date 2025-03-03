@@ -4,7 +4,7 @@
 #include <vector>
 
 void DiceCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
-    std::cout << "Choose the number you roll (1-12): ";
+    std::cout << "Choose the number you roll (2-12): ";
     int chosenRoll;
     while (true) {
         std::string input;
@@ -12,7 +12,7 @@ void DiceCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::sha
         try {
             size_t pos;
             chosenRoll = std::stoi(input, &pos);
-            if (pos!=input.size() || chosenRoll < 1 || chosenRoll > 12) {
+            if (pos!=input.size() || chosenRoll < 2 || chosenRoll > 12) {
                 throw std::invalid_argument("Invalid input");
             }
             curPlayer->setDiceControl(chosenRoll);
