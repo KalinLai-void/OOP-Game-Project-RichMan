@@ -624,13 +624,13 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
     int newPos = currentPos;
     std::shared_ptr<Tile> nextTile = nullptr;
     // Check each step in the path for barriers
-    for (int i = 1; i < steps; i++) {
+    for (int i = 1; i <= steps; i++) {
         int nextPos = (currentPos + i) % boardSize;
         nextTile = board.getTile(nextPos);
 
         if (nextTile->isBlocked()) {
             std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
-
+            nextTile->setBlock(false);
             break;
         }
         newPos = nextPos;
@@ -638,5 +638,4 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
 
     // Update player position
     player->setPosition(newPos);
-    nextTile->setBlock(false);
 }
