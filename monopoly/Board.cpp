@@ -1,10 +1,11 @@
-#include "Board.hpp"
+﻿#include "Board.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "PropertyTile.hpp"
 #include "SingletonManager.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
+#include "Utils.hpp"
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -29,7 +30,10 @@ void Board::init(const GameConfig& config) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
         } else if (boardTiles.type == "fate") {
-            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange()));
+            std::shared_ptr<Tile> tilea = std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange());
+            tilea->setBlock(true);
+            tiles.push_back(tilea);
+            // tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange()));
         } else if (boardTiles.type == "chance") {
             tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::CHANCE, config.getEventValueRange()));
         } else if (boardTiles.type == "store") {
@@ -45,6 +49,7 @@ void Board::init(const GameConfig& config) {
 
     // Create an 8x8 empty board
     board = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, "   "));
+    playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
     propertyLevelBoard = std::vector<std::vector<int>>(mapSize, std::vector<int>(mapSize, 0));
     propertyLevelIcons = config.getPropertyLevelIcons();
     int posIndex = 0; // Tile index (0~31)
@@ -144,69 +149,14 @@ int Board::findNextTilePosition() {
     return -1;
 }
 
-void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
+void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     clearScreen();
 
-    std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
+    // std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
 
-    // Update player positions
-    for (const auto& player : players) {
-        int pPos = player->getPosition() % 32; // Ensure index does not exceed 31
-        int tempIndex = 0, rowOut = 0, colOut = 0;
-        bool found = false;
-
-        // Find the corresponding row, col for the index
-        for (int col = 0; col < mapSize && !found; ++col) {
-            if (tempIndex == pPos) {
-                rowOut = 0;
-                colOut = col;
-                found = true;
-                break;
-            }
-            tempIndex++;
-        }
-        for (int row = 1; row < mapSize && !found; ++row) {
-            if (tempIndex == pPos) {
-                rowOut = row;
-                colOut = mapSize - 1;
-                found = true;
-                break;
-            }
-            tempIndex++;
-        }
-        for (int col = mapSize - 2; col >= 0 && !found; --col) {
-            if (tempIndex == pPos) {
-                rowOut = mapSize - 1;
-                colOut = col;
-                found = true;
-                break;
-            }
-            tempIndex++;
-        }
-        for (int row = mapSize - 2; row > 0 && !found; --row) {
-            if (tempIndex == pPos) {
-                rowOut = row;
-                colOut = 0;
-                found = true;
-                break;
-            }
-            tempIndex++;
-        }
-
-        // Mark player position on the board
-        playerBoard[rowOut][colOut] += player->getIconWithColor();
-    }
-
-    // Update property levels
-    int posIndex = 0;
-    for (int col = 0; col < mapSize; ++col)
-        updatePropertyLevelBoard(0, col, posIndex++);
-    for (int row = 1; row < mapSize; ++row)
-        updatePropertyLevelBoard(row, mapSize - 1, posIndex++);
-    for (int col = mapSize - 2; col >= 0; --col)
-        updatePropertyLevelBoard(mapSize - 1, col, posIndex++);
-    for (int row = mapSize - 2; row > 0; --row)
-        updatePropertyLevelBoard(row, 0, posIndex++);
+    // Update player and property levels
+    updatePlayerPositions(players);
+    updatePropertyLevels(players);
 
     // Output the board
     std::cout << "+";
@@ -267,15 +217,34 @@ void Board::drawBoard(std::vector<std::shared_ptr<Player>>& players) {
     std::cout << "+----------------+------------+------------------------+\n";
 }
 
-void Board::updatePropertyLevelBoard(int row, int col, int posIndex) {
-    if (tiles[posIndex]) {
-        // Convert Tile class to PropertyTile class
-        std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
+void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players) {
+    for (auto& row : playerBoard) {
+        for (auto& cell : row) {
+            cell = "";
+        }
+    }
+    for (const auto& player : players) {
+        int pPos = player->getPosition() % 32; // 限制索引範圍
+        auto [rowOut, colOut] = getBoardPosition(pPos, mapSize);
+        if (rowOut != -1 && colOut != -1) {
+            playerBoard[rowOut][colOut] += player->getIconWithColor();
+        }
+    }
+}
 
-        if (propertyTile) { // make sure it is a property tile
-            int level = static_cast<int>(propertyTile->getPropertyLevel());
+void Board::updatePropertyLevels(const std::vector<std::shared_ptr<Player>>& players) {
+    for (int posIndex = 0; posIndex < 32; ++posIndex) {
+        auto [row, col] = getBoardPosition(posIndex, mapSize);
+        if (row != -1 && col != -1) {
+            if (tiles[posIndex]) {
+                // Convert Tile class to PropertyTile class
+                std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
 
-            propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+                if (propertyTile) { // make sure it is a property tile
+                    int level = static_cast<int>(propertyTile->getPropertyLevel());
+                    propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+                }
+            }
         }
     }
 }

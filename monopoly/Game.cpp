@@ -1,6 +1,6 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
-//#include "DiceCard.hpp"
+// #include "DiceCard.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
@@ -255,9 +255,11 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         cout << "Opening the player trading interface (to be implemented)." << endl;
         break;
     case 'T':
-        ++currentState;
-        throwDice(player);
-        break;
+        if (currentState == State::START) { // Only allow to throw dice in the start state
+            ++currentState;
+            throwDice(player);
+            break;
+        }
     // input any key to continue
     default:
         ++currentState;
@@ -530,15 +532,15 @@ void Game::throwDice(std::shared_ptr<Player> player) {
         player->setDiceControl(0);
         board->drawBoard(players);
         std::cout << "\n Dice control activated: Move " << steps << " steps" << endl;
-        
+
     } else {
         std::uniform_int_distribution<int> dist(1, 6);
         int d1 = dist(engine);
         int d2 = dist(engine);
 
         steps = d1 + d2;
-        board->drawBoard(players);
         movePlayer(player, steps);
+        board->drawBoard(players);
         cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
     }
 }

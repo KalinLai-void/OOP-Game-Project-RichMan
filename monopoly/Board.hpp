@@ -49,6 +49,7 @@ private:
     int tileWidth = 0;
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::vector<std::string>> board;
+    std::vector<std::vector<std::string>> playerBoard;
     std::vector<std::vector<int>> propertyLevelBoard;
     std::vector<std::string> propertyLevelIcons;
 
@@ -75,8 +76,9 @@ public:
     template <typename T>
     int findNextTilePosition();
 
-    void drawBoard(std::vector<std::shared_ptr<Player>>& players);
-    void updatePropertyLevelBoard(int row, int col, int posIndex);
+    void drawBoard(const std::vector<std::shared_ptr<Player>>& players);
+    void updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players);
+    void updatePropertyLevels(const std::vector<std::shared_ptr<Player>>& players);
     static void clearScreen();
 };
 

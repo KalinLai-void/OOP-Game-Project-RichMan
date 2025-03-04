@@ -1,8 +1,8 @@
 ﻿#include "Utils.hpp"
 #include <chrono>
+#include <regex>
 #include <string>
 #include <thread>
-#include <regex>
 
 #ifdef _WIN32
 void setConsoleSize(int width, int height) {
@@ -24,4 +24,29 @@ void delayTime(long long s) {
 std::string stripAnsi(const std::string& text) {
     static const std::regex ansiRegex("\033\\[[0-9;]*m");
     return std::regex_replace(text, ansiRegex, "");
+}
+
+std::pair<int, int> getBoardPosition(int posIndex, int mapSize) {
+    int tempIndex = 0;
+    for (int col = 0; col < mapSize; ++col) {
+        if (tempIndex == posIndex)
+            return {0, col};
+        tempIndex++;
+    }
+    for (int row = 1; row < mapSize; ++row) {
+        if (tempIndex == posIndex)
+            return {row, mapSize - 1};
+        tempIndex++;
+    }
+    for (int col = mapSize - 2; col >= 0; --col) {
+        if (tempIndex == posIndex)
+            return {mapSize - 1, col};
+        tempIndex++;
+    }
+    for (int row = mapSize - 2; row > 0; --row) {
+        if (tempIndex == posIndex)
+            return {row, 0};
+        tempIndex++;
+    }
+    return {-1, -1}; // 出錯處理，應該不會發生
 }

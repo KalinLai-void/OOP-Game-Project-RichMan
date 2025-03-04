@@ -10,5 +10,6 @@
 void setConsoleSize(int width, int height);
 void delayTime(long long s);
 std::string stripAnsi(const std::string& text);
+std::pair<int, int> getBoardPosition(int posIndex, int mapSize);
 
 #endif // UTILS_HPP
