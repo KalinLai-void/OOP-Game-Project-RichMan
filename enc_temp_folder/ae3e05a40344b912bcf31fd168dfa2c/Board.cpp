@@ -30,7 +30,6 @@ void Board::init(const GameConfig& config) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
         } else if (boardTiles.type == "fate") {
-            // test barrier
             std::shared_ptr<Tile> tilea = std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange());
             tilea->setBlock(true);
             tiles.push_back(tilea);

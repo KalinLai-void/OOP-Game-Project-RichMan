@@ -79,6 +79,7 @@ public:
     void drawBoard(const std::vector<std::shared_ptr<Player>>& players);
     void updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players);
     void updatePropertyLevels(const std::vector<std::shared_ptr<Player>>& players);
+    std::vector<int> getTileBlockPos();
     static void clearScreen();
 };
 
