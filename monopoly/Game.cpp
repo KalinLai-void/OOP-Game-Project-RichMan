@@ -73,8 +73,11 @@ void Game::initGame() {
     } else {
         for (int i = 0; i < config.getPlayersNum(); i++) {
             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
+            for (auto card : CardStore::getInstance(config)->getCards()) {
+                players[i]->addCard(card);
+            }
         }
-        
+  
     }
 }
 
