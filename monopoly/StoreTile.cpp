@@ -5,8 +5,8 @@
 
 using namespace std;
 
-StoreTile::StoreTile(const size_t id, const std::string& n)
-    : Tile(id, n) {}
+StoreTile::StoreTile(const size_t id, const std::string& n, const GameConfig& config)
+    : Tile(id, n), store(CardStore::getInstance(config)) {}
 
 CardStore* StoreTile::getStore() {
     return store;

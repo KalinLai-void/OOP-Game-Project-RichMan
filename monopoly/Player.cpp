@@ -115,6 +115,10 @@ void Player::endMiniGame() {
     MiniGameManager::endMiniGame(shared_from_this());
 }
 
+std::vector<std::shared_ptr<Card>> Player::getCards() {
+    return cards;
+}
+
 void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
     if (cards.empty()) {
         std::cout << name << " has no cards." << std::endl;

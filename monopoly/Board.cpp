@@ -38,7 +38,7 @@ void Board::init(const GameConfig& config) {
         } else if (boardTiles.type == "chance") {
             tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::CHANCE, config.getEventValueRange()));
         } else if (boardTiles.type == "store") {
-            tiles.push_back(std::make_shared<StoreTile>(boardTiles.id, boardTiles.name));
+            tiles.push_back(std::make_shared<StoreTile>(boardTiles.id, boardTiles.name, config));
         } else if (boardTiles.type == "hospital") {
             tiles.push_back(std::make_shared<HospitalTile>(boardTiles.id, boardTiles.name));
         } else if (boardTiles.type == "start") {
@@ -197,22 +197,29 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     std::cout << "| Player Name    | Assets     | Card                    \n";
     std::cout << "+----------------+------------+------------------------+\n";
 
+    
     for (const auto& player : players) {
         std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
-        // todo: card system
-        //     const auto& cards = player->getCards(); // 假設有 getCards() 方法返回 std::vector<std::string>
-        //     if (cards.empty()) {
-        //         std::cout << "無";
-        //     } else {
-        //         for (size_t i = 0; i < cards.size(); ++i) {
-        //             std::cout << cards[i];
-        //             if (i != cards.size() - 1) {
-        //                 std::cout << ", ";
-        //             }
-        //         }
-        //     }
-        //     std::cout << std::setw(22 - (cards.empty() ? 1 : (cards.size() * 5))) << " |" << std::endl;
-        // std::cout << std::setw(24) << " |" << std::endl;
+         
+        const auto& cards = player->getCards(); // 假設有 getCards() 方法返回 std::vector<std::string>
+        int lenCardName = 1;
+
+        // To do: waiting for better idea to display cards
+        /*if (cards.empty()) {
+            std::cout << "無";
+        } else {
+            for (size_t i = 0; i < cards.size(); ++i) {
+                std::cout << cards[i]->getName();
+                lenCardName += cards[i]->getName().size() + 1;
+                if (i != cards.size() - 1) {
+                    std::cout << ", ";
+                }
+            }
+        }*/
+
+        std::cout << std::setw(24 - (cards.empty() ? 1 : (lenCardName))) << " " << "|";
+        //std::cout << std::setw(24) << " |" << std::endl;
+        
         std::cout << std::endl;
     }
     std::cout << "+----------------+------------+------------------------+\n";

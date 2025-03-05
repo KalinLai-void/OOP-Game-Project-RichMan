@@ -1,4 +1,4 @@
-{
+﻿{
   "playerIcons": [
     "[A]",
     "[B]",
@@ -251,5 +251,34 @@
       "price": 14000,
       "toll": 1400
     }
+  ],
+  "cards": [
+    {
+      "name": "Barrier Card",
+      "price": 1500,
+      "effect": "Place a barrier on a tile to blcok players.."
+    },
+    {
+      "name": "Dice Card",
+      "price": 2000,
+      "effect": "Choose the number you roll on the dice."
+    },
+    {
+      "name": "Destory Card",
+      "price": 2500,
+      "effect": "Destory another player's property."
+    },
+    {
+      "name": "Fate Card",
+      "price": 1000,
+      "effect": "Trigger a Fate event."
+    },
+    {
+      "name": "Rocket Card",
+      "price": 3000,
+      "effect": "Send a player to the hospital for 2 turns."
+    }
+
   ]
+
 }

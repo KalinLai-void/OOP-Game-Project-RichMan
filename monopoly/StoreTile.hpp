@@ -6,10 +6,10 @@
 
 class StoreTile : public Tile {
 private:
-    CardStore* store = CardStore::getInstance();
+    CardStore* store;
 
 public:
-    StoreTile(const size_t id, const std::string& n);
+    StoreTile(const size_t id, const std::string& n, const GameConfig& config);
     CardStore* getStore();
     TileAction landOn(std::shared_ptr<Player> player) override;
     void enterStore(std::shared_ptr<Player> player);

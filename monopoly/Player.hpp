@@ -54,6 +54,7 @@ public:
     void startMiniGame();
     void endMiniGame();
 
+    std::vector<std::shared_ptr<Card>> getCards();
     void displayCards(std::vector<std::shared_ptr<Player>>& players);
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players);
     int rollDice();

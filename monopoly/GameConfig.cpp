@@ -38,6 +38,10 @@ void GameConfig::loadConfig() {
             this->boardTiles.push_back(
                 {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
         }
+        for (const auto& card : config["cards"]) {
+            this->cards.push_back({card["name"].get<std::string>(), card["price"].get<int>(), card["effect"].get<std::string>()});
+            
+        }
         this->eventValueRange.clear();
         for (const auto& event : config["eventValueRange"].items()) {
             this->eventValueRange[event.key()] = {event.value()[0].get<int>(), event.value()[1].get<int>()};
@@ -158,6 +162,14 @@ void GameConfig::setBoardTiles(const std::vector<TileConfig>& tiles) {
 
 std::vector<TileConfig> GameConfig::getBoardTiles() const {
     return boardTiles;
+}
+
+void GameConfig::setCards(const std::vector<CardConfig>& cards) {
+    this->cards = cards;
+}
+
+std::vector<CardConfig> GameConfig::getCards() const {
+    return cards;
 }
 
 void GameConfig::setEventValueRange(const std::map<std::string, std::pair<int, int>>& range) {

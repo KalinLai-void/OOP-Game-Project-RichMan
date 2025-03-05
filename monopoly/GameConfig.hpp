@@ -17,6 +17,12 @@ struct TileConfig {
     int rent;
 };
 
+struct CardConfig {
+    std::string name;
+    int price;
+    std::string effect;
+};
+
 class GameConfig {
 private:
     static GameConfig instance;
@@ -31,6 +37,7 @@ private:
     std::vector<std::string> playersName;
     std::vector<PlayerIcon> playerIcons;
     std::vector<TileConfig> boardTiles;
+    std::vector<CardConfig> cards;
     std::vector<std::string> propertyLevelIcons;
     std::map<int, std::string> locationMap;
     std::map<std::string, std::pair<int, int>> eventValueRange;
@@ -75,6 +82,10 @@ public:
     // Set and get board tile information
     void setBoardTiles(const std::vector<TileConfig>& tiles);
     std::vector<TileConfig> getBoardTiles() const;
+
+    // Set and get cards information
+    void setCards(const std::vector<CardConfig>& cards);
+    std::vector<CardConfig> getCards() const;
 
     // Set and get event value range
     void setEventValueRange(const std::map<std::string, std::pair<int, int>>& range);

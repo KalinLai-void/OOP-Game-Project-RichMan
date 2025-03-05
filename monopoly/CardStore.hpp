@@ -9,6 +9,7 @@
 #include "FateCard.hpp"
 #include "Player.hpp"
 #include "RocketCard.hpp"
+#include "GameConfig.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -18,11 +19,11 @@ private:
     static CardStore* instance;
     std::vector<std::shared_ptr<Card>> cards;
 
-    CardStore();
+    CardStore(const GameConfig& config);
     ~CardStore() = default;
 
 public:
-    static CardStore* getInstance();
+    static CardStore* getInstance(const GameConfig& config);
     static void destroyInstance();
 
     CardStore(const CardStore&) = delete;

@@ -1,6 +1,5 @@
 ﻿#include "Game.hpp"
 #include "Bank.hpp"
-// #include "DiceCard.hpp"
 #include "EventTile.hpp"
 #include "HospitalTile.hpp"
 #include "InputManager.hpp"
@@ -75,6 +74,7 @@ void Game::initGame() {
         for (int i = 0; i < config.getPlayersNum(); i++) {
             players.push_back(std::make_shared<Player>(config.getPlayerNames()[i], config.getPlayerIcons()[i], config.getStartMoney()));
         }
+        
     }
 }
 
@@ -442,7 +442,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             std::shared_ptr<Card> targetCard = nullptr;
-            for (const auto& card : CardStore::getInstance()->getCards()) {
+            for (const auto& card : CardStore::getInstance(config)->getCards()) {
                 if (card->getName() == cardName) {
                     targetCard = card;
                     break;
@@ -452,7 +452,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             if (!targetCard) {
 
                 std::cout << "Available cards name:" << std::endl;
-                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance()->getCards();
+                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance(config)->getCards();
                 for (int i = 0; i < availableCards.size(); i++) {
                     std::cout << i + 1 << ". " << availableCards[i]->getName() << std::endl;
                 }

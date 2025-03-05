@@ -6,8 +6,8 @@
 
 class DiceCard : public Card {
 public:
-    DiceCard()
-        : Card("Dice Card", 2000, "Choose the number you roll on the dice.") {}
+    DiceCard(const std::string& n, int p, const std::string& e)
+        : Card(n, p, e) {}
 
     void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) override;
 };
