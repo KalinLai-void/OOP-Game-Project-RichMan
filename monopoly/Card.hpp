@@ -11,17 +11,24 @@ class Player; // Forward declaration to prevent circular dependency
 class Card {
 private:
     std::string name;
+    std::string icon;
     int price;
     std::string effect; // Card effect
 
 public:
-    Card(const std::string& n, int p, const std::string& e)
-        : name(n), price(p), effect(e) {}
+    Card(const std::string& n, const std::string& i, int p, const std::string& e)
+        : name(n)
+        , icon(i)
+        , price(p)
+        , effect(e) {}
 
     virtual ~Card() = default;
 
     std::string getName() const {
         return name;
+    }
+    std::string getIcon() const {
+        return icon;
     }
     int getPrice() const {
         return price;

@@ -191,9 +191,9 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     }
     std::cout << std::endl;
     // === Player info ===
-    std::cout << "+----------------+------------+--------------------------------+\n";
-    std::cout << "| Player Name    | Assets     | Property                       |\n";
-    std::cout << "+----------------+------------+--------------------------------+\n";
+    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
+    std::cout << "| Player Name    | Assets     | Property                       | Cards                |\n";
+    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
 
     for (const auto& player : players) {
         const auto& properties = getPlayerProperty(player);
@@ -203,12 +203,17 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
         }
         propertyIds = propertyIds.substr(0, propertyIds.size() - 2); // Remove the last comma
 
+        std::string cardIcons;
+        for (const auto& card : player->getCards()) {
+            cardIcons += card->getIcon() + ", ";
+        }
+
         std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | "
-                  << std::setw(30) << propertyIds << " | ";
+                  << std::setw(30) << propertyIds << " | " << std::setw(20) << cardIcons << " | ";
 
         std::cout << std::endl;
     }
-    std::cout << "+----------------+------------+--------------------------------+\n";
+    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
 }
 
 void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players) {

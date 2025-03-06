@@ -35,7 +35,8 @@ void GameConfig::loadConfig() {
                 {id++, tile["type"].get<std::string>(), tile["name"].get<std::string>(), tile["price"].get<int>(), tile["toll"].get<int>()});
         }
         for (const auto& card : config["cards"]) {
-            this->cards.push_back({card["name"].get<std::string>(), card["price"].get<int>(), card["effect"].get<std::string>()});
+            this->cards.push_back(
+                {card["name"].get<std::string>(), card["icon"].get<std::string>(), card["price"].get<int>(), card["effect"].get<std::string>()});
         }
         this->eventValueRange.clear();
         for (const auto& event : config["eventValueRange"].items()) {

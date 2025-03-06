@@ -18,6 +18,7 @@ struct TileConfig {
 
 struct CardConfig {
     std::string name;
+    std::string icon;
     int price;
     std::string effect;
 };
