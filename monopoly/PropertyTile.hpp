@@ -33,6 +33,7 @@ public:
     void sell(std::shared_ptr<Player> player);
 
     void updateCurrentPrice();
+    std::string getNameWithId() const override;
     std::shared_ptr<Player> getPropertyOwner() const;
 };
 

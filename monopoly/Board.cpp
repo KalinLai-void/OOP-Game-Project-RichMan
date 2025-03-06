@@ -153,11 +153,9 @@ int Board::findNextTilePosition() {
 void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     clearScreen();
 
-    // std::vector<std::vector<std::string>> playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
-
     // Update player and property levels
     updatePlayerPositions(players);
-    updatePropertyLevels(players);
+    updateProperty(players);
 
     // Output the board
     std::cout << "+";
@@ -193,36 +191,24 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     }
     std::cout << std::endl;
     // === Player info ===
-    std::cout << "+----------------+------------+------------------------+\n";
-    std::cout << "| Player Name    | Assets     | Card                    \n";
-    std::cout << "+----------------+------------+------------------------+\n";
+    std::cout << "+----------------+------------+--------------------------------+\n";
+    std::cout << "| Player Name    | Assets     | Property                       |\n";
+    std::cout << "+----------------+------------+--------------------------------+\n";
 
-    
     for (const auto& player : players) {
-        std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | ";
-         
-        const auto& cards = player->getCards(); // 假設有 getCards() 方法返回 std::vector<std::string>
-        int lenCardName = 1;
+        const auto& properties = getPlayerProperty(player);
+        std::string propertyIds;
+        for (const auto& property : properties) {
+            propertyIds += std::to_string(property->getId()) + ", ";
+        }
+        propertyIds = propertyIds.substr(0, propertyIds.size() - 2); // Remove the last comma
 
-        // To do: waiting for better idea to display cards
-        /*if (cards.empty()) {
-            std::cout << "無";
-        } else {
-            for (size_t i = 0; i < cards.size(); ++i) {
-                std::cout << cards[i]->getName();
-                lenCardName += cards[i]->getName().size() + 1;
-                if (i != cards.size() - 1) {
-                    std::cout << ", ";
-                }
-            }
-        }*/
+        std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | "
+                  << std::setw(30) << propertyIds << " | ";
 
-        std::cout << std::setw(24 - (cards.empty() ? 1 : (lenCardName))) << " " << "|";
-        //std::cout << std::setw(24) << " |" << std::endl;
-        
         std::cout << std::endl;
     }
-    std::cout << "+----------------+------------+------------------------+\n";
+    std::cout << "+----------------+------------+--------------------------------+\n";
 }
 
 void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players) {
@@ -258,7 +244,18 @@ std::vector<int> Board::getTileBlockPos() {
     return blockedPos;
 }
 
-void Board::updatePropertyLevels(const std::vector<std::shared_ptr<Player>>& players) {
+std::vector<std::shared_ptr<PropertyTile>> Board::getPlayerProperty(const std::shared_ptr<Player>& player) {
+    std::vector<std::shared_ptr<PropertyTile>> playerProperties;
+    for (const auto& tile : tiles) {
+        auto propertyTile = std::dynamic_pointer_cast<PropertyTile>(tile);
+        if (propertyTile && propertyTile->getPropertyOwner() == player) {
+            playerProperties.push_back(propertyTile);
+        }
+    }
+    return playerProperties;
+}
+
+void Board::updateProperty(const std::vector<std::shared_ptr<Player>>& players) {
     for (int posIndex = 0; posIndex < 28; ++posIndex) {
         auto [row, col] = getBoardPosition(posIndex, mapSize);
         if (row != -1 && col != -1) {
@@ -269,6 +266,12 @@ void Board::updatePropertyLevels(const std::vector<std::shared_ptr<Player>>& pla
                 if (propertyTile) { // make sure it is a property tile
                     int level = static_cast<int>(propertyTile->getPropertyLevel());
                     propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+
+                    // Update the board with the owner's color
+                    auto owner = propertyTile->getPropertyOwner();
+                    if (owner) {
+                        board[row][col] = propertyTile->getNameWithId();
+                    }
                 }
             }
         }

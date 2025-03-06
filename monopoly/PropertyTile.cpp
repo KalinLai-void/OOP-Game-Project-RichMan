@@ -9,7 +9,12 @@
 using namespace std;
 
 PropertyTile::PropertyTile(const size_t id, const std::string& n, long long price, long long toll)
-    : Tile(id, n), basePrice(price), baseToll(toll), owner(nullptr), level(PropertyLevel::EMPTY), currentPrice(price) {}
+    : Tile(id, n)
+    , basePrice(price)
+    , baseToll(toll)
+    , owner(nullptr)
+    , level(PropertyLevel::EMPTY)
+    , currentPrice(price) {}
 
 long long PropertyTile::getToll() const {
     switch (level) {
@@ -126,6 +131,14 @@ void PropertyTile::updateCurrentPrice() {
     default:
         currentPrice = basePrice;
         break;
+    }
+}
+
+std::string PropertyTile::getNameWithId() const {
+    if (owner) {
+        return std::to_string(id) + " " + owner->getColor() + name + "\033[0m";
+    } else {
+        return std::to_string(id) + " " + name;
     }
 }
 

@@ -5,7 +5,15 @@
 #include "iostream"
 
 Player::Player(const std::string& n, const std::string& i, const std::string& c, long long m)
-    : name(n), icon(i), color(c), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0), diceControl(0) {}
+    : name(n)
+    , icon(i)
+    , color(c)
+    , money(m)
+    , position(0)
+    , bankrupt(false)
+    , inHospital(false)
+    , hospitalRoundLeft(0)
+    , diceControl(0) {}
 
 std::string Player::getName() const {
     return name;
@@ -13,6 +21,10 @@ std::string Player::getName() const {
 
 std::string Player::getIcon() const {
     return icon;
+}
+
+std::string Player::getColor() const {
+    return color;
 }
 
 std::string Player::getIconWithColor() const {

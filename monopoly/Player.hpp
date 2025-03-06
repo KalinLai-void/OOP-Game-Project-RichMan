@@ -27,6 +27,7 @@ public:
     // Accessors
     std::string getName() const;
     std::string getIcon() const;
+    std::string getColor() const;
     std::string getIconWithColor() const;
     std::string getDisplayName() const;
 

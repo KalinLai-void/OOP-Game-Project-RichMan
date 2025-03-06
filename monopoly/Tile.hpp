@@ -22,7 +22,7 @@ public:
         return name;
     }
 
-    std::string getNameWithId() const {
+    virtual std::string getNameWithId() const {
         return std::to_string(id) + " " + name;
     }
 
