@@ -63,22 +63,22 @@
     <ClCompile Include="PlayerIcon.hpp">
       <Filter>標頭檔</Filter>
     </ClCompile>
-    <ClCompile Include="DiceControlCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="RocketCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="DestroyPropertyCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawFateCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="BarrierCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="SingletonManager.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="DestroyCard.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="DiceCard.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="FateCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,22 +128,22 @@
     <ClInclude Include="MiniGameManager.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="DiceControlCard.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="RocketCard.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="DestroyPropertyCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="BarrierCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="DrawFateCard.hpp">
+    <ClInclude Include="SingletonManager.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="SingletonManager.hpp">
+    <ClInclude Include="DestroyCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="DiceCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="FateCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

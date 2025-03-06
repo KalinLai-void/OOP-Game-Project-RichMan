@@ -31,6 +31,13 @@ CardStore* CardStore::getInstance(const GameConfig& config) {
     return instance;
 }
 
+CardStore* CardStore::getInstance() {
+    if (instance == nullptr) {
+        throw std::runtime_error("CardStore instance is not initialized!");
+    }
+    return instance;
+}
+
 void CardStore::destroyInstance() {
     if (instance) {
         delete instance;

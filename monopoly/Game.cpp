@@ -77,8 +77,7 @@ void Game::initGame() {
                 players[i]->addCard(card);
             }
         }
-  
-    }
+      }
 }
 
 void Game::start() {
@@ -445,7 +444,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
 
             std::shared_ptr<Card> targetCard = nullptr;
-            for (const auto& card : CardStore::getInstance(config)->getCards()) {
+            for (const auto& card : CardStore::getInstance()->getCards()) {
                 if (card->getName() == cardName) {
                     targetCard = card;
                     break;
@@ -455,7 +454,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             if (!targetCard) {
 
                 std::cout << "Available cards name:" << std::endl;
-                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance(config)->getCards();
+                std::vector<std::shared_ptr<Card>> availableCards = CardStore::getInstance()->getCards();
                 for (int i = 0; i < availableCards.size(); i++) {
                     std::cout << i + 1 << ". " << availableCards[i]->getName() << std::endl;
                 }

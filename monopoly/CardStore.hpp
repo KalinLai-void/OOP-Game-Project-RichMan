@@ -7,9 +7,9 @@
 #include "DestroyCard.hpp"
 #include "DiceCard.hpp"
 #include "FateCard.hpp"
+#include "GameConfig.hpp"
 #include "Player.hpp"
 #include "RocketCard.hpp"
-#include "GameConfig.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -24,6 +24,7 @@ private:
 
 public:
     static CardStore* getInstance(const GameConfig& config);
+    static CardStore* getInstance();
     static void destroyInstance();
 
     CardStore(const CardStore&) = delete;
