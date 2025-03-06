@@ -11,7 +11,9 @@
 using namespace std;
 
 EventTile::EventTile(const size_t id, const std::string& n, EventType t, const std::map<std::string, std::pair<int, int>>& valueRange)
-    : Tile(id, n), type(t), eventValueRange(valueRange) {}
+    : Tile(id, n)
+    , type(t)
+    , eventValueRange(valueRange) {}
 
 TileAction EventTile::landOn(std::shared_ptr<Player> player) {
     return TileAction::SPECIAL_EVENT;
@@ -122,6 +124,9 @@ int EventTile::getRandomValue100Multiple(EventType type) {
         return getRandomValue100Multiple(eventValueRange["FATE"].first, eventValueRange["FATE"].second);
     case EventType::CHANCE:
         return getRandomValue100Multiple(eventValueRange["CHANCE"].first, eventValueRange["CHANCE"].second);
+    default:
+        std::cerr << "Invalid event type." << std::endl;
+        return 0;
     }
 }
 

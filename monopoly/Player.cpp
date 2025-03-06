@@ -1,23 +1,27 @@
 ﻿#include "Player.hpp"
 #include "Card.hpp"
 #include "MiniGameManager.hpp"
-#include "iostream"
 #include "iomanip"
+#include "iostream"
 
-Player::Player(const std::string& n, const PlayerIcon& i, long long m)
-    : name(n), icon(i), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0), diceControl(0) {}
+Player::Player(const std::string& n, const std::string& i, const std::string& c, long long m)
+    : name(n), icon(i), color(c), money(m), position(0), bankrupt(false), inHospital(false), hospitalRoundLeft(0), diceControl(0) {}
 
 std::string Player::getName() const {
     return name;
 }
 
 std::string Player::getIcon() const {
-    return icon.icon;
+    return icon;
 }
 
 std::string Player::getIconWithColor() const {
-    std::string iconWithColor = icon.color + icon.icon + "\033[0m";
+    std::string iconWithColor = color + icon + "\033[0m";
     return iconWithColor;
+}
+
+std::string Player::getDisplayName() const {
+    return getIconWithColor() + " " + getName();
 }
 
 long long Player::getMoney() const {
@@ -124,14 +128,14 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
         std::cout << name << " has no cards." << std::endl;
         return;
     }
-    
+
     std::vector<int> colWidth = {5, 23, 45};
     std::cout << std::endl << name << "'s Cards:" << std::endl;
-    
+
     // Print top border
     std::cout << "+" << std::setfill('-') << std::setw(colWidth[0] + 1) << '-' << std::setw(colWidth[1] + 1) << '-' << std::setw(colWidth[2] + 1) << '-' << "+"
               << std::setfill(' ') << std::endl;
-    
+
     // Print column headers
     std::cout << "| " << std::left << std::setw(colWidth[0] - 1) << "No."
               << "| " << std::setw(colWidth[1] - 1) << "Card Name"
@@ -143,8 +147,8 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
 
     // Print each card in table format
     for (size_t i = 0; i < cards.size(); i++) {
-        std::cout << "| " << std::left << std::setw(colWidth[0] - 1) << i+1 << "| " << std::setw(colWidth[1] - 1) << cards[i]->getName()
-                  << "| " << std::setw(colWidth[2] - 1) << cards[i]->getEffect() << " |" << std::endl;
+        std::cout << "| " << std::left << std::setw(colWidth[0] - 1) << i + 1 << "| " << std::setw(colWidth[1] - 1) << cards[i]->getName() << "| "
+                  << std::setw(colWidth[2] - 1) << cards[i]->getEffect() << " |" << std::endl;
     }
 
     // Print bottom border
@@ -159,7 +163,7 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
         try {
             std::cin >> input;
             size_t pos;
-            choice = std::stoi(input, &pos);
+            choice = std::stoi(input, &pos); // pos will be set to the position of the first character in the input that is not part of the number
             if (pos != input.size() || choice < 1 || choice > static_cast<int>(cards.size())) {
                 if (choice == 0) {
                     return;
@@ -169,9 +173,7 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
             break;
         } catch (std::exception&) {
             std::cout << "Invalid input. Enter a number between 1 and " << cards.size() << " (or 0 to exit): ";
-       }
-
-
+        }
     }
 
     if (choice > 0) {

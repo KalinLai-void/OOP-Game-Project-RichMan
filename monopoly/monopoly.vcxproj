@@ -146,7 +146,6 @@
     <ClCompile Include="Bank.cpp" />
     <ClCompile Include="MinigameManager.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerIcon.hpp" />
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="RocketCard.cpp" />
     <ClCompile Include="SingletonManager.cpp" />
@@ -179,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="command.json" />
     <None Include="config.json" />
     <None Include="dialogue.json">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>

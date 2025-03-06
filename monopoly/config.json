@@ -5,11 +5,11 @@
     "[C]",
     "[D]"
   ],
-  "playerIconColors": [
-    "\u001b[31m",
-    "\u001b[32m",
-    "\u001b[33m",
-    "\u001b[34m"
+  "playerColors": [
+    "\u001b[91m",
+    "\u001b[92m",
+    "\u001b[93m",
+    "\u001b[94m"
   ],
   "propertyLevelIcons": [
     " ",
@@ -278,7 +278,5 @@
       "price": 3000,
       "effect": "Send a player to the hospital for 2 turns."
     }
-
   ]
-
 }

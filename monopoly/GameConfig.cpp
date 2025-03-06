@@ -22,12 +22,8 @@ void GameConfig::loadConfig() {
     file.close();
 
     try {
-        auto icons = config["playerIcons"].get<std::vector<std::string>>();
-        auto colors = config["playerIconColors"].get<std::vector<std::string>>();
-        this->playerIcons.clear();
-        for (size_t i = 0; i < icons.size(); ++i) {
-            this->playerIcons.push_back({icons[i], colors[i]});
-        }
+        this->playerIcons = config["playerIcons"].get<std::vector<std::string>>();
+        this->playerColors = config["playerColors"].get<std::vector<std::string>>();
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
         this->animationSecond = config["animationSecond"].get<long long>();
@@ -40,7 +36,6 @@ void GameConfig::loadConfig() {
         }
         for (const auto& card : config["cards"]) {
             this->cards.push_back({card["name"].get<std::string>(), card["price"].get<int>(), card["effect"].get<std::string>()});
-            
         }
         this->eventValueRange.clear();
         for (const auto& event : config["eventValueRange"].items()) {
@@ -100,16 +95,24 @@ std::vector<std::string> GameConfig::getPlayerNames() const {
     return playersName;
 }
 
-void GameConfig::setPlayerIcons(const std::vector<PlayerIcon>& icons) {
-    if (icons.size() == playersNum) {
-        playerIcons = icons;
-    } else {
-        std::cerr << "Error: The number of player icons does not match the number of players!" << std::endl;
+void GameConfig::setPlayerIcons(const std::vector<std::string>& icons) {
+    for (int i = 0; i < playersNum; ++i) {
+        playerIcons.push_back(icons[i]);
     }
 }
 
-std::vector<PlayerIcon> GameConfig::getPlayerIcons() const {
+std::vector<std::string> GameConfig::getPlayerIcons() const {
     return playerIcons;
+}
+
+void GameConfig::setPlayerColors(const std::vector<std::string>& icons) {
+    for (int i = 0; i < playersNum; ++i) {
+        playerColors.push_back(icons[i]);
+    }
+}
+
+std::vector<std::string> GameConfig::getPlayerColors() const {
+    return playerColors;
 }
 
 void GameConfig::setPropertyLevelIcons(const std::vector<std::string>& icons) {

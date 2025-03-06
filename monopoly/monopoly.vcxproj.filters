@@ -60,9 +60,6 @@
     <ClCompile Include="MinigameManager.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerIcon.hpp">
-      <Filter>標頭檔</Filter>
-    </ClCompile>
     <ClCompile Include="RocketCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
@@ -153,6 +150,9 @@
       <Filter>資源檔</Filter>
     </None>
     <None Include="config.json">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="command.json">
       <Filter>資源檔</Filter>
     </None>
   </ItemGroup>

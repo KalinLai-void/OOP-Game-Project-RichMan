@@ -1,8 +1,6 @@
 ﻿#ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-//#include "Card.hpp"
-#include "PlayerIcon.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -13,7 +11,8 @@ class MiniGameManager;
 class Player : public std::enable_shared_from_this<Player> {
 private:
     std::string name;
-    PlayerIcon icon;
+    std::string icon;
+    std::string color;
     int position;
     long long money;
     std::vector<std::shared_ptr<Card>> cards; // Cards held by the player
@@ -23,12 +22,13 @@ private:
     int diceControl;
 
 public:
-    Player(const std::string& n, const PlayerIcon& i, long long m);
+    Player(const std::string& n, const std::string& i, const std::string& c, long long m); // name, icon, color, init money
 
     // Accessors
     std::string getName() const;
     std::string getIcon() const;
     std::string getIconWithColor() const;
+    std::string getDisplayName() const;
 
     long long getMoney() const;
     int getPosition() const;
@@ -58,7 +58,6 @@ public:
     void displayCards(std::vector<std::shared_ptr<Player>>& players);
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players);
     int rollDice();
-
 };
 
 #endif // PLAYER_HPP

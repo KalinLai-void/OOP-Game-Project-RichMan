@@ -43,13 +43,11 @@ BraceWrapping:
   BeforeCatch: false
 AlignAfterOpenBracket: AlwaysBreak
 AlignConsecutiveAssignments: None
-AlignConsecutiveBitFields:
-  Enabled: true
-  AcrossEmptyLines: false
-  AcrossComments: false
-AlignArrayOfStructures: Right
+AlignConsecutiveBitFields: Consecutive
 AlignEscapedNewlines: Left
 BreakConstructorInitializers: BeforeComma
 IndentPPDirectives: AfterHash
 PointerAlignment: Left
-PackConstructorInitializers: NextLineOnly
+# If use Windows Visual Studio，DON'T Enable the following options
+# AlignArrayOfStructures: Right
+# PackConstructorInitializers: NextLineOnly
