@@ -59,6 +59,7 @@ public:
 
         bool guessCorrect = false;
         bool hitPillar = (thirdCard == firstCard || thirdCard == secondCard);
+        bool hitTwoPillars = (firstCard == secondCard && hitPillar);
         if (firstCard == secondCard) {
             // Guess "Higher" or "Lower"
             if ((thirdCard > firstCard && choice == 1) || (thirdCard < firstCard && choice == 2)) {
@@ -70,12 +71,16 @@ public:
                 guessCorrect = true;
             }
         }
-
-        if (hitPillar) {
+        if (hitTwoPillars) {
+            std::cout << "Disaster strikes! The third card matches the first two, and you lose triple your bet!" << std::endl;
+            std::cout << "You lose " << 3 * betAmount << " coins!" << std::endl;
+            totalReward = -3 * betAmount;
+        } else if (hitPillar) {
             std::cout << "Oh no! The third card is equal to one of the first two cards. You lose double!" << std::endl;
+            std::cout << "You lose " << 2 * betAmount << " coins!" << std::endl;
             totalReward = -2 * betAmount;
         } else if (guessCorrect) {
-            std::cout << "Congratulations! You won 1000 coins!" << std::endl;
+            std::cout << "Congratulations! You won " << betAmount << " coins!" << std::endl;
             totalReward = betAmount;
         } else {
             std::cout << "Sorry, you lost!" << std::endl;
