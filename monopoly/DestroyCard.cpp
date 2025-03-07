@@ -51,11 +51,11 @@ void DestroyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::
 
     if (playerProperties.size() < 1) {
         std::cout << std::endl << targetPlayer->getName() << " doesn't have any property!." << std::endl;
-        curPlayer->addCard(CardStore::getInstance()->getCardByName("Destory Card"));
+        curPlayer->addCard(CardStore::getInstance()->getCardByName("Destroy Card"));
         return;
     }
 
-    // Select a property to destory a level
+    // Select a property to destroy a level
     std::cout << std::endl << targetPlayer->getName() << " has: " << std::endl;
     for (size_t i = 0; i < playerProperties.size(); i++) {
         std::cout << i + 1 << ". " << playerProperties[i]->getName() << " (Level: " << static_cast<int>(playerProperties[i]->getPropertyLevel()) << ")"

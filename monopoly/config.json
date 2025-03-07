@@ -266,10 +266,10 @@
       "effect": "Choose the number you roll on the dice."
     },
     {
-      "name": "Destory Card",
+      "name": "Destroy Card",
       "icon": "De",
       "price": 2500,
-      "effect": "Destory another player's property."
+      "effect": "Destroy another player's property."
     },
     {
       "name": "Fate Card",

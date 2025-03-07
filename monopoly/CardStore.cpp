@@ -10,7 +10,7 @@ CardStore::CardStore(const GameConfig& config) {
         std::cout << card.name << std::endl;
         if (card.name == "Barrier Card") {
             cards.push_back(std::make_shared<BarrierCard>(card.name, card.icon, card.price, card.effect));
-        } else if (card.name == "Destory Card") {
+        } else if (card.name == "Destroy Card") {
             cards.push_back(std::make_shared<DestroyCard>(card.name, card.icon, card.price, card.effect));
         } else if (card.name == "Dice Card") {
             cards.push_back(std::make_shared<DiceCard>(card.name, card.icon, card.price, card.effect));
