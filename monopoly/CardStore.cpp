@@ -8,7 +8,6 @@ CardStore* CardStore::instance = nullptr;
 CardStore::CardStore(const GameConfig& config) {
 
     for (const auto& card : config.getCards()) {
-        std::cout << card.name << std::endl;
         if (card.name == "Barrier Card") {
             cards.push_back(std::make_shared<BarrierCard>(card.name, card.icon, card.price, card.effect));
         } else if (card.name == "Destroy Card") {

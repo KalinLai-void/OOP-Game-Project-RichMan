@@ -47,6 +47,7 @@ public:
     int findNextTilePosition();
 
     void drawBoard();
+    void drawMonopolyAscii();
 
     std::vector<std::shared_ptr<PropertyTile>> getPlayerProperty(const std::shared_ptr<Player>& player);
     static void clearScreen();

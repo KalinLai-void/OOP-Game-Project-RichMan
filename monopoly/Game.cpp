@@ -84,15 +84,19 @@ void Game::initGame() {
 }
 
 void Game::start() {
+    // Drawing the opening animation
+    if (config.getAnimation()) {
+        board->drawMonopolyAscii();
+    }
     // Display dialogue
-    cout << "\n" << playerAction()["prompt"].get<std::string>() << endl;
+    cout << playerAction()["prompt"].get<std::string>() << endl;
     for (const auto& option : playerAction()["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
-    if (config.getAnimation()) {
-        delayTime(1000);
-    }
     setState("start");
+    cout << "Press any key to start the game...";
+    InputManager::getKey();
+
     // Main game loop
     while (isRoundState()) {
         for (auto& p : players) {
