@@ -18,7 +18,7 @@ void DiceCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::sha
             curPlayer->setDiceControl(chosenRoll);
             return;
         } catch (const std::exception&) {
-            std::cout << "Invalid input. Please choose the number you roll (1-12):";
+            std::cout << "Invalid input. Please choose the number you roll (2-12):";
         }
     }
 }

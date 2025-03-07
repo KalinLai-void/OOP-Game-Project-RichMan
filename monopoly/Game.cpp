@@ -246,6 +246,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         break;
     case 'I':
         player->displayCards(players);
+        board->drawBoard(players);
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
