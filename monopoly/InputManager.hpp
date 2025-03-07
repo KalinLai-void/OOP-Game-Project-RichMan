@@ -37,7 +37,7 @@ public:
                 continue;
             }
 #    endif
-            if (std::isalnum(ch) || std::ispunct(ch) || ch == ' ') {
+            if (std::isalnum(ch) || std::ispunct(ch) || ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t') {
                 return std::isalpha(ch) ? std::toupper(ch) : ch;
             }
         }
