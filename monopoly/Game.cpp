@@ -517,7 +517,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
             return true;
         } else if (command == "test") {
-            player->sendToStart();
+            MiniGameManager::startMiniGame(player);
             return true;
         }
     }

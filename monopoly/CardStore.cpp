@@ -1,4 +1,5 @@
 ﻿#include "CardStore.hpp"
+#include "InputManager.hpp"
 #include "SingletonManager.hpp"
 #include <limits>
 
@@ -48,29 +49,25 @@ void CardStore::destroyInstance() {
 void CardStore::displayStore(std::shared_ptr<Player> player) {
     std::cout << "=== Welcome to the Card Store ===" << std::endl;
     for (size_t i = 0; i < cards.size(); ++i) {
-        std::cout << "[" << i + 1 << "] " << cards[i]->getName() << " - Price: $" << cards[i]->getPrice() << " - Effect: " << cards[i]->getEffect()
-                  << std::endl;
+        std::cout << "[" << i + 1 << "] " << std::setw(15) << cards[i]->getName() << " - Price: $" << std::setw(10) << cards[i]->getPrice()
+                  << " - Effect: " << cards[i]->getEffect() << std::endl;
     }
     std::cout << "[0] Exit store" << std::endl;
     std::cout << "Enter the number of the card you want to buy: ";
 
     int choice;
     while (true) {
-        std::string input;
-        input.clear();
-
-        std::getline(std::cin, input);
         try {
-            size_t pos;
-            choice = std::stoi(input, &pos);
+            choice = InputManager::getKeyInt();
+            std::cout << choice << std::endl;
             if (choice == 0) {
                 std::cout << "You left the store." << std::endl;
                 return;
             }
+            if (choice >= 0 && choice <= static_cast<int>(cards.size())) {
 
-            if (choice > 0 && choice <= static_cast<int>(cards.size())) {
-                purchaseCard(player, cards[choice - 1]);
-                return;
+                purchaseCard(player, cards[choice - 1]); // convert char to int
+                break;
             } else {
                 std::cout << "Invalid choice. Try again." << std::endl;
                 std::cout << "Enter the number of the card you want to buy: ";
@@ -81,6 +78,10 @@ void CardStore::displayStore(std::shared_ptr<Player> player) {
             std::cout << "Enter the number of the card you want to buy: ";
         }
     }
+
+    std::cout << "\nPress any key to continue...";
+    InputManager::getKey();
+    return;
 }
 
 void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card) {

@@ -8,7 +8,6 @@
 class MiniGameManager {
 private:
     static std::vector<std::shared_ptr<Player>> players;
-
     MiniGameManager() = delete;
     MiniGameManager(const MiniGameManager&) = delete;
     MiniGameManager& operator=(const MiniGameManager&) = delete;

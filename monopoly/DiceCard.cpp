@@ -12,12 +12,12 @@ void DiceCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::sha
         try {
             size_t pos;
             chosenRoll = std::stoi(input, &pos);
-            if (pos!=input.size() || chosenRoll < 2 || chosenRoll > 12) {
+            if (pos != input.size() || chosenRoll < 2 || chosenRoll > 12) {
                 throw std::invalid_argument("Invalid input");
             }
             curPlayer->setDiceControl(chosenRoll);
             return;
-        } catch (const std::exception&){
+        } catch (const std::exception&) {
             std::cout << "Invalid input. Please choose the number you roll (1-12):";
         }
     }

@@ -1,4 +1,6 @@
 ﻿#include "MiniGameManager.hpp"
+#include "Board.hpp"
+#include "InputManager.hpp"
 #include "Player.hpp"
 #include <algorithm>
 #include <chrono>
@@ -10,15 +12,13 @@
 #include <vector>
 
 void delayMilliseconds(int ms);
-void clearScreen();
-
 // -----------------------------------------
 // Embedded classes for "DragonGateGame" and "HorseRacing"
 // -----------------------------------------
 class DragonGateGame {
 public:
     // Returns the amount of coins won (could be 0 or a positive value)
-    long long playGame() {
+    long long playGame(long long betAmount) {
         std::cout << "\nStarting Dragon Gate Game!" << std::endl;
 
         long long totalReward = 0;
@@ -65,15 +65,19 @@ public:
 
         if (hitPillar) {
             std::cout << "Oh no! The third card is equal to one of the first two cards. You lose double!" << std::endl;
-            totalReward = -2000;
+            totalReward = -2 * betAmount;
         } else if (guessCorrect) {
             std::cout << "Congratulations! You won 1000 coins!" << std::endl;
-            totalReward = 1000;
+            totalReward = betAmount;
         } else {
             std::cout << "Sorry, you lost!" << std::endl;
+            totalReward = -betAmount;
         }
 
-        return totalReward;
+        std::cout << "\nPress any key to continue...";
+        std::cin.ignore();
+        InputManager::getKey();
+        return totalReward; // Default return value
     }
 };
 
@@ -81,12 +85,14 @@ class HorseRacing {
 public:
     // Takes the bet amount as input, returns positive value for winnings, negative for losses
     long long playGame(long long betAmount) {
-        std::cout << "\nStarting Horse Racing Game!" << std::endl;
+        std::cout << "Starting Horse Racing Game!" << std::endl;
 
         const std::vector<std::string> colors = {"\033[31m", "\033[32m", "\033[33m", "\033[34m"}; // Red, Green, Yellow, Blue
         const std::string resetColor = "\033[0m";
         std::vector<std::string> horses = {"Deep Impact", "Orfevre", "Kitasan Black", "Gold Ship"};
         std::vector<int> odds = {2, 3, 5, 10};
+        long long totalReward = 0;
+        int finishLine = 30;
 
         std::cout << "Odds table:" << std::endl;
         for (size_t i = 0; i < horses.size(); i++)
@@ -102,33 +108,53 @@ public:
 
         std::cout << "The race begins!" << std::endl;
         std::vector<int> speeds(4, 0);
-
-        // Simple simulation of 30 steps with different colors for each horse
-        for (int step = 0; step < 30; step++) {
+        std::vector<int> ranks(4, -1);
+        bool raceOver = false;
+        int rankCounter = 1;
+        Board::getInstance()->clearScreen();
+        while (!raceOver) {
             for (int i = 0; i < 4; i++) {
-                speeds[i] += rand() % 3 + 1; // 1~3
+                if (ranks[i] == -1) {            // Only move horses that haven't finished
+                    speeds[i] += rand() % 3 + 1; // 1~3
+                    if (speeds[i] >= finishLine) {
+                        ranks[i] = rankCounter++;
+                    }
+                }
             }
-            // Output current progress (very simple)
             std::cout << "\r";
+            std::cout << "Start Line:\t|" << std::string(finishLine, '-') << "| Finish Line" << std::endl;
             for (int i = 0; i < 4; i++) {
-                std::cout << colors[i] << horses[i] << ": " << std::string(speeds[i], '-') << "|" << resetColor << "\n";
+                if (speeds[i] >= finishLine) {
+                    std::cout << colors[i] << horses[i] << ":\t|" << std::string(finishLine, '-') << "|" << resetColor << " Finish! (Rank: " << ranks[i] << ")"
+                              << std::endl;
+                } else {
+                    std::cout << colors[i] << horses[i] << ":\t|" << std::string(speeds[i], '-') << "|" << resetColor << std::endl;
+                }
             }
-            delayMilliseconds(200);
-            clearScreen();
+            if (rankCounter > 4) {
+                raceOver = true;
+            } else {
+                delayMilliseconds(200);
+                Board::getInstance()->clearScreen();
+            }
         }
 
         // Find the winning horse
-        int winner = static_cast<int>(std::max_element(speeds.begin(), speeds.end()) - speeds.begin());
-        std::cout << "The winning horse is: " << horses[winner] << "!" << std::endl;
+        int winner = std::distance(ranks.begin(), std::find(ranks.begin(), ranks.end(), 1));
+        std::cout << "The winning horse is: " << colors[winner] << horses[winner] << resetColor << "!" << std::endl;
 
         if (choice - 1 == winner) {
-            long long winnings = betAmount * odds[choice - 1];
-            std::cout << "Congratulations! You won " << winnings << " coins!" << std::endl;
-            return winnings; // Return positive value
+            totalReward = betAmount * odds[choice - 1];
+            std::cout << "Congratulations! You won " << totalReward << " coins!" << std::endl;
         } else {
             std::cout << "Sorry, you lost." << std::endl;
-            return -betAmount; // Return negative value
+            totalReward = -betAmount;
         }
+
+        std::cout << "\nPress any key to continue...";
+        std::cin.ignore();
+        InputManager::getKey();
+        return totalReward; // Default return value
     }
 };
 
@@ -137,13 +163,14 @@ public:
 // -----------------------------------------
 
 void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
-    // You can write the process of "choosing which mini-game to play" here
-    // Or you can directly call a specific game, depending on your needs
-    std::cout << "\n========================\n"
-              << "MiniGame Menu\n"
-              << "1. Dragon Gate Game\n"
-              << "2. Horse Racing Game\n"
-              << "3. Return\n"
+    // Choose a mini-game to play
+    Board::getInstance()->clearScreen();
+    std::cout << "========================\n"
+              << "      MiniGame Menu     \n"
+              << "========================\n"
+              << "1. Dragon Gate Game     \n"
+              << "2. Horse Racing Game    \n"
+              << "3. Return               \n"
               << "========================\n"
               << "Please choose (1~3): ";
 
@@ -154,11 +181,22 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
         std::cin.ignore(10000, '\n');
     }
 
+    // Get the bet amount from the player
+    std::cout << "\nEnter your bet amount (you currently have " << player->getMoney() << "): ";
+    long long bet = 0;
+    while (!(std::cin >> bet) || bet <= 0 || bet > player->getMoney()) {
+        std::cout << "Please enter a valid bet amount (1 ~ " << player->getMoney() << "): ";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
+    Board::getInstance()->clearScreen();
+
+    // Start the selected mini-game
     switch (choice) {
     case 1:
     {
         DragonGateGame dragonGateGame;
-        long long reward = dragonGateGame.playGame();
+        long long reward = dragonGateGame.playGame(bet);
         if (reward > 0) {
             player->addMoney(reward);
         }
@@ -167,13 +205,6 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     case 2:
     {
         HorseRacing horseRacing;
-        std::cout << "Enter your bet amount (you currently have " << player->getMoney() << "): ";
-        long long bet = 0;
-        while (!(std::cin >> bet) || bet <= 0 || bet > player->getMoney()) {
-            std::cout << "Please enter a valid bet amount (1 ~ " << player->getMoney() << "): ";
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-        }
         long long result = horseRacing.playGame(bet);
         if (result < 0) {
             player->deductMoney(result);
@@ -187,6 +218,8 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
         std::cout << "Returning to main program...\n";
         break;
     }
+
+    Board::getInstance()->drawBoard();
 }
 
 void MiniGameManager::endMiniGame(std::shared_ptr<Player> player) {
@@ -202,66 +235,9 @@ void MiniGameManager::listMiniGames() {
     // You can list more mini-games here
 }
 
-void clearScreen() {
-#ifdef _WIN32
-    system("cls");
-#else
-    std::cout << "\033[2J\033[H"; // ANSI Escape Code to clear the screen and move the cursor to the top-left corner
-#endif
-}
-
 void delayMilliseconds(int ms) {
     auto start = std::chrono::steady_clock::now();
     while (std::chrono::steady_clock::now() - start < std::chrono::milliseconds(ms)) {
         // Busy-waiting loop (not CPU-efficient but avoids thread sleep issues)
     }
 }
-
-// -----------------------------------------
-// Main function as the entry point of the program
-// -----------------------------------------
-#ifdef UNIT_TEST
-int main() {
-    // Initialize random seed
-    srand(static_cast<unsigned int>(time(nullptr)));
-
-    // Create mini-game manager
-    std::shared_ptr<MiniGameManager> miniGameManager = std::make_shared<MiniGameManager>();
-
-    // Create player
-    std::shared_ptr<Player> player = std::make_shared<Player>("TestPlayer", "T", 5000ll);
-
-    // Main loop: player can repeatedly enter different mini-games until they choose to exit
-    while (true) {
-        std::cout << "\n============= Main Menu =============\n"
-                  << "Player: " << player->getName() << " (Balance: " << player->getMoney() << ")\n"
-                  << "1) Start Mini-Game\n"
-                  << "2) End Mini-Game (Test)\n"
-                  << "3) List Available Mini-Games\n"
-                  << "4) Exit Program\n"
-                  << "=====================================\n"
-                  << "Please choose (1~4): ";
-
-        int c;
-        while (!(std::cin >> c) || c < 1 || c > 4) {
-            std::cout << "Please enter 1-4: ";
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-        }
-
-        if (c == 1) {
-            miniGameManager->startMiniGame(player);
-        } else if (c == 2) {
-            miniGameManager->endMiniGame(player);
-        } else if (c == 3) {
-            miniGameManager->listMiniGames();
-        } else {
-            // Exit
-            std::cout << "Thank you for playing!\n";
-            break;
-        }
-    }
-
-    return 0;
-}
-#endif

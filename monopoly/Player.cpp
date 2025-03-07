@@ -1,5 +1,6 @@
 ﻿#include "Player.hpp"
 #include "Card.hpp"
+#include "InputManager.hpp"
 #include "MiniGameManager.hpp"
 #include "iomanip"
 #include "iostream"
@@ -170,28 +171,26 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
     std::cout << "Enter the number of the card to use (or 0 to exit): ";
     int choice;
     while (true) {
-
-        std::string input;
         try {
-            std::cin >> input;
-            size_t pos;
-            choice = std::stoi(input, &pos); // pos will be set to the position of the first character in the input that is not part of the number
-            if (pos != input.size() || choice < 1 || choice > static_cast<int>(cards.size())) {
+            choice = InputManager::getKeyInt();
+            std::cout << choice << std::endl;
+            if (choice < 1 || choice > static_cast<int>(cards.size())) {
                 if (choice == 0) {
                     return;
                 }
-                throw std::invalid_argument("Invalid input");
+                throw std::invalid_argument("Invalid input\n");
             }
             break;
         } catch (std::exception&) {
-            std::cout << "Invalid input. Enter a number between 1 and " << cards.size() << " (or 0 to exit): ";
+            std::cout << "Invalid input." << std::endl;
+            std::cout << "Enter a number between 1 and " << cards.size() << " (or 0 to exit): ";
         }
     }
 
     if (choice > 0) {
         useCard(choice - 1, players);
     } else {
-        std::cout << "Exited without using a card.\n";
+        std::cout << "Exited without using a card." << std::endl;
     }
 }
 

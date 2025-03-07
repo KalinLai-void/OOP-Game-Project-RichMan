@@ -81,43 +81,6 @@ void Board::init(const GameConfig& config) {
             }
         }
     }
-    // int posIndex = 0; // Tile index (0~31)
-    // for (int col = 0; col < mapSize; ++col) {
-    //     // Top
-    //     if (tiles[posIndex]) {
-    //         board[0][col] = tiles[posIndex]->getNameWithId();
-    //     } else {
-    //         board[0][col] = "P" + std::to_string(posIndex);
-    //     }
-    //     posIndex++;
-    // }
-    // for (int row = 1; row < mapSize; ++row) {
-    //     // Right
-    //     if (tiles[posIndex]) {
-    //         board[row][mapSize - 1] = tiles[posIndex]->getNameWithId();
-    //     } else {
-    //         board[row][mapSize - 1] = "P" + std::to_string(posIndex);
-    //     }
-    //     posIndex++;
-    // }
-    // for (int col = mapSize - 2; col >= 0; --col) {
-    //     // Bottom
-    //     if (tiles[posIndex]) {
-    //         board[mapSize - 1][col] = tiles[posIndex]->getNameWithId();
-    //     } else {
-    //         board[mapSize - 1][col] = "P" + std::to_string(posIndex);
-    //     }
-    //     posIndex++;
-    // }
-    // for (int row = mapSize - 2; row > 0; --row) {
-    //     // Left
-    //     if (tiles[posIndex]) {
-    //         board[row][0] = tiles[posIndex]->getNameWithId();
-    //     } else {
-    //         board[row][0] = "P" + std::to_string(posIndex);
-    //     }
-    //     posIndex++;
-    // }
 }
 
 Board* Board::getInstance(const GameConfig& config) {
@@ -177,13 +140,12 @@ int Board::findNextTilePosition() {
     }
     return -1;
 }
-
-void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
+void Board::drawBoard() {
     clearScreen();
 
     // Update player and property levels
-    updatePlayerPositions(players);
-    updateProperty(players);
+    updatePlayerPositions(playersList);
+    updateProperty(playersList);
 
     // Output the board
     std::cout << "+";
@@ -223,7 +185,7 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
     std::cout << "| Player Name    | Assets     | Property                       | Cards                |\n";
     std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
 
-    for (const auto& player : players) {
+    for (const auto& player : playersList) {
         const auto& properties = getPlayerProperty(player);
         std::string propertyIds;
         for (const auto& property : properties) {
@@ -243,6 +205,10 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
         std::cout << std::endl;
     }
     std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
+}
+void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
+    playersList = players;
+    drawBoard();
 }
 
 void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players) {
@@ -300,7 +266,7 @@ void Board::updateProperty(const std::vector<std::shared_ptr<Player>>& players) 
 
                 if (propertyTile) { // make sure it is a property tile
                     int level = static_cast<int>(propertyTile->getPropertyLevel());
-                    // propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+                    propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
 
                     // Update the board with the owner's color
                     auto owner = propertyTile->getPropertyOwner();
