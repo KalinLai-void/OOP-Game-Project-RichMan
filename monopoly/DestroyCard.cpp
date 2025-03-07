@@ -1,5 +1,6 @@
 ﻿#include "DestroyCard.hpp"
 #include "CardStore.hpp"
+#include "InputManager.hpp"
 
 void DestroyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     if (players.size() < 2) {
@@ -22,17 +23,14 @@ void DestroyCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::
     std::cout << "Enter the number of the player whose property you want to destroy: ";
     int choice;
     while (true) {
-
-        std::string input;
-        std::cin >> input;
         try {
-            size_t pos;
-            choice = std::stoi(input, &pos);
-
-            if (pos != input.size() || choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
+            choice = InputManager::getKeyInt();
+            std::cout << choice << std::endl;
+            if (choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
                 throw std::invalid_argument("Invalid input");
             }
             break;
+
         } catch (const std::exception&) {
             std::cout << "Invalid input. Please enter a number between 1 and " << availablePlayers.size() << ":";
         }

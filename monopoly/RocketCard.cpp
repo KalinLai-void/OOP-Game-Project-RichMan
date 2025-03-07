@@ -1,4 +1,5 @@
 ﻿#include "RocketCard.hpp"
+#include "InputManager.hpp"
 #include <iostream>
 
 void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
@@ -18,14 +19,11 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
     }
     std::cout << "Choose a player (1-" << static_cast<int>(availablePlayers.size()) << "): ";
     int choice;
-
     while (true) {
-        std::string input;
-        std::cin >> input;
         try {
-            size_t pos;
-            choice = std::stoi(input, &pos);
-            if (pos != input.size() || choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
+            choice = InputManager::getKeyInt();
+            std::cout << choice << std::endl;
+            if (choice < 1 || choice > static_cast<int>(availablePlayers.size())) {
                 throw std::invalid_argument("Invalid input");
             }
             break;

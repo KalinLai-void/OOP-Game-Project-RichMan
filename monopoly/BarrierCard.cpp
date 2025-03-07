@@ -1,4 +1,5 @@
 ﻿#include "BarrierCard.hpp"
+#include "InputManager.hpp"
 
 void BarrierCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     std::cout << curPlayer->getName() << " used Barrier Card! Select a tile to place a barrier." << std::endl;
@@ -14,15 +15,14 @@ void BarrierCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::
     std::cout << "Enter the tile number to put the barrier (0 to cancel): ";
     int choice;
     while (true) {
-        std::string input;
-        std::cin >> input;
         try {
-            size_t pos;
-            choice = std::stoi(input, &pos);
-            if (pos != input.size() || choice < 0 || choice > static_cast<int>(tiles.size())) {
+            choice = InputManager::getKeyInt();
+            std::cout << choice << std::endl;
+            if (choice < 1 || choice > static_cast<int>(tiles.size())) {
                 throw std::invalid_argument("Invalid input");
             }
             break;
+
         } catch (const std::exception&) {
             std::cout << "Invalid input. Please enter a valid tile number.\n";
         }

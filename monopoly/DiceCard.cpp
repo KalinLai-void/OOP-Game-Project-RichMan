@@ -6,9 +6,9 @@
 void DiceCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) {
     std::cout << "Choose the number you roll (2-12): ";
     int chosenRoll;
+    std::string input;
     while (true) {
-        std::string input;
-        std::cin >> input;
+        std::getline(std::cin, input);
         try {
             size_t pos;
             chosenRoll = std::stoi(input, &pos);
