@@ -54,10 +54,12 @@ void PropertyTile::upgrade(std::shared_ptr<Player> player) {
     }
     if (player->getMoney() >= getUpgradeCost()) {
         player->deductMoney(getUpgradeCost());
-        if (level == PropertyLevel::LEVEL1)
+        if (level == PropertyLevel::LEVEL1) {
             level = PropertyLevel::LEVEL2;
-        else if (level == PropertyLevel::LEVEL2)
+
+        } else if (level == PropertyLevel::LEVEL2) {
             level = PropertyLevel::LEVEL3;
+        }
         updateCurrentPrice();
         cout << "Upgrade successful! Current Property level: " << static_cast<int>(level) << ", remaining money: " << player->getMoney() << endl;
     } else {

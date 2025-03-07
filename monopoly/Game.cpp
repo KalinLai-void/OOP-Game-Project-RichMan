@@ -145,11 +145,16 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             cout << "Property price: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
             break;
         case TileAction::OWN:
+        {
             nowPlayerAction = playerAction("property_owned");
             cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
-            cout << "Upgrade cost: " << static_pointer_cast<PropertyTile>(tile)->getUpgradeCost() << endl;
-            cout << "Sell value: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
+            std::shared_ptr<PropertyTile> propertyTile = static_pointer_cast<PropertyTile>(tile);
+            if (propertyTile->getPropertyLevel() != PropertyLevel::LEVEL3) {
+                cout << "Upgrade cost: " << propertyTile->getUpgradeCost() << endl;
+            }
+            cout << "Sell value: " << propertyTile->getCurrentPrice() << endl;
             break;
+        }
         case TileAction::PAY_TOLL:
             nowPlayerAction = playerAction("property_toll");
             cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;

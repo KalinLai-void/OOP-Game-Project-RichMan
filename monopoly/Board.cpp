@@ -15,6 +15,7 @@
 #endif
 
 Board* Board::instance = nullptr;
+std::string resetColor = "\033[0m";
 
 Board::Board(const GameConfig& config) {
     SingletonManager::registerDestructor(CardStore::destroyInstance);
@@ -64,17 +65,17 @@ void Board::init(const GameConfig& config) {
                 std::shared_ptr<HospitalTile> hospitalTile = std::dynamic_pointer_cast<HospitalTile>(tiles[posIndex]);
 
                 if (startTile) {
-                    board[row][col] = "\033[30m\033[48;5;46m" + startTile->getNameWithId() + "\033[0m"; // Green background
+                    board[row][col] = "\033[30m\033[48;5;46m" + startTile->getNameWithId() + resetColor; // Green background
                 } else if (storeTile) {
-                    board[row][col] = "\033[30m\033[48;5;220m" + storeTile->getNameWithId() + "\033[0m"; // Yellow background
+                    board[row][col] = "\033[30m\033[48;5;220m" + storeTile->getNameWithId() + resetColor; // Yellow background
                 } else if (eventTile) {
                     if (eventTile->getEventType() == EventType::FATE) {
-                        board[row][col] = "\033[48;5;57m" + eventTile->getNameWithId() + "\033[0m"; // Blue background
+                        board[row][col] = "\033[48;5;57m" + eventTile->getNameWithId() + resetColor; // Blue background
                     } else {
-                        board[row][col] = "\033[48;5;53m" + eventTile->getNameWithId() + "\033[0m"; // Blue background
+                        board[row][col] = "\033[48;5;53m" + eventTile->getNameWithId() + resetColor; // Blue background
                     }
                 } else if (hospitalTile) {
-                    board[row][col] = "\033[48;5;124m" + hospitalTile->getNameWithId() + "\033[0m"; // Red background
+                    board[row][col] = "\033[48;5;124m" + hospitalTile->getNameWithId() + resetColor; // Red background
                 } else {
                     board[row][col] = tiles[posIndex]->getNameWithId();
                 }
@@ -170,7 +171,8 @@ void Board::drawBoard() {
         // property level
         std::cout << "\n| ";
         for (int j = 0; j < mapSize; j++) {
-            std::cout << std::left << std::setw(this->tileWidth - 2) << propertyLevelIcons[propertyLevelBoard[i][j]] << " | ";
+            std::cout << "\033[48;5;237m " << std::left << std::setw(this->tileWidth - 3) << propertyLevelIcons[propertyLevelBoard[i][j]] << resetColor
+                      << " | ";
         }
         // footer
         std::cout << "\n+";
@@ -221,7 +223,7 @@ void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& pl
     for (const auto& pos : blockedPos) {
         auto [rowOut, colOut] = getBoardPosition(pos, mapSize);
         if (rowOut != -1 && colOut != -1) {
-            playerBoard[rowOut][colOut] = "\033[1;31mX\033[0m";
+            playerBoard[rowOut][colOut] += "\033[1;31mX\033[0m";
         }
     }
 
