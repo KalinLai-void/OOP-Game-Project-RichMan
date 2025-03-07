@@ -20,6 +20,7 @@ private:
     int tileWidth = 0;
     bool animation = true;
     bool animationDone = false;
+    int animationTime = 0;
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::vector<std::string>> board;
     std::vector<std::vector<std::string>> playerBoard;

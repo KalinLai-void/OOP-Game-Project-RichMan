@@ -24,6 +24,7 @@ Board::Board(const GameConfig& config) {
     this->mapSize = 8;
     this->tileWidth = config.getTileWidth();
     this->animation = config.getAnimation();
+    this->animationTime = config.getAnimationTime();
 }
 
 void Board::init(const GameConfig& config, const std::vector<std::shared_ptr<Player>>& players) {
@@ -186,7 +187,7 @@ void Board::drawBoard() {
             std::cout << "\n";
         }
         if (animation && !animationDone) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            delayTime(animationTime);
         }
 
     } while (!animationDone && animation);

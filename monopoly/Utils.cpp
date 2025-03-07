@@ -17,8 +17,9 @@ void setConsoleSize(int width, int height) {
 }
 #endif
 
-void delayTime(long long s) {
-    std::this_thread::sleep_for(std::chrono::seconds(s));
+void delayTime(long long ms) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    // std::this_thread::sleep_for(std::chrono::seconds(s));
 }
 
 std::string stripAnsi(const std::string& text) {

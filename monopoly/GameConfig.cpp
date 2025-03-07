@@ -27,7 +27,7 @@ void GameConfig::loadConfig() {
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
         this->animation = config["animation"].get<bool>();
-        this->animationSecond = config["animationSecond"].get<long long>();
+        this->animationTime = config["animationTime"].get<long long>();
         this->mapSize = config["mapSize"].get<int>();
         this->boardTiles.clear();
         std::size_t id = 0;
@@ -201,6 +201,6 @@ int GameConfig::getTileWidth() const {
     return tileWidth;
 }
 
-long long GameConfig::getAnimationSecond() const {
-    return animationSecond;
+long long GameConfig::getAnimationTime() const {
+    return animationTime;
 }

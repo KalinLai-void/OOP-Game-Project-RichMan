@@ -33,7 +33,7 @@ private:
     int passingStartBonus = 0;
     int mapSize = 8;
     int tileWidth = 12;
-    long long animationSecond = 0;
+    long long animationTime = 0;
     bool animation = true;
     std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
@@ -106,7 +106,7 @@ public:
 
     int getTileWidth() const;
 
-    long long getAnimationSecond() const;
+    long long getAnimationTime() const;
 
     void loadConfig();
 };

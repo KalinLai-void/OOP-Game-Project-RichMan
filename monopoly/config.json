@@ -19,7 +19,7 @@
   ],
   "tileWidth": 14,
   "animation": true,
-  "animationSecond": 0,
+  "animationTime": 200,
   "eventValueRange": {
     "FATE": [
       500,

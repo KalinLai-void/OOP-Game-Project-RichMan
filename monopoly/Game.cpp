@@ -89,8 +89,9 @@ void Game::start() {
     for (const auto& option : playerAction()["options"]) {
         cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
     }
-
-    delayTime(config.getAnimationSecond());
+    if (config.getAnimation()) {
+        delayTime(1000);
+    }
     setState("start");
     // Main game loop
     while (isRoundState()) {
@@ -101,7 +102,8 @@ void Game::start() {
             if (p->isInHospital()) {
                 cout << "You're in the hospital. You can't move." << endl;
                 p->updateHospitalStatus();
-                delayTime(config.getAnimationSecond());
+                std::cout << "\nPress any key to continue...";
+                InputManager::getKey();
                 continue;
             }
             // Player Round
