@@ -18,7 +18,7 @@
 
 using namespace std;
 
-std::default_random_engine Game::engine;
+std::mt19937 Game::engine;
 std::shared_ptr<Game> Game::instance = nullptr;
 
 Game::Game(const GameConfig& cfg)

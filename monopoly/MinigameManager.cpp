@@ -8,10 +8,18 @@
 #include <ctime>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <string>
 #include <vector>
 
 void delayMilliseconds(int ms);
+
+// Random engine and distribution
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<> cardDist(1, 13);
+std::uniform_int_distribution<> speedDist(1, 3);
+
 // -----------------------------------------
 // Embedded classes for "DragonGateGame" and "HorseRacing"
 // -----------------------------------------
@@ -22,8 +30,8 @@ public:
         std::cout << "\nStarting Dragon Gate Game!" << std::endl;
 
         long long totalReward = 0;
-        int firstCard = rand() % 13 + 1;
-        int secondCard = rand() % 13 + 1;
+        int firstCard = cardDist(gen);
+        int secondCard = cardDist(gen);
         if (firstCard > secondCard)
             std::swap(firstCard, secondCard);
 
@@ -46,7 +54,7 @@ public:
             }
         }
 
-        int thirdCard = rand() % 13 + 1;
+        int thirdCard = cardDist(gen);
         std::cout << "Third card: " << thirdCard << std::endl;
 
         bool guessCorrect = false;
@@ -115,7 +123,7 @@ public:
         while (!raceOver) {
             for (int i = 0; i < 4; i++) {
                 if (ranks[i] == -1) {            // Only move horses that haven't finished
-                    speeds[i] += rand() % 3 + 1; // 1~3
+                    speeds[i] += speedDist(gen); // 1~3
                     if (speeds[i] >= finishLine) {
                         ranks[i] = rankCounter++;
                     }
@@ -197,7 +205,9 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     {
         DragonGateGame dragonGateGame;
         long long reward = dragonGateGame.playGame(bet);
-        if (reward > 0) {
+        if (reward < 0) {
+            player->deductMoney(-reward);
+        } else {
             player->addMoney(reward);
         }
         break;
@@ -205,11 +215,11 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     case 2:
     {
         HorseRacing horseRacing;
-        long long result = horseRacing.playGame(bet);
-        if (result < 0) {
-            player->deductMoney(result);
+        long long reward = horseRacing.playGame(bet);
+        if (reward < 0) {
+            player->deductMoney(-reward);
         } else {
-            player->addMoney(result);
+            player->addMoney(reward);
         }
         break;
     }
