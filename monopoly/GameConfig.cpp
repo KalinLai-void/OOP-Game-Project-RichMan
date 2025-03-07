@@ -26,6 +26,7 @@ void GameConfig::loadConfig() {
         this->playerColors = config["playerColors"].get<std::vector<std::string>>();
         this->tileWidth = config["tileWidth"].get<int>();
         this->propertyLevelIcons = config["propertyLevelIcons"].get<std::vector<std::string>>();
+        this->animation = config["animation"].get<bool>();
         this->animationSecond = config["animationSecond"].get<long long>();
         this->mapSize = config["mapSize"].get<int>();
         this->boardTiles.clear();
@@ -182,6 +183,14 @@ void GameConfig::setEventValueRange(const std::map<std::string, std::pair<int, i
 
 std::map<std::string, std::pair<int, int>> GameConfig::getEventValueRange() const {
     return eventValueRange;
+}
+
+void GameConfig::setAnimation(bool status) {
+    this->animation = status;
+}
+
+bool GameConfig::getAnimation() const {
+    return animation;
 }
 
 int GameConfig::getMapSize() const {

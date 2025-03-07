@@ -9,8 +9,9 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <thread>
 #include <vector>
-#ifdef _WIN28
+#ifdef _WIN32
 #    include <windows.h> // For system("cls")
 #endif
 
@@ -22,11 +23,16 @@ Board::Board(const GameConfig& config) {
     // this->mapSize = config.getMapSize();
     this->mapSize = 8;
     this->tileWidth = config.getTileWidth();
+    this->animation = config.getAnimation();
 }
 
-void Board::init(const GameConfig& config) {
+void Board::init(const GameConfig& config, const std::vector<std::shared_ptr<Player>>& players) {
     // Clear existing tiles
     tiles.clear();
+    playersList = players;
+    for (const auto& player : players) {
+        playersPosition[player] = player->getPosition();
+    }
     for (const auto& boardTiles : config.getBoardTiles()) {
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
@@ -142,46 +148,51 @@ int Board::findNextTilePosition() {
     return -1;
 }
 void Board::drawBoard() {
-    clearScreen();
-
-    // Update player and property levels
-    updatePlayerPositions(playersList);
-    updateProperty(playersList);
-
-    // Output the board
-    std::cout << "+";
-    for (int j = 0; j < mapSize; j++) {
-        std::cout << std::string(this->tileWidth, '-') << "+";
-    }
-    std::cout << "\n";
-    for (int i = 0; i < mapSize; i++) {
-        // tile name
-        std::cout << "| ";
-        for (int j = 0; j < mapSize; j++) {
-            const std::string& cell = board[i][j];
-            std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
-        }
-        // player icon
-        std::cout << "\n| ";
-
-        for (int j = 0; j < mapSize; j++) {
-            const std::string& cell = playerBoard[i][j];
-            std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
-        }
-        // property level
-        std::cout << "\n| ";
-        for (int j = 0; j < mapSize; j++) {
-            std::cout << "\033[48;5;237m " << std::left << std::setw(this->tileWidth - 3) << propertyLevelIcons[propertyLevelBoard[i][j]] << resetColor
-                      << " | ";
-        }
-        // footer
-        std::cout << "\n+";
+    // === Board ===
+    do {
+        clearScreen();
+        // Update player and property levels
+        updatePlayerPositions(playersList);
+        updateProperty(playersList);
+        std::cout << "+";
         for (int j = 0; j < mapSize; j++) {
             std::cout << std::string(this->tileWidth, '-') << "+";
         }
         std::cout << "\n";
-    }
+        for (int i = 0; i < mapSize; i++) {
+            // tile name
+            std::cout << "| ";
+            for (int j = 0; j < mapSize; j++) {
+                const std::string& cell = board[i][j];
+                std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
+            }
+            // player icon
+            std::cout << "\n| ";
+            for (int j = 0; j < mapSize; j++) {
+                const std::string& cell = playerBoard[i][j];
+                std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
+            }
+            // property level
+            std::cout << "\n| ";
+            for (int j = 0; j < mapSize; j++) {
+                std::cout << "\033[48;5;237m " << std::left << std::setw(this->tileWidth - 3) << propertyLevelIcons[propertyLevelBoard[i][j]] << resetColor
+                          << " | ";
+            }
+            // footer
+            std::cout << "\n+";
+            for (int j = 0; j < mapSize; j++) {
+                std::cout << std::string(this->tileWidth, '-') << "+";
+            }
+            std::cout << "\n";
+        }
+        if (animation && !animationDone) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        }
+
+    } while (!animationDone && animation);
+
     std::cout << std::endl;
+
     // === Player info ===
     std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
     std::cout << "| Player Name    | Assets     | Property                       | Cards                |\n";
@@ -206,11 +217,7 @@ void Board::drawBoard() {
 
         std::cout << std::endl;
     }
-    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
-}
-void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
-    playersList = players;
-    drawBoard();
+    std::cout << "+----------------+------------+--------------------------------+----------------------+\n\n";
 }
 
 void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players) {
@@ -219,31 +226,43 @@ void Board::updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& pl
             cell = "";
         }
     }
-    std::vector<int> blockedPos = getTileBlockPos();
-    for (const auto& pos : blockedPos) {
-        auto [rowOut, colOut] = getBoardPosition(pos, mapSize);
-        if (rowOut != -1 && colOut != -1) {
-            playerBoard[rowOut][colOut] += "\033[1;31mX\033[0m";
-        }
-    }
-
-    for (const auto& player : players) {
-        int pPos = player->getPosition() % 28; // 限制索引範圍
-        auto [rowOut, colOut] = getBoardPosition(pPos, mapSize);
-        if (rowOut != -1 && colOut != -1) {
-            playerBoard[rowOut][colOut] += player->getIconWithColor();
-        }
-    }
-}
-
-std::vector<int> Board::getTileBlockPos() {
-    std::vector<int> blockedPos;
+    // Update barrier positions
     for (int posIndex = 0; posIndex < 28; ++posIndex) {
         if (tiles[posIndex]->isBlocked()) {
-            blockedPos.push_back(posIndex);
+            auto [rowOut, colOut] = getBoardPosition(posIndex, mapSize);
+            if (rowOut != -1 && colOut != -1) {
+                playerBoard[rowOut][colOut] += "\033[1;31mX\033[0m";
+            }
         }
     }
-    return blockedPos;
+
+    // Update player positions (animation or direct)
+    for (const auto& player : players) {
+        int pPos = player->getPosition() % 28; // limit the index range
+        if (animation) {
+            if (playersPosition[player] != pPos) {
+                playersPosition[player]++;
+                playersPosition[player] %= 28; // limit the index range
+            }
+            auto [rowOut, colOut] = getBoardPosition(playersPosition[player], mapSize);
+            if (rowOut != -1 && colOut != -1) {
+                playerBoard[rowOut][colOut] += player->getIconWithColor();
+            }
+        } else {
+            playersPosition[player] = pPos;
+            auto [rowOut, colOut] = getBoardPosition(pPos, mapSize);
+            if (rowOut != -1 && colOut != -1) {
+                playerBoard[rowOut][colOut] += player->getIconWithColor();
+            }
+        }
+    }
+    animationDone = true;
+    for (const auto& player : players) {
+        if (playersPosition[player] != player->getPosition() % 28) {
+            animationDone = false;
+            break;
+        }
+    }
 }
 
 std::vector<std::shared_ptr<PropertyTile>> Board::getPlayerProperty(const std::shared_ptr<Player>& player) {

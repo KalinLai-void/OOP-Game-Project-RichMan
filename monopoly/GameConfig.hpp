@@ -34,6 +34,7 @@ private:
     int mapSize = 8;
     int tileWidth = 12;
     long long animationSecond = 0;
+    bool animation = true;
     std::vector<std::string> playersName;
     std::vector<std::string> playerIcons;
     std::vector<std::string> playerColors;
@@ -96,6 +97,10 @@ public:
     // Set and get event value range
     void setEventValueRange(const std::map<std::string, std::pair<int, int>>& range);
     std::map<std::string, std::pair<int, int>> getEventValueRange() const;
+
+    // Set and get animation status
+    void setAnimation(bool status);
+    bool getAnimation() const;
 
     int getMapSize() const;
 

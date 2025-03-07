@@ -15,8 +15,11 @@ private:
     ~Board() = default;
 
     std::vector<std::shared_ptr<Player>> playersList;
+    std::map<std::shared_ptr<Player>, int> playersPosition; // Pair(First: Init round position, Second: Current round position)
     int mapSize = 0;
     int tileWidth = 0;
+    bool animation = true;
+    bool animationDone = false;
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::vector<std::string>> board;
     std::vector<std::vector<std::string>> playerBoard;
@@ -32,7 +35,7 @@ public:
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
 
-    void init(const GameConfig& config);
+    void init(const GameConfig& config, const std::vector<std::shared_ptr<Player>>& players);
     int getSize() const;
     std::shared_ptr<Tile> getTile(int index);
     std::vector<std::shared_ptr<Tile>> getTileList();
@@ -43,9 +46,7 @@ public:
     int findNextTilePosition();
 
     void drawBoard();
-    void drawBoard(const std::vector<std::shared_ptr<Player>>& players);
 
-    std::vector<int> getTileBlockPos();
     std::vector<std::shared_ptr<PropertyTile>> getPlayerProperty(const std::shared_ptr<Player>& player);
     static void clearScreen();
 };

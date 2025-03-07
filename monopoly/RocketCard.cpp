@@ -48,7 +48,7 @@ void RocketCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::s
     }
     targetPlayer->sendToHospital(2);
 
-    Board::getInstance()->drawBoard(players);
+    Board::getInstance()->drawBoard();
 
     std::cout << targetPlayer->getName() << " was hit by Rocket and sent to the hospital for 2 turns!" << std::endl;
     std::cout << "It's " << curPlayer->getName() << "'s turn." << std::endl;

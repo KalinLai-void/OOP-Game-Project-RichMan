@@ -53,8 +53,7 @@ std::shared_ptr<Game> Game::getInstance(const GameConfig& config) {
 }
 
 void Game::initGame() {
-    board = Board::getInstance(config);
-    board->init(config);
+
     players.clear();
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
@@ -80,6 +79,8 @@ void Game::initGame() {
             }
         }
     }
+    board = Board::getInstance(config);
+    board->init(config, players);
 }
 
 void Game::start() {
@@ -95,7 +96,7 @@ void Game::start() {
     while (isRoundState()) {
         for (auto& p : players) {
             setState("start");
-            board->drawBoard(players);
+            board->drawBoard();
             cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
                 cout << "You're in the hospital. You can't move." << endl;
@@ -256,7 +257,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         break;
     case 'I':
         player->displayCards(players);
-        board->drawBoard(players);
+        board->drawBoard();
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
@@ -506,7 +507,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             }
             return true;
         } else if (command == "refresh") {
-            board->drawBoard(players);
+            board->drawBoard();
             return true;
         } else if (command == "list" || command == "help") {
             bool showAll = (tokens.size() > 1 && tokens[1] == "-a");
@@ -545,8 +546,8 @@ void Game::throwDice(std::shared_ptr<Player> player) {
         steps = diceControl;
         movePlayer(player, steps);
         player->setDiceControl(0);
-        board->drawBoard(players);
-        std::cout << "\n Dice control activated: Move " << steps << " steps" << endl;
+        board->drawBoard();
+        std::cout << "Dice control activated: Move " << steps << " steps" << endl;
 
     } else {
         std::uniform_int_distribution<int> dist(1, 6);
@@ -555,8 +556,8 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
         steps = d1 + d2;
         movePlayer(player, steps);
-        board->drawBoard(players);
-        cout << "\nDice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
+        board->drawBoard();
+        cout << "Dice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
     }
 }
 
