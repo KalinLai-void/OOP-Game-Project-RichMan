@@ -304,9 +304,7 @@ void Board::updateProperty(const std::vector<std::shared_ptr<Player>>& players) 
 
                     // Update the board with the owner's color
                     auto owner = propertyTile->getPropertyOwner();
-                    if (owner) {
-                        board[row][col] = propertyTile->getNameWithId();
-                    }
+                    board[row][col] = propertyTile->getNameWithId();
                 }
             }
         }
