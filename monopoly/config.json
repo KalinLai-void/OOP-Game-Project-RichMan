@@ -72,7 +72,7 @@
     {
       "index": 2,
       "type": "fate",
-      "name": "\u001b[96mFate\u001b[0m",
+      "name": "Fate",
       "price": 0,
       "toll": 0
     },
@@ -128,7 +128,7 @@
     {
       "index": 10,
       "type": "chance",
-      "name": "\u001b[96mChance\u001b[0m",
+      "name": "Chance",
       "price": 0,
       "toll": 0
     },
@@ -170,7 +170,7 @@
     {
       "index": 16,
       "type": "fate",
-      "name": "\u001b[96mFate\u001b[0m",
+      "name": "Fate",
       "price": 0,
       "toll": 0
     },
@@ -226,7 +226,7 @@
     {
       "index": 24,
       "type": "chance",
-      "name": "\u001b[96mChance\u001b[0m",
+      "name": "Chance",
       "price": 0,
       "toll": 0
     },

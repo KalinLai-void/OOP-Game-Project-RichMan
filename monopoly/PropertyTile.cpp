@@ -136,7 +136,7 @@ void PropertyTile::updateCurrentPrice() {
 
 std::string PropertyTile::getNameWithId() const {
     if (owner) {
-        return std::to_string(id) + " " + owner->getColor() + name + "\033[0m";
+        return owner->getColor() + std::to_string(id) + " " + name + "\033[0m";
     } else {
         return std::to_string(id) + " " + name;
     }

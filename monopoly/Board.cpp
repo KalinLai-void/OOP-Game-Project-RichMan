@@ -53,43 +53,71 @@ void Board::init(const GameConfig& config) {
     playerBoard = std::vector<std::vector<std::string>>(mapSize, std::vector<std::string>(mapSize, ""));
     propertyLevelBoard = std::vector<std::vector<int>>(mapSize, std::vector<int>(mapSize, 0));
     propertyLevelIcons = config.getPropertyLevelIcons();
-    int posIndex = 0; // Tile index (0~31)
-    for (int col = 0; col < mapSize; ++col) {
-        // Top
-        if (tiles[posIndex]) {
-            board[0][col] = tiles[posIndex]->getNameWithId();
-        } else {
-            board[0][col] = "P" + std::to_string(posIndex);
+
+    for (int posIndex = 0; posIndex < 28; ++posIndex) {
+        auto [row, col] = getBoardPosition(posIndex, mapSize);
+        if (row != -1 && col != -1) {
+            if (tiles[posIndex]) {
+                std::shared_ptr<StartTile> startTile = std::dynamic_pointer_cast<StartTile>(tiles[posIndex]);
+                std::shared_ptr<StoreTile> storeTile = std::dynamic_pointer_cast<StoreTile>(tiles[posIndex]);
+                std::shared_ptr<EventTile> eventTile = std::dynamic_pointer_cast<EventTile>(tiles[posIndex]);
+                std::shared_ptr<HospitalTile> hospitalTile = std::dynamic_pointer_cast<HospitalTile>(tiles[posIndex]);
+
+                if (startTile) {
+                    board[row][col] = "\033[30m\033[48;5;46m" + startTile->getNameWithId() + "\033[0m"; // Green background
+                } else if (storeTile) {
+                    board[row][col] = "\033[30m\033[48;5;220m" + storeTile->getNameWithId() + "\033[0m"; // Yellow background
+                } else if (eventTile) {
+                    if (eventTile->getEventType() == EventType::FATE) {
+                        board[row][col] = "\033[48;5;57m" + eventTile->getNameWithId() + "\033[0m"; // Blue background
+                    } else {
+                        board[row][col] = "\033[48;5;53m" + eventTile->getNameWithId() + "\033[0m"; // Blue background
+                    }
+                } else if (hospitalTile) {
+                    board[row][col] = "\033[48;5;124m" + hospitalTile->getNameWithId() + "\033[0m"; // Red background
+                } else {
+                    board[row][col] = tiles[posIndex]->getNameWithId();
+                }
+            }
         }
-        posIndex++;
     }
-    for (int row = 1; row < mapSize; ++row) {
-        // Right
-        if (tiles[posIndex]) {
-            board[row][mapSize - 1] = tiles[posIndex]->getNameWithId();
-        } else {
-            board[row][mapSize - 1] = "P" + std::to_string(posIndex);
-        }
-        posIndex++;
-    }
-    for (int col = mapSize - 2; col >= 0; --col) {
-        // Bottom
-        if (tiles[posIndex]) {
-            board[mapSize - 1][col] = tiles[posIndex]->getNameWithId();
-        } else {
-            board[mapSize - 1][col] = "P" + std::to_string(posIndex);
-        }
-        posIndex++;
-    }
-    for (int row = mapSize - 2; row > 0; --row) {
-        // Left
-        if (tiles[posIndex]) {
-            board[row][0] = tiles[posIndex]->getNameWithId();
-        } else {
-            board[row][0] = "P" + std::to_string(posIndex);
-        }
-        posIndex++;
-    }
+    // int posIndex = 0; // Tile index (0~31)
+    // for (int col = 0; col < mapSize; ++col) {
+    //     // Top
+    //     if (tiles[posIndex]) {
+    //         board[0][col] = tiles[posIndex]->getNameWithId();
+    //     } else {
+    //         board[0][col] = "P" + std::to_string(posIndex);
+    //     }
+    //     posIndex++;
+    // }
+    // for (int row = 1; row < mapSize; ++row) {
+    //     // Right
+    //     if (tiles[posIndex]) {
+    //         board[row][mapSize - 1] = tiles[posIndex]->getNameWithId();
+    //     } else {
+    //         board[row][mapSize - 1] = "P" + std::to_string(posIndex);
+    //     }
+    //     posIndex++;
+    // }
+    // for (int col = mapSize - 2; col >= 0; --col) {
+    //     // Bottom
+    //     if (tiles[posIndex]) {
+    //         board[mapSize - 1][col] = tiles[posIndex]->getNameWithId();
+    //     } else {
+    //         board[mapSize - 1][col] = "P" + std::to_string(posIndex);
+    //     }
+    //     posIndex++;
+    // }
+    // for (int row = mapSize - 2; row > 0; --row) {
+    //     // Left
+    //     if (tiles[posIndex]) {
+    //         board[row][0] = tiles[posIndex]->getNameWithId();
+    //     } else {
+    //         board[row][0] = "P" + std::to_string(posIndex);
+    //     }
+    //     posIndex++;
+    // }
 }
 
 Board* Board::getInstance(const GameConfig& config) {
@@ -207,6 +235,7 @@ void Board::drawBoard(const std::vector<std::shared_ptr<Player>>& players) {
         for (const auto& card : player->getCards()) {
             cardIcons += card->getIcon() + ", ";
         }
+        cardIcons = cardIcons.substr(0, cardIcons.size() - 2); // Remove the last comma
 
         std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | "
                   << std::setw(30) << propertyIds << " | " << std::setw(20) << cardIcons << " | ";
@@ -267,10 +296,11 @@ void Board::updateProperty(const std::vector<std::shared_ptr<Player>>& players) 
             if (tiles[posIndex]) {
                 // Convert Tile class to PropertyTile class
                 std::shared_ptr<PropertyTile> propertyTile = std::dynamic_pointer_cast<PropertyTile>(tiles[posIndex]);
+                std::shared_ptr<EventTile> eventTile = std::dynamic_pointer_cast<EventTile>(tiles[posIndex]);
 
                 if (propertyTile) { // make sure it is a property tile
                     int level = static_cast<int>(propertyTile->getPropertyLevel());
-                    propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
+                    // propertyLevelBoard[row][col] = level; // Like level 1, level 2, level 3
 
                     // Update the board with the owner's color
                     auto owner = propertyTile->getPropertyOwner();
