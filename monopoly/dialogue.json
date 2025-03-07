@@ -33,7 +33,7 @@
         ]
       },
       "hospital": {
-        "prompt": "You are in the hospital. P",
+        "prompt": "You are in the hospital.",
         "options": [
           {
             "key": "R",
@@ -106,7 +106,7 @@
         "prompt": "You have landed on the item shop.",
         "options": [
           {
-            "key": "R",
+            "key": "E",
             "description": "Enter the shop"
           },
           {

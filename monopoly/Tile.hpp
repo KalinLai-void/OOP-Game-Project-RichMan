@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-enum class TileAction { NONE, PURCHASE_PROPERTY, OWN, PAY_TOLL, STORE, SPECIAL_EVENT, TRADE, HOSPITAL, JAIL, START };
+enum class TileAction { NONE, PURCHASE_PROPERTY, OWN, PAY_TOLL, STORE, SPECIAL_EVENT, TRADE, HOSPITAL, JAIL, START_POINT };
 
 class Tile {
 protected:
@@ -15,7 +15,9 @@ protected:
 
 public:
     Tile(const size_t id, const std::string& n)
-        : id(id), name(n), blocked(false) {}
+        : id(id)
+        , name(n)
+        , blocked(false) {}
     virtual ~Tile() {}
 
     std::string getName() const {

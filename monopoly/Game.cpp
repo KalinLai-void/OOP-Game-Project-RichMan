@@ -167,7 +167,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             nowPlayerAction = playerAction("event");
             cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             break;
-        case TileAction::START:
+        case TileAction::START_POINT:
             nowPlayerAction = playerAction("start_point");
             cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
             cout << "Receive bonus: " << static_pointer_cast<StartTile>(tile)->getBonus() << endl;
@@ -238,9 +238,14 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         case TileAction::HOSPITAL:
             static_pointer_cast<HospitalTile>(tile)->handleHospitalChoice(player);
             break;
-        case TileAction::STORE:
+        }
+        std::cout << "\nPress any key to continue...";
+        InputManager::getKey();
+        break;
+    case 'E':
+        ++currentState;
+        if (action == TileAction::STORE) {
             static_pointer_cast<StoreTile>(tile)->enterStore(player);
-            break;
         }
         break;
     case 'S':
@@ -257,7 +262,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         cout << "Opening the player trading interface (to be implemented)." << endl;
         break;
     case 'T':
-        if (currentState == State::START) { // Only allow to throw dice in the start state
+        if (currentState == State::START) {
             ++currentState;
             throwDice(player);
             break;
@@ -267,6 +272,10 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         ++currentState;
         if (action == TileAction::SPECIAL_EVENT) {
             static_pointer_cast<EventTile>(tile)->triggerEvent(player);
+            break;
+        } else if (action == TileAction::START_POINT) {
+            player->addMoney(static_pointer_cast<StartTile>(tile)->getBonus());
+            cout << "You received a bonus of " << static_pointer_cast<StartTile>(tile)->getBonus() << " dollars!" << endl;
             break;
         }
         cout << "Action Pass." << endl;
@@ -283,7 +292,6 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
     }
 
     if (tokens.empty()) {
-        std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
         return false;
     }
 
