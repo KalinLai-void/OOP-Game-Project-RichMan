@@ -97,3 +97,12 @@ void CardStore::purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Car
 std::vector<std::shared_ptr<Card>> CardStore::getCards() const {
     return cards;
 }
+
+std::shared_ptr<Card> CardStore::getCardByName(const std::string& cardName) const {
+    for (auto& card : CardStore::getInstance()->getCards()) {
+        if (card->getName() == cardName) {
+            return card;
+        }
+    }
+    return nullptr;
+}

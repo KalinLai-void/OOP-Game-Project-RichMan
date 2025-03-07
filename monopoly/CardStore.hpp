@@ -33,6 +33,7 @@ public:
     void displayStore(std::shared_ptr<Player> player);
     void purchaseCard(std::shared_ptr<Player> player, std::shared_ptr<Card> card);
     std::vector<std::shared_ptr<Card>> getCards() const;
+    std::shared_ptr<Card> getCardByName(const std::string& cardName) const;
 };
 
 #endif // CARDSTORE_HPP

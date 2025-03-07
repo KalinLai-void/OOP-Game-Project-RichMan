@@ -3,15 +3,15 @@
 
 #include "Card.hpp"
 #include "Player.hpp"
-#include "Tile.hpp"
 #include "PropertyTile.hpp"
-class  DestroyCard : public Card{
+#include "Tile.hpp"
+
+class DestroyCard : public Card {
 public:
     DestroyCard(const std::string& n, const std::string& i, int p, const std::string& e)
         : Card(n, i, p, e) {}
 
     void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) override;
 };
-
 
 #endif // !DESTROY_CARD_HPP
