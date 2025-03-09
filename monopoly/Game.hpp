@@ -17,6 +17,7 @@ private:
     Board* board;
     GameConfig config;
     State currentState;
+    std::string diceResult;
     nlohmann::json dialogueData;
     nlohmann::json commandData;
     bool gameForceControl;

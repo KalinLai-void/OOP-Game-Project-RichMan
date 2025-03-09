@@ -109,8 +109,10 @@ void Game::start() {
             // Player Round
             while (this->isActivateState()) {
                 processPlayerAction(p, board->getTile(p->getPosition()));
-                if (currentState == State::START) {
-                    board->drawBoard();
+                board->drawBoard();
+                if (!diceResult.empty()) {
+                    std::cout << diceResult << std::endl;
+                    diceResult.clear();
                 }
             }
             p->setMyTurn(false);
@@ -514,9 +516,9 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
 
                 for (const auto& p : players) {
                     std::string playerName = p->getDisplayName();
-                    std::cout << "| " << std::setw(15 + (playerName.length() - stripAnsi(playerName).length())) << std::left << playerName << "| " << std::setw(11) << std::left
-                              << p->getMoney() << "| " << std::setw(11) << std::left << p->getPosition() << "| " << std::setw(10) << std::left
-                              << (p->isBankrupt() ? "Bankrupt" : (p->isInHospital() ? "In Hospital" : "Active")) << " |\n";
+                    std::cout << "| " << std::setw(15 + (playerName.length() - stripAnsi(playerName).length())) << std::left << playerName << "| "
+                              << std::setw(11) << std::left << p->getMoney() << "| " << std::setw(11) << std::left << p->getPosition() << "| " << std::setw(10)
+                              << std::left << (p->isBankrupt() ? "Bankrupt" : (p->isInHospital() ? "In Hospital" : "Active")) << " |\n";
                 }
                 std::cout << "+----------------+------------+------------+------------+\n";
             }
@@ -561,8 +563,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
         steps = diceControl;
         movePlayer(player, steps);
         player->setDiceControl(0);
-        board->drawBoard();
-        std::cout << "Dice control activated: Move " << steps << " steps" << std::endl;
+        diceResult = "Dice control activated: Move " + std::to_string(steps) + " steps";
 
     } else {
         std::uniform_int_distribution<int> dist(1, 6);
@@ -571,8 +572,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
 
         steps = d1 + d2;
         movePlayer(player, steps);
-        board->drawBoard();
-        std::cout << "Dice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << std::endl;
+        diceResult = "Dice roll result: (" + std::to_string(d1) + ", " + std::to_string(d2) + ") -> Move forward " + std::to_string(steps) + " steps";
     }
 }
 

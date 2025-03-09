@@ -62,6 +62,10 @@
         "prompt": "Something exciting is about to happen! Press any key to uncover the secret.",
         "options": [
           {
+            "key": "I",
+            "description": "View Player Info"
+          },
+          {
             "key": "*",
             "description": "Press any key to Continue"
           }
@@ -70,6 +74,10 @@
       "start_point": {
         "prompt": "You have landed on the start tile.",
         "options": [
+          {
+            "key": "I",
+            "description": "View Player Info"
+          },
           {
             "key": "*",
             "description": "Press any key to Continue"
@@ -82,6 +90,10 @@
           {
             "key": "E",
             "description": "Enter the shop"
+          },
+          {
+            "key": "I",
+            "description": "View Player Info"
           },
           {
             "key": "*",
@@ -97,6 +109,10 @@
             "description": "Pay the medical bills and early leave."
           },
           {
+            "key": "I",
+            "description": "View Player Info"
+          },
+          {
             "key": "*",
             "description": "Press any key to PASS"
           }
@@ -110,6 +126,10 @@
             "description": "Pay to roll the dice and escape."
           },
           {
+            "key": "I",
+            "description": "View Player Info"
+          },
+          {
             "key": "*",
             "description": "Press any key to PASS"
           }
@@ -121,6 +141,10 @@
           {
             "key": "R",
             "description": "Buy property"
+          },
+          {
+            "key": "I",
+            "description": "View Player Info"
           },
           {
             "key": "*",
@@ -140,6 +164,10 @@
             "description": "Sell property"
           },
           {
+            "key": "I",
+            "description": "View Player Info"
+          },
+          {
             "key": "*",
             "description": "Press any key to PASS"
           }
@@ -153,37 +181,15 @@
             "description": "Pay toll"
           },
           {
+            "key": "I",
+            "description": "View Player Info"
+          },
+          {
             "key": "*",
             "description": "Press any key to PASS"
           }
         ]
       }
-    },
-    "end_turn": {
-      "prompt": "The turn is about to end, you can choose:",
-      "options": [
-        {
-          "key": "E",
-          "description": "End turn"
-        },
-        {
-          "key": "I",
-          "description": "View Player Info"
-        }
-      ]
-    },
-    "default": {
-      "prompt": "Please choose an action:",
-      "options": [
-        {
-          "key": "T",
-          "description": "Roll the dice"
-        },
-        {
-          "key": "I",
-          "description": "View Player Info"
-        }
-      ]
     }
   },
   "invalid_input": {
