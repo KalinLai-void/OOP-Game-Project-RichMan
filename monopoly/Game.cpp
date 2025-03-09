@@ -16,8 +16,6 @@
 #include <sstream>
 #include <unordered_map>
 
-using namespace std;
-
 std::mt19937 Game::engine;
 std::shared_ptr<Game> Game::instance = nullptr;
 
@@ -30,7 +28,7 @@ Game::Game(const GameConfig& cfg)
     // load dialogue.json and commandData.json
     std::ifstream file("dialogue.json");
     if (!file) {
-        cerr << "Error: Could not open dialogue.json" << endl;
+        std::cerr << "Error: Could not open dialogue.json" << std::endl;
         return;
     }
     file >> dialogueData;
@@ -38,7 +36,7 @@ Game::Game(const GameConfig& cfg)
 
     std::ifstream file2("command.json");
     if (!file2) {
-        cerr << "Error: Could not open command.json" << endl;
+        std::cerr << "Error: Could not open command.json" << std::endl;
         return;
     }
     file2 >> commandData;
@@ -57,17 +55,17 @@ void Game::initGame() {
     players.clear();
     if (config.getMode() == GameMode::RELEASE) {
         int playerCount;
-        cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
-        cin >> playerCount;
+        std::cout << dialogueData["input_player_num"]["prompt"].get<std::string>();
+        std::cin >> playerCount;
         if (playerCount < 2)
             playerCount = 2;
         if (playerCount > 4)
             playerCount = 4;
 
         for (int i = 0; i < playerCount; i++) {
-            cout << "Please enter the name of player " << (i + 1) << ": ";
+            std::cout << "Please enter the name of player " << (i + 1) << ": ";
             std::string name;
-            cin >> name;
+            std::cin >> name;
             players.push_back(std::make_shared<Player>(name, config.getPlayerIcons()[i], config.getPlayerColors()[i], config.getStartMoney()));
         }
     } else {
@@ -89,12 +87,12 @@ void Game::start() {
         board->drawMonopolyAscii();
     }
     // Display dialogue
-    cout << playerAction()["prompt"].get<std::string>() << endl;
+    std::cout << playerAction()["prompt"].get<std::string>() << std::endl;
     for (const auto& option : playerAction()["options"]) {
-        cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
+        std::cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << std::endl;
     }
     setState("start");
-    cout << "Press any key to start the game...";
+    std::cout << "Press any key to start the game...";
     InputManager::getKey();
 
     // Main game loop
@@ -103,7 +101,7 @@ void Game::start() {
             p->setMyTurn(true);
             setState("start");
             board->drawBoard();
-            // cout << "It's " << p->getName() << "'s turn." << endl;
+            // std::cout << "It's " << p->getName() << "'s turn." << std::endl;
             if (p->isInHospital()) {
                 p->updateHospitalStatus();
                 setState("moved");
@@ -118,7 +116,7 @@ void Game::start() {
             p->setMyTurn(false);
 
             if (p->isBankrupt()) {
-                cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
+                std::cout << "player " << p->getName() << " Bankrupt, skip the action." << std::endl;
                 continue;
             }
             checkGameOver();
@@ -149,60 +147,60 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         switch (action) {
         case TileAction::PURCHASE_PROPERTY:
             nowPlayerAction = playerAction("property_unowned");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
-            cout << "Property price: " << static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << endl;
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
+            std::cout << "Property price: " << std::static_pointer_cast<PropertyTile>(tile)->getCurrentPrice() << std::endl;
             break;
         case TileAction::OWN:
         {
             nowPlayerAction = playerAction("property_owned");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
-            std::shared_ptr<PropertyTile> propertyTile = static_pointer_cast<PropertyTile>(tile);
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
+            std::shared_ptr<PropertyTile> propertyTile = std::static_pointer_cast<PropertyTile>(tile);
             if (propertyTile->getPropertyLevel() != PropertyLevel::LEVEL3) {
-                cout << "Upgrade cost: " << propertyTile->getUpgradeCost() << endl;
+                std::cout << "Upgrade cost: " << propertyTile->getUpgradeCost() << std::endl;
             }
-            cout << "Sell value: " << propertyTile->getCurrentPrice() << endl;
+            std::cout << "Sell value: " << propertyTile->getCurrentPrice() << std::endl;
             break;
         }
         case TileAction::PAY_TOLL:
             nowPlayerAction = playerAction("property_toll");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
-            cout << "tile owner: " << static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName() << endl;
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
+            std::cout << "tile owner: " << std::static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName() << std::endl;
             break;
         case TileAction::HOSPITAL:
             if (player->isInHospital()) {
                 nowPlayerAction = playerAction("hospital");
-                cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+                std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
             } else {
                 action = TileAction::NONE;
                 nowPlayerAction = playerAction("default");
-                cout << "You're not sick, so why are you in the hospital? Got lost on your way to victory?" << endl;
+                std::cout << "You're not sick, so why are you in the hospital? Got lost on your way to victory?" << std::endl;
             }
             break;
         case TileAction::SPECIAL_EVENT:
             nowPlayerAction = playerAction("event");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
             break;
         case TileAction::START_POINT:
             nowPlayerAction = playerAction("start_point");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
-            cout << "Receive bonus: " << static_pointer_cast<StartTile>(tile)->getBonus() << endl;
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
+            std::cout << "Receive bonus: " << std::static_pointer_cast<StartTile>(tile)->getBonus() << std::endl;
             break;
         case TileAction::STORE:
             nowPlayerAction = playerAction("store");
-            cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            std::cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << std::endl;
             break;
         default:
-            cout << tile->getName() << endl;
+            std::cout << tile->getName() << std::endl;
             break;
         }
     }
     //----------------------------------
     // Player input
-    cout << "\n" << playerAction()["option_prompt"].get<std::string>() << endl;
+    std::cout << "\n" << playerAction()["option_prompt"].get<std::string>() << std::endl;
 
     // Display current tile which key can be pressed
     for (const auto& option : nowPlayerAction["options"]) {
-        cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << endl;
+        std::cout << option["key"].get<std::string>() << ": " << option["description"].get<std::string>() << std::endl;
     }
 
     // Check player input
@@ -213,19 +211,19 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     while (!validInput) {
         input.clear();
         key = InputManager::getKey();
-        cout << key;
+        std::cout << key;
         if (key == '/') {
             std::getline(std::cin, input);
             validInput = processCommand(player, input);
             if (!validInput) {
-                cout << commandData["invalid_command"]["prompt"].get<std::string>() << endl;
-                cout << "\nPress any key to continue...";
+                std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
+                std::cout << "\nPress any key to continue...";
                 InputManager::getKey();
             }
             // processPlayerAction(player, tile);
             return;
         } else {
-            cout << endl;
+            std::cout << std::endl;
             for (const auto& option : playerAction()["options"]) {
                 if (option["key"].get<std::string>()[0] == key || option["key"].get<std::string>()[0] == '*') {
                     validInput = true;
@@ -233,7 +231,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
                 }
             }
             if (!validInput) {
-                cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << endl;
+                std::cout << dialogueData["invalid_input"]["prompt"].get<std::string>() << std::endl;
             }
         }
     }
@@ -244,16 +242,16 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         ++currentState;
         switch (action) {
         case TileAction::PURCHASE_PROPERTY:
-            static_pointer_cast<PropertyTile>(tile)->purchase(player);
+            std::static_pointer_cast<PropertyTile>(tile)->purchase(player);
             break;
         case TileAction::OWN:
-            static_pointer_cast<PropertyTile>(tile)->upgrade(player);
+            std::static_pointer_cast<PropertyTile>(tile)->upgrade(player);
             break;
         case TileAction::PAY_TOLL:
-            static_pointer_cast<PropertyTile>(tile)->payToll(player);
+            std::static_pointer_cast<PropertyTile>(tile)->payToll(player);
             break;
         case TileAction::HOSPITAL:
-            static_pointer_cast<HospitalTile>(tile)->handleHospitalChoice(player);
+            std::static_pointer_cast<HospitalTile>(tile)->handleHospitalChoice(player);
             break;
         }
         std::cout << "\nPress any key to continue...";
@@ -262,13 +260,13 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     case 'E':
         ++currentState;
         if (action == TileAction::STORE) {
-            static_pointer_cast<StoreTile>(tile)->enterStore(player);
+            std::static_pointer_cast<StoreTile>(tile)->enterStore(player);
         }
         break;
     case 'S':
         ++currentState;
         if (action == TileAction::OWN) {
-            static_pointer_cast<PropertyTile>(tile)->sell(player);
+            std::static_pointer_cast<PropertyTile>(tile)->sell(player);
         }
         break;
     case 'I':
@@ -276,7 +274,7 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         player->displayCards(players);
         break;
     case 'P':
-        cout << "Opening the player trading interface (to be implemented)." << endl;
+        std::cout << "Opening the player trading interface (to be implemented)." << std::endl;
         break;
     case 'T':
         if (currentState == State::START) {
@@ -288,14 +286,14 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
     default:
         ++currentState;
         if (action == TileAction::SPECIAL_EVENT) {
-            static_pointer_cast<EventTile>(tile)->triggerEvent(player);
+            std::static_pointer_cast<EventTile>(tile)->triggerEvent(player);
             break;
         } else if (action == TileAction::START_POINT) {
-            player->addMoney(static_pointer_cast<StartTile>(tile)->getBonus());
-            cout << "You received a bonus of " << static_pointer_cast<StartTile>(tile)->getBonus() << " dollars!" << endl;
+            player->addMoney(std::static_pointer_cast<StartTile>(tile)->getBonus());
+            std::cout << "You received a bonus of " << std::static_pointer_cast<StartTile>(tile)->getBonus() << " dollars!" << std::endl;
             break;
         }
-        cout << "Action Pass." << endl;
+        std::cout << "Action Pass." << std::endl;
         break;
     }
 }
@@ -510,17 +508,17 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             return true;
         } else if (command == "info") {
             for (const auto& p : players) {
-                cout << "+----------------+------------+------------+------------+\n";
-                cout << "| Player         | Money      | Position   | Status     |\n";
-                cout << "+----------------+------------+------------+------------+\n";
+                std::cout << "+----------------+------------+------------+------------+\n";
+                std::cout << "| Player         | Money      | Position   | Status     |\n";
+                std::cout << "+----------------+------------+------------+------------+\n";
 
                 for (const auto& p : players) {
                     std::string playerName = p->getDisplayName();
-                    cout << "| " << setw(15 + (playerName.length() - stripAnsi(playerName).length())) << left << playerName << "| " << setw(11) << left
-                         << p->getMoney() << "| " << setw(11) << left << p->getPosition() << "| " << setw(10) << left
-                         << (p->isBankrupt() ? "Bankrupt" : (p->isInHospital() ? "In Hospital" : "Active")) << " |\n";
+                    std::cout << "| " << std::setw(15 + (playerName.length() - stripAnsi(playerName).length())) << std::left << playerName << "| " << std::setw(11) << std::left
+                              << p->getMoney() << "| " << std::setw(11) << std::left << p->getPosition() << "| " << std::setw(10) << std::left
+                              << (p->isBankrupt() ? "Bankrupt" : (p->isInHospital() ? "In Hospital" : "Active")) << " |\n";
                 }
-                cout << "+----------------+------------+------------+------------+\n";
+                std::cout << "+----------------+------------+------------+------------+\n";
             }
             return true;
         } else if (command == "refresh") {
@@ -539,7 +537,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
                     if (showAll && cmdData.contains("usage")) {
                         std::cout << "   Usage:   " << cmdData["usage"].get<std::string>() << std::endl;
                         if (cmdData.contains("examples")) {
-                            std::cout << "   Example: " << endl;
+                            std::cout << "   Example: " << std::endl;
                             for (const auto& example : cmdData["examples"]) {
                                 std::cout << "            " << example.get<std::string>() << std::endl;
                             }
@@ -564,7 +562,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
         movePlayer(player, steps);
         player->setDiceControl(0);
         board->drawBoard();
-        std::cout << "Dice control activated: Move " << steps << " steps" << endl;
+        std::cout << "Dice control activated: Move " << steps << " steps" << std::endl;
 
     } else {
         std::uniform_int_distribution<int> dist(1, 6);
@@ -574,7 +572,7 @@ void Game::throwDice(std::shared_ptr<Player> player) {
         steps = d1 + d2;
         movePlayer(player, steps);
         board->drawBoard();
-        cout << "Dice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << endl;
+        std::cout << "Dice roll result: (" << d1 << ", " << d2 << ") -> Move forward " << steps << " steps" << std::endl;
     }
 }
 
@@ -596,7 +594,7 @@ void Game::checkGameOver() {
 }
 
 void Game::endGame() {
-    cout << "\n==== Game Result ====\n";
+    std::cout << "\n==== Game Result ====\n";
     std::sort(players.begin(), players.end(), [](auto& a, auto& b) {
         if (a->isBankrupt() && !b->isBankrupt())
             return false;
@@ -605,7 +603,8 @@ void Game::endGame() {
         return a->getMoney() > b->getMoney();
     });
     for (size_t i = 0; i < players.size(); i++) {
-        cout << (i + 1) << ". " << players[i]->getName() << " - Money: " << players[i]->getMoney() << (players[i]->isBankrupt() ? " (Bankrupt)" : "") << endl;
+        std::cout << (i + 1) << ". " << players[i]->getName() << " - Money: " << players[i]->getMoney() << (players[i]->isBankrupt() ? " (Bankrupt)" : "")
+                  << std::endl;
     }
 }
 
@@ -650,7 +649,7 @@ const nlohmann::json& Game::playerAction() {
     return dialogueData["player_action"][getStateString()];
 }
 
-const nlohmann::json& Game::playerAction(const string& key) {
+const nlohmann::json& Game::playerAction(const std::string& key) {
     if (key == "" || key == "/")
         return dialogueData["player_action"][getStateString()]["default"];
     return dialogueData["player_action"][getStateString()][key];
