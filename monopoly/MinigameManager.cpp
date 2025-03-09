@@ -194,21 +194,12 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
         std::cin.ignore(10000, '\n');
     }
 
-    // Get the bet amount from the player
-    std::cout << "\nEnter your bet amount (you currently have " << player->getMoney() << "): ";
-    long long bet = 0;
-    while (!(std::cin >> bet) || bet <= 0 || bet > player->getMoney()) {
-        std::cout << "Please enter a valid bet amount (1 ~ " << player->getMoney() << "): ";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-    }
-    Board::getInstance()->clearScreen();
-
     // Start the selected mini-game
     switch (choice) {
     case 1:
     {
         DragonGateGame dragonGateGame;
+        long long bet = setBetAmount(player);
         long long reward = dragonGateGame.playGame(bet);
         if (reward < 0) {
             player->deductMoney(-reward);
@@ -220,6 +211,7 @@ void MiniGameManager::startMiniGame(std::shared_ptr<Player> player) {
     case 2:
     {
         HorseRacing horseRacing;
+        long long bet = setBetAmount(player);
         long long reward = horseRacing.playGame(bet);
         if (reward < 0) {
             player->deductMoney(-reward);
@@ -248,6 +240,18 @@ void MiniGameManager::listMiniGames() {
               << "2) Horse Racing Game\n"
               << "...\n";
     // You can list more mini-games here
+}
+
+long long MiniGameManager::setBetAmount(std::shared_ptr<Player> player) {
+    std::cout << "\nEnter your bet amount (you currently have " << player->getMoney() << "): ";
+    long long bet = 0;
+    while (!(std::cin >> bet) || bet <= 0 || bet > player->getMoney()) {
+        std::cout << "Please enter a valid bet amount (1 ~ " << player->getMoney() << "): ";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
+    Board::getInstance()->clearScreen();
+    return bet;
 }
 
 void delayMilliseconds(int ms) {

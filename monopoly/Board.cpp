@@ -38,11 +38,7 @@ void Board::init(const GameConfig& config, const std::vector<std::shared_ptr<Pla
         if (boardTiles.type == "property") {
             tiles.push_back(std::make_shared<PropertyTile>(boardTiles.id, boardTiles.name, boardTiles.cost, boardTiles.rent));
         } else if (boardTiles.type == "fate") {
-            // test barrier
-            std::shared_ptr<Tile> tilea = std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange());
-            tilea->setBlock(true);
-            tiles.push_back(tilea);
-            // tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange()));
+            tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::FATE, config.getEventValueRange()));
         } else if (boardTiles.type == "chance") {
             tiles.push_back(std::make_shared<EventTile>(boardTiles.id, boardTiles.name, EventType::CHANCE, config.getEventValueRange()));
         } else if (boardTiles.type == "store") {
@@ -124,30 +120,8 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 
 std::vector<std::shared_ptr<Tile>> Board::getTileList() {
     return tiles;
-}
+}   
 
-template <typename T>
-std::vector<int> Board::findAllTilePositions() {
-    std::vector<int> positions;
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        if (std::dynamic_pointer_cast<T>(tiles[i])) { // Check if it's of type T
-            positions.push_back(static_cast<int>(i)); // Store index
-        }
-    }
-    return positions;
-}
-
-template <typename T>
-int Board::findNextTilePosition() {
-
-    auto it = std::find_if(tiles.begin(), tiles.end(), [](const std::shared_ptr<Tile>& tile) {
-        return std::dynamic_pointer_cast<T>(tile) != nullptr;
-    });
-    if (it != tiles.end()) {
-        return static_cast<int>(std::distance(tiles.begin(), it));
-    }
-    return -1;
-}
 void Board::drawBoard() {
     // === Board ===
     do {
@@ -219,6 +193,12 @@ void Board::drawBoard() {
         std::cout << std::endl;
     }
     std::cout << "+----------------+------------+--------------------------------+----------------------+\n\n";
+
+    for (auto player : playersList) {
+        if (player->checkIsMyTurn()) {
+            std::cout << "It's " << player->getName() << "'s turn." << std::endl;
+        }
+    }
 }
 void Board::drawMonopolyAscii() {
     std::cout << "\n\n";

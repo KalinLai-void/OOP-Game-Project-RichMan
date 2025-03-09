@@ -100,26 +100,27 @@ void Game::start() {
     // Main game loop
     while (isRoundState()) {
         for (auto& p : players) {
+            p->setMyTurn(true);
             setState("start");
             board->drawBoard();
-            cout << "It's " << p->getName() << "'s turn." << endl;
+            // cout << "It's " << p->getName() << "'s turn." << endl;
             if (p->isInHospital()) {
-                cout << "You're in the hospital. You can't move." << endl;
                 p->updateHospitalStatus();
-                std::cout << "\nPress any key to continue...";
-                InputManager::getKey();
-                continue;
+                setState("moved");
             }
             // Player Round
             while (this->isActivateState()) {
                 processPlayerAction(p, board->getTile(p->getPosition()));
+                if (currentState == State::START) {
+                    board->drawBoard();
+                }
             }
+            p->setMyTurn(false);
 
             if (p->isBankrupt()) {
                 cout << "player " << p->getName() << " Bankrupt, skip the action." << endl;
                 continue;
             }
-
             checkGameOver();
             if (!isRoundState()) {
                 break;
@@ -168,7 +169,14 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             cout << "tile owner: " << static_pointer_cast<PropertyTile>(tile)->getPropertyOwner()->getName() << endl;
             break;
         case TileAction::HOSPITAL:
-            nowPlayerAction = playerAction("default");
+            if (player->isInHospital()) {
+                nowPlayerAction = playerAction("hospital");
+                cout << "\n" << nowPlayerAction["prompt"].get<std::string>() << endl;
+            } else {
+                action = TileAction::NONE;
+                nowPlayerAction = playerAction("default");
+                cout << "You're not sick, so why are you in the hospital? Got lost on your way to victory?" << endl;
+            }
             break;
         case TileAction::SPECIAL_EVENT:
             nowPlayerAction = playerAction("event");
@@ -211,8 +219,10 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             validInput = processCommand(player, input);
             if (!validInput) {
                 cout << commandData["invalid_command"]["prompt"].get<std::string>() << endl;
+                cout << "\nPress any key to continue...";
+                InputManager::getKey();
             }
-            processPlayerAction(player, tile);
+            // processPlayerAction(player, tile);
             return;
         } else {
             cout << endl;
@@ -262,8 +272,8 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         }
         break;
     case 'I':
+
         player->displayCards(players);
-        board->drawBoard();
         break;
     case 'P':
         cout << "Opening the player trading interface (to be implemented)." << endl;
@@ -356,6 +366,7 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             setState("moved");
             player->setPosition(newPos);
             processPlayerAction(player, board->getTile(newPos));
+            board->drawBoard();
             return true;
         } else if (command == "give") {
             if (tokens.size() < 3) {

@@ -1,4 +1,5 @@
 ﻿#include "HospitalTile.hpp"
+#include "InputManager.hpp"
 #include <iostream>
 using namespace std;
 
@@ -8,7 +9,6 @@ HospitalTile::HospitalTile(const size_t id, const std::string& n)
 }
 
 TileAction HospitalTile::landOn(std::shared_ptr<Player> player) {
-    handleHospitalChoice(player);
     return TileAction::HOSPITAL;
 }
 
@@ -21,7 +21,7 @@ void HospitalTile::handleHospitalChoice(std::shared_ptr<Player> player) {
             player->recoverFromHospital();
             cout << "You got lucky and left the hospital." << endl;
         } else {
-            cout << "You are still in the hospital." << endl;
+            cout << "You're still stuck in the hospital—tough luck! Guess you'll have to sit this one out." << endl;
         }
     } else {
         cout << "You do not have enough money to pay the fee and stay in the hospital." << endl;

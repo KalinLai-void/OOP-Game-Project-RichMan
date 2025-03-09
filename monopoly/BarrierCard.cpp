@@ -16,7 +16,9 @@ void BarrierCard::useEffect(std::vector<std::shared_ptr<Player>>& players, std::
     int choice;
     while (true) {
         try {
-            choice = InputManager::getKeyInt();
+            std::string input;
+            std::getline(std::cin, input);
+            choice = std::stoi(input);
             std::cout << choice << std::endl;
             if (choice < 1 || choice > static_cast<int>(tiles.size())) {
                 throw std::invalid_argument("Invalid input");

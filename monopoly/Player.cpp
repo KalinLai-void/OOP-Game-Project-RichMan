@@ -13,6 +13,7 @@ Player::Player(const std::string& n, const std::string& i, const std::string& c,
     , position(0)
     , bankrupt(false)
     , inHospital(false)
+    , isMyTurn(false)
     , hospitalRoundLeft(0)
     , diceControl(0) {}
 
@@ -53,8 +54,16 @@ bool Player::isInHospital() const {
     return inHospital;
 }
 
+bool Player::checkIsMyTurn() const {
+    return isMyTurn;
+}
+
 void Player::setPosition(int pos) {
     position = pos;
+}
+
+void Player::setMyTurn(bool b) {
+    isMyTurn = b;
 }
 
 /**
@@ -189,6 +198,8 @@ void Player::displayCards(std::vector<std::shared_ptr<Player>>& players) {
 
     if (choice > 0) {
         useCard(choice - 1, players);
+        std::cout << "\nPress any key to continue...";
+        InputManager::getKey();
     } else {
         std::cout << "Exited without using a card." << std::endl;
     }

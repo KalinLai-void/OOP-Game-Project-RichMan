@@ -41,10 +41,27 @@ public:
     std::shared_ptr<Tile> getTile(int index);
     std::vector<std::shared_ptr<Tile>> getTileList();
     template <typename T>
-    std::vector<int> findAllTilePositions();
+    std::vector<int> findAllTilePositions() {
+        std::vector<int> positions;
+        for (size_t i = 0; i < tiles.size(); ++i) {
+            if (std::dynamic_pointer_cast<T>(tiles[i])) { // Check if it's of type T
+                positions.push_back(static_cast<int>(i)); // Store index
+            }
+        }
+        return positions;
+    }
 
     template <typename T>
-    int findNextTilePosition();
+    int findNextTilePosition() {
+
+        auto it = std::find_if(tiles.begin(), tiles.end(), [](const std::shared_ptr<Tile>& tile) {
+            return std::dynamic_pointer_cast<T>(tile) != nullptr;
+        });
+        if (it != tiles.end()) {
+            return static_cast<int>(std::distance(tiles.begin(), it));
+        }
+        return -1;
+    }
 
     void drawBoard();
     void drawMonopolyAscii();

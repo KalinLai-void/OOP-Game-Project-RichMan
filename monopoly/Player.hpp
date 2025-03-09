@@ -18,6 +18,7 @@ private:
     std::vector<std::shared_ptr<Card>> cards; // Cards held by the player
     bool bankrupt;                            // Whether the player is bankrupt
     bool inHospital;                          // Whether the player is in the hospital
+    bool isMyTurn;                            // Whether it is the player's turn
     int hospitalRoundLeft;                    // Number of rounds left in the hospital
     int diceControl;
 
@@ -36,9 +37,11 @@ public:
     int getDiceControl() const;
     bool isBankrupt() const;
     bool isInHospital() const;
+    bool checkIsMyTurn() const;
 
     // Update Player status
     void setPosition(int pos);
+    void setMyTurn(bool b);
     bool addMoney(long long amount);
     bool deductMoney(long long amount);
     void setBankrupt(bool b);

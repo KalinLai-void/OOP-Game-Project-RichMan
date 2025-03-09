@@ -16,6 +16,7 @@ public:
     static void startMiniGame(std::shared_ptr<Player> player);
     static void endMiniGame(std::shared_ptr<Player> player);
     static void listMiniGames();
+    static long long setBetAmount(std::shared_ptr<Player> player);
 };
 
 #endif // MINIGAMEMANAGER_HPP
