@@ -2,6 +2,7 @@
 #include "EventTile.hpp"
 #include "Bank.hpp"
 #include "MiniGameManager.hpp"
+#include "InputManager.hpp"
 #include "Player.hpp"
 #include <ctime>
 #include <iostream>
@@ -109,6 +110,8 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
             break;
         }
     }
+    std::cout << "\nPress any key to continue...";
+    InputManager::getKey();
 }
 
 int EventTile::getRandomValue100Multiple(int min, int max) {
