@@ -120,7 +120,7 @@ std::shared_ptr<Tile> Board::getTile(int index) {
 
 std::vector<std::shared_ptr<Tile>> Board::getTileList() {
     return tiles;
-}   
+}
 
 void Board::drawBoard() {
     // === Board ===
@@ -169,9 +169,9 @@ void Board::drawBoard() {
     std::cout << std::endl;
 
     // === Player info ===
-    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
-    std::cout << "| Player Name    | Assets     | Property                       | Cards                |\n";
-    std::cout << "+----------------+------------+--------------------------------+----------------------+\n";
+    std::cout << "+----------------+------------+--------------------------------------------+-----------------------------+\n";
+    std::cout << "| Player Name    | Assets     | Property                                   | Cards                       |\n";
+    std::cout << "+----------------+------------+--------------------------------------------+-----------------------------+\n";
 
     for (const auto& player : playersList) {
         const auto& properties = getPlayerProperty(player);
@@ -188,11 +188,11 @@ void Board::drawBoard() {
         cardIcons = cardIcons.substr(0, cardIcons.size() - 2); // Remove the last comma
 
         std::cout << "| " << player->getIconWithColor() << " " << std::setw(10) << player->getName() << " | " << std::setw(10) << player->getMoney() << " | "
-                  << std::setw(30) << propertyIds << " | " << std::setw(20) << cardIcons << " | ";
+                  << std::setw(42) << propertyIds << " | " << std::setw(27) << cardIcons << " | ";
 
         std::cout << std::endl;
     }
-    std::cout << "+----------------+------------+--------------------------------+----------------------+\n\n";
+    std::cout << "+----------------+------------+--------------------------------------------+-----------------------------+\n\n";
 
     for (auto player : playersList) {
         if (player->checkIsMyTurn()) {
