@@ -101,7 +101,6 @@ void Game::start() {
             p->setMyTurn(true);
             setState("start");
             board->drawBoard();
-            // std::cout << "It's " << p->getName() << "'s turn." << std::endl;
             if (p->isInHospital()) {
                 p->updateHospitalStatus();
                 setState("moved");
@@ -109,7 +108,9 @@ void Game::start() {
             // Player Round
             while (this->isActivateState()) {
                 processPlayerAction(p, board->getTile(p->getPosition()));
-                board->drawBoard();
+                if (this->isActivateState()) {
+                    board->drawBoard();
+                }
                 if (!diceResult.empty()) {
                     std::cout << diceResult << std::endl;
                     diceResult.clear();
@@ -287,10 +288,6 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         if (action == TileAction::SPECIAL_EVENT) {
             std::static_pointer_cast<EventTile>(tile)->triggerEvent(player);
             break;
-        } else if (action == TileAction::START_POINT) {
-            player->addMoney(std::static_pointer_cast<StartTile>(tile)->getBonus());
-            std::cout << "You received a bonus of " << std::static_pointer_cast<StartTile>(tile)->getBonus() << " dollars!" << std::endl;
-            break;
         } else if (action == TileAction::PAY_TOLL) {
             std::static_pointer_cast<PropertyTile>(tile)->payToll(player);
             break;
@@ -341,7 +338,10 @@ bool Game::processCommand(std::shared_ptr<Player> player, const std::string& inp
             // Check if input is a named location (e.g., "USA")
             std::vector<std::shared_ptr<Tile>> tmpTileList = board->getTileList();
             auto it = std::find_if(tmpTileList.begin(), tmpTileList.end(), [&](const std::shared_ptr<Tile>& tile) {
-                return tile->getName() == location;
+                std::string tileName = tile->getName();
+                std::transform(tileName.begin(), tileName.end(), tileName.begin(), ::toupper);
+                std::transform(location.begin(), location.end(), location.begin(), ::toupper);
+                return tileName == location;
             });
             if (it != tmpTileList.end()) {
                 newPos = static_cast<int>(std::distance(tmpTileList.begin(), it));
