@@ -177,16 +177,12 @@
         "prompt": "You have landed on a property owned by another player. You must pay rent or take other actions.",
         "options": [
           {
-            "key": "R",
-            "description": "Pay toll"
-          },
-          {
             "key": "I",
             "description": "View Player Info"
           },
           {
             "key": "*",
-            "description": "Press any key to PASS"
+            "description": "Pay toll"
           }
         ]
       }

@@ -249,9 +249,6 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         case TileAction::OWN:
             std::static_pointer_cast<PropertyTile>(tile)->upgrade(player);
             break;
-        case TileAction::PAY_TOLL:
-            std::static_pointer_cast<PropertyTile>(tile)->payToll(player);
-            break;
         case TileAction::HOSPITAL:
             std::static_pointer_cast<HospitalTile>(tile)->handleHospitalChoice(player);
             break;
@@ -293,6 +290,9 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
         } else if (action == TileAction::START_POINT) {
             player->addMoney(std::static_pointer_cast<StartTile>(tile)->getBonus());
             std::cout << "You received a bonus of " << std::static_pointer_cast<StartTile>(tile)->getBonus() << " dollars!" << std::endl;
+            break;
+        } else if (action == TileAction::PAY_TOLL) {
+            std::static_pointer_cast<PropertyTile>(tile)->payToll(player);
             break;
         }
         std::cout << "Action Pass." << std::endl;
