@@ -569,18 +569,17 @@ void Game::throwDice(std::shared_ptr<Player> player) {
     int diceControl = player->getDiceControl();
     if (diceControl > 0) {
         steps = diceControl;
+        diceResult = "Dice control activated: Move " + std::to_string(steps) + " steps";
         movePlayer(player, steps);
         player->setDiceControl(0);
-        diceResult = "Dice control activated: Move " + std::to_string(steps) + " steps";
-
     } else {
         std::uniform_int_distribution<int> dist(1, 6);
         int d1 = dist(engine);
         int d2 = dist(engine);
 
         steps = d1 + d2;
-        movePlayer(player, steps);
         diceResult = "Dice roll result: (" + std::to_string(d1) + ", " + std::to_string(d2) + ") -> Move forward " + std::to_string(steps) + " steps";
+        movePlayer(player, steps);
     }
 }
 
@@ -672,13 +671,13 @@ void Game::movePlayer(std::shared_ptr<Player> player, int steps) {
     for (int i = 1; i <= steps; i++) {
         int nextPos = (currentPos + i) % boardSize;
         nextTile = board->getTile(nextPos);
+        newPos = nextPos;
 
         if (nextTile->isBlocked()) {
-            std::cout << "A barrier is blocking the path at " << nextTile->getName() << std::endl;
+            diceResult += "\nBut a barrier is blocking the path at " + nextTile->getName() + "!";
             nextTile->setBlock(false);
             break;
         }
-        newPos = nextPos;
     }
 
     // Update player position
