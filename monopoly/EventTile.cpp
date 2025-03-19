@@ -9,7 +9,7 @@
 #include <map>
 #include <random>
 
-using namespace std;
+//using namespace std;
 
 EventTile::EventTile(const size_t id, const std::string& n, EventType t, const std::map<std::string, std::pair<int, int>>& valueRange)
     : Tile(id, n)
@@ -22,91 +22,93 @@ TileAction EventTile::landOn(std::shared_ptr<Player> player) {
 
 void EventTile::triggerEvent(std::shared_ptr<Player> player) {
     // Generate a random event
-    static default_random_engine engine(static_cast<unsigned>(time(nullptr)));
-    uniform_int_distribution<int> dist(1, 5); // Adjusted to include all cases
+    static std::default_random_engine engine(static_cast<unsigned>(time(nullptr)));
+    std::uniform_int_distribution<int> dist(1, 5); // Adjusted to include all cases
     int eventType = dist(engine);
     int value = getRandomValue100Multiple(type);
 
     if (type == EventType::FATE) {
         switch (eventType) {
         case 1:
-            cout << "Unexpected Inheritance!\nYou receive an inheritance of $" << value << "." << endl;
+            std::cout << "Unexpected Inheritance!\nYou receive an inheritance of $" << value << "." << std::endl;
             player->addMoney(value);
             Bank::getInstance()->payToPlayer(player, value);
             break;
         case 2:
-            cout << "Medical Expenses!\nPay $" << value << " in hospital fees." << endl;
+            std::cout << "Medical Expenses!\nPay $" << value << " in hospital fees." << std::endl;
             if (player->getMoney() >= value) {
                 Bank::getInstance()->receiveFromPlayer(player, value);
             } else {
                 player->setBankrupt(true);
-                cout << "Not enough money, bankrupt!" << endl;
+                std::cout << "Not enough money, bankrupt!" << std::endl;
             }
             break;
         case 3:
-            cout << "Charity Donation!\nDonate $" << value << " to charity." << endl;
+            std::cout << "Charity Donation!\nDonate $" << value << " to charity." << std::endl;
             if (player->getMoney() >= value) {
                 Bank::getInstance()->receiveFromPlayer(player, value);
             } else {
                 player->setBankrupt(true);
-                cout << "Not enough money, bankrupt!" << endl;
+                std::cout << "Not enough money, bankrupt!" << std::endl;
             }
             break;
         case 4:
-            cout << "Tax Season!\nPay $" << value << " in taxes to the bank." << endl;
+            std::cout << "Tax Season!\nPay $" << value << " in taxes to the bank." << std::endl;
             if (player->getMoney() >= value) {
                 Bank::getInstance()->receiveFromPlayer(player, value);
             } else {
                 player->setBankrupt(true);
-                cout << "Not enough money, bankrupt!" << endl;
+                std::cout << "Not enough money, bankrupt!" << std::endl;
             }
             break;
         case 5:
-            cout << "You have entered the playground!\nGet ready to play a mini-game." << endl;
+            std::cout << "You have entered the playground!\nGet ready to play a mini-game." << std::endl;
+            std::cout << "\nPress any key to continue...";
+            InputManager::getKey();
             MiniGameManager::startMiniGame(player);
             break;
         default:
-            cout << "No event triggered." << endl;
+            std::cout << "No event triggered." << std::endl;
             break;
         }
     } else if (type == EventType::CHANCE) {
 
         switch (eventType) {
         case 1:
-            cout << "Successful Investment!\nYour investment paid off! Collect $" << value << "." << endl;
+            std::cout << "Successful Investment!\nYour investment paid off! Collect $" << value << "." << std::endl;
             Bank::getInstance()->payToPlayer(player, value);
             break;
         case 2:
-            cout << "Stock Market Crash!\nYour stocks lost value. Pay $" << value << " to the bank." << endl;
+            std::cout << "Stock Market Crash!\nYour stocks lost value. Pay $" << value << " to the bank." << std::endl;
             if (player->getMoney() >= value) {
                 Bank::getInstance()->receiveFromPlayer(player, value);
             } else {
                 player->setBankrupt(true);
-                cout << "Not enough money, bankrupt!" << endl;
+                std::cout << "Not enough money, bankrupt!" << std::endl;
             }
             break;
         case 3:
-            cout << "Traffic Violation Fine!\nPay a $" << value << " fine, or roll the dice—if you roll a 6, the fine is waived." << endl;
+            std::cout << "Traffic Violation Fine!\nPay a $" << value << " fine, or roll the dice—if you roll a 6, the fine is waived." << std::endl;
             if (player->rollDice() != 6) {
                 if (player->getMoney() >= value) {
                     Bank::getInstance()->receiveFromPlayer(player, value);
                 } else {
                     player->setBankrupt(true);
-                    cout << "Not enough money, bankrupt!" << endl;
+                    std::cout << "Not enough money, bankrupt!" << std::endl;
                 }
             } else {
-                cout << "Lucky! You rolled a 6 and avoided the fine!" << endl;
+                std::cout << "Lucky! You rolled a 6 and avoided the fine!" << std::endl;
             }
             break;
         case 4:
-            cout << "Advance to [Start]!\nMove directly to [Start] and collect $" << value << "." << endl;
+            std::cout << "Advance to [Start]!\nMove directly to [Start] and collect $" << value << "." << std::endl;
             player->sendToStart(); // todo
             break;
         case 5:
-            cout << "You have entered the playground!\nGet ready to play a mini-game." << endl;
+            std::cout << "You have entered the playground!\nGet ready to play a mini-game." << std::endl;
             MiniGameManager::startMiniGame(player);
         default:
-            cout << "No event triggered." << endl;
+            std::cout << "No event triggered." << std::endl;
             break;
         }
     }
@@ -116,8 +118,8 @@ void EventTile::triggerEvent(std::shared_ptr<Player> player) {
 
 int EventTile::getRandomValue100Multiple(int min, int max) {
     int multiplier = 100;
-    static default_random_engine engine(static_cast<unsigned>(time(nullptr)));
-    uniform_int_distribution<int> dist(min / multiplier, max / multiplier);
+    static std::default_random_engine engine(static_cast<unsigned>(time(nullptr)));
+    std::uniform_int_distribution<int> dist(min / multiplier, max / multiplier);
     return dist(engine) * multiplier; // Return a random value [500, max]
 }
 
