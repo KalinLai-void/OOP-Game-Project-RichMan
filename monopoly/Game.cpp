@@ -223,8 +223,8 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
             validInput = processCommand(player, input);
             if (!validInput) {
                 std::cout << commandData["invalid_command"]["prompt"].get<std::string>() << std::endl;
-                //std::cout << "\nPress any key to continue...";
-                //InputManager::getKey();
+                // std::cout << "\nPress any key to continue...";
+                // InputManager::getKey();
                 processPlayerAction(player, tile, true); // let it can retry input command
             }
             return;
@@ -294,6 +294,8 @@ void Game::processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<T
                 break;
             } else if (action == TileAction::PAY_TOLL) {
                 std::static_pointer_cast<PropertyTile>(tile)->payToll(player);
+                std::cout << "\nPress any key to continue...";
+                InputManager::getKey();
                 break;
             }
             std::cout << "Action Pass." << std::endl;
