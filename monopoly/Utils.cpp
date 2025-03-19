@@ -3,6 +3,7 @@
 #include <regex>
 #include <string>
 #include <thread>
+#include <sstream>
 
 #ifdef _WIN32
 void setConsoleSize(int width, int height) {
@@ -50,4 +51,15 @@ std::pair<int, int> getBoardPosition(int posIndex, int mapSize) {
         tempIndex++;
     }
     return {-1, -1}; // 出錯處理，應該不會發生
+}
+
+std::vector<std::string> split(const std::string& str) {
+    std::istringstream iss(str);
+    std::vector<std::string> tokens;
+    std::string token;
+    while (iss >> token) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
 }

@@ -56,9 +56,9 @@ void GameConfig::loadConfig() {
         this->passingStartBonus = modeConfig["passingStartBonus"].get<int>();
 
         // 設定 Windows Console 視窗大小 # TODO: but now failure
-        // int consoleWidth = 1000;
-        // int consoleHeight = 1000;
-        // setConsoleSize(consoleWidth, consoleHeight);
+        //int consoleWidth = 1000;
+        //int consoleHeight = 1000;
+        //setConsoleSize(consoleWidth, consoleHeight);
     } catch (const std::exception& e) {
         std::cerr << "Error: Failed to load configuration - " << e.what() << std::endl;
     }
