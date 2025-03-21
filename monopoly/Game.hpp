@@ -5,6 +5,8 @@
 #include "GameConfig.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
+#include "Utils.hpp"
+#include "OutputCache.hpp"
 #include <memory>
 #include <random>
 #include <vector>
@@ -24,6 +26,7 @@ private:
 
     std::vector<std::shared_ptr<Player>> players;
     static std::default_random_engine engine;
+    OutputCache cache;
 
     // isCommandResult = false (default). let it continue to retry input when isCommandResult = true
     void processPlayerAction(std::shared_ptr<Player> player, std::shared_ptr<Tile> tile, bool isCommandResult = false);
@@ -34,6 +37,7 @@ private:
     const nlohmann::json& playerAction(const std::string& key);
     Game(const GameConfig& config);
     static std::shared_ptr<Game> instance;
+    
 
 public:
     static std::shared_ptr<Game> getInstance(const GameConfig& config);

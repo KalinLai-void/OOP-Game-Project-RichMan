@@ -78,6 +78,9 @@
     <ClCompile Include="FateCard.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="OutputCache.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.hpp">
@@ -141,6 +144,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="FateCard.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputCache.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

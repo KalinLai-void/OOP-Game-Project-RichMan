@@ -7,7 +7,6 @@
 #include "PropertyTile.hpp"
 #include "StartTile.hpp"
 #include "StoreTile.hpp"
-#include "Utils.hpp"
 #include <algorithm>
 #include <ctime>
 #include <fstream>

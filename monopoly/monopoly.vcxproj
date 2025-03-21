@@ -145,6 +145,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Bank.cpp" />
     <ClCompile Include="MinigameManager.cpp" />
+    <ClCompile Include="OutputCache.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PropertyTile.cpp" />
     <ClCompile Include="RocketCard.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="HospitalTile.hpp" />
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="MiniGameManager.hpp" />
+    <ClInclude Include="OutputCache.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PropertyTile.hpp" />
     <ClInclude Include="RocketCard.hpp" />
