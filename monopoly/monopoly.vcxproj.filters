@@ -13,147 +13,192 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="來源檔案\Cards">
+      <UniqueIdentifier>{395751a0-30b8-4582-b262-d1e199784aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Cards">
+      <UniqueIdentifier>{4e137668-b5e4-4779-923a-c5f7eeb3a889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="來源檔案\Game">
+      <UniqueIdentifier>{5e8b82b1-5aee-4bbd-81a7-d1572c5b6a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Game">
+      <UniqueIdentifier>{d58d2a37-b099-4f7b-acef-cc18a17fe933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="來源檔案\Tiles">
+      <UniqueIdentifier>{1cea7ba0-b5ec-4bce-9440-7bfa31d2c720}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Tiles">
+      <UniqueIdentifier>{843904cd-1aa7-4c77-ac09-945c24191480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="來源檔案\Utils">
+      <UniqueIdentifier>{63cd53c8-ac94-4c76-9541-83ad5c624b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\Utils">
+      <UniqueIdentifier>{9f9740ec-68a1-409f-bf60-c1af07816da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="標頭檔\MiniGames">
+      <UniqueIdentifier>{f7e1a891-dd21-4a7f-aaa1-3e2717d8dbf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="來源檔案\MniGames">
+      <UniqueIdentifier>{dbef8163-2354-45e8-bb9d-547c1b7024ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bank.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="EventTile.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="HospitalTile.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyTile.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="StoreTile.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="GameConfig.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="StartTile.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="CardStore.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="CardStore.hpp">
-      <Filter>標頭檔</Filter>
-    </ClCompile>
-    <ClCompile Include="MinigameManager.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="RocketCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="BarrierCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="SingletonManager.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="DestroyCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="DiceCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="FateCard.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
+    <None Include=".editorconfig" />
+    <None Include="json\command.json">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="json\config.json">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="json\dialogue.json">
+      <Filter>資源檔</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bank.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="EventTile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="HospitalTile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="PropertyTile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="StoreTile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="GameConfig.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="StartTile.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Card.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniGameManager.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="RocketCard.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="BarrierCard.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="SingletonManager.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="DestroyCard.hpp">
-      <Filter>標頭檔</Filter>
+    <ClInclude Include="Cards\BarrierCard.hpp">
+      <Filter>標頭檔\Cards</Filter>
     </ClInclude>
-    <ClInclude Include="DiceCard.hpp">
-      <Filter>標頭檔</Filter>
+    <ClInclude Include="Cards\DestroyCard.hpp">
+      <Filter>標頭檔\Cards</Filter>
     </ClInclude>
-    <ClInclude Include="FateCard.hpp">
-      <Filter>標頭檔</Filter>
+    <ClInclude Include="Cards\Card.hpp">
+      <Filter>標頭檔\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Cards\DiceCard.hpp">
+      <Filter>標頭檔\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Cards\FateCard.hpp">
+      <Filter>標頭檔\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Cards\RocketCard.hpp">
+      <Filter>標頭檔\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Board.hpp">
+      <Filter>標頭檔\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.hpp">
+      <Filter>標頭檔\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameConfig.hpp">
+      <Filter>標頭檔\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player.hpp">
+      <Filter>標頭檔\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\Bank.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\CardStore.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\EventTile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\HospitalTile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\PropertyTile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\StartTile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\StoreTile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles\Tile.hpp">
+      <Filter>標頭檔\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Utils.hpp">
+      <Filter>標頭檔\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGames\MiniGameManager.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="HorseRacing.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonGateGame.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGame.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="dialogue.json">
-      <Filter>資源檔</Filter>
-    </None>
-    <None Include="config.json">
-      <Filter>資源檔</Filter>
-    </None>
-    <None Include="command.json">
-      <Filter>資源檔</Filter>
-    </None>
+    <ClCompile Include="Main.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="SingletonManager.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="Cards\BarrierCard.cpp">
+      <Filter>來源檔案\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Cards\DestroyCard.cpp">
+      <Filter>來源檔案\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Cards\DiceCard.cpp">
+      <Filter>來源檔案\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Cards\FateCard.cpp">
+      <Filter>來源檔案\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Cards\RocketCard.cpp">
+      <Filter>來源檔案\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Board.cpp">
+      <Filter>來源檔案\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>來源檔案\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameConfig.cpp">
+      <Filter>來源檔案\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.cpp">
+      <Filter>來源檔案\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\Bank.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\CardStore.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\EventTile.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\HospitalTile.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\PropertyTile.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\StartTile.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles\StoreTile.cpp">
+      <Filter>來源檔案\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Utils.cpp">
+      <Filter>來源檔案\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGames\MinigameManager.cpp">
+      <Filter>來源檔案\MniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="HorseRacing.cpp">
+      <Filter>來源檔案\MniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="DragonGateGame.cpp">
+      <Filter>來源檔案\MniGames</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

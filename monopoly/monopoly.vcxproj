@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,58 +131,61 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BarrierCard.cpp" />
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="CardStore.cpp" />
-    <ClCompile Include="CardStore.hpp" />
-    <ClCompile Include="DestroyCard.cpp" />
-    <ClCompile Include="DiceCard.cpp" />
-    <ClCompile Include="FateCard.cpp" />
-    <ClCompile Include="EventTile.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameConfig.cpp" />
-    <ClCompile Include="HospitalTile.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Bank.cpp" />
-    <ClCompile Include="MinigameManager.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PropertyTile.cpp" />
-    <ClCompile Include="RocketCard.cpp" />
-    <ClCompile Include="SingletonManager.cpp" />
-    <ClCompile Include="StartTile.cpp" />
-    <ClCompile Include="StoreTile.cpp" />
-    <ClCompile Include="Utils.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Bank.hpp" />
-    <ClInclude Include="BarrierCard.hpp" />
-    <ClInclude Include="Board.hpp" />
-    <ClInclude Include="Card.hpp" />
-    <ClInclude Include="DestroyCard.hpp" />
-    <ClInclude Include="DiceCard.hpp" />
-    <ClInclude Include="FateCard.hpp" />
-    <ClInclude Include="EventTile.hpp" />
-    <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GameConfig.hpp" />
-    <ClInclude Include="HospitalTile.hpp" />
-    <ClInclude Include="InputManager.hpp" />
-    <ClInclude Include="MiniGameManager.hpp" />
-    <ClInclude Include="Player.hpp" />
-    <ClInclude Include="PropertyTile.hpp" />
-    <ClInclude Include="RocketCard.hpp" />
-    <ClInclude Include="SingletonManager.hpp" />
-    <ClInclude Include="StartTile.hpp" />
-    <ClInclude Include="StoreTile.hpp" />
-    <ClInclude Include="Tile.hpp" />
-    <ClInclude Include="Utils.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="command.json" />
-    <None Include="config.json" />
-    <None Include="dialogue.json">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
-    </None>
+    <None Include="json\command.json" />
+    <None Include="json\config.json" />
+    <None Include="json\dialogue.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cards\BarrierCard.hpp" />
+    <ClInclude Include="Cards\Card.hpp" />
+    <ClInclude Include="Cards\DestroyCard.hpp" />
+    <ClInclude Include="Cards\DiceCard.hpp" />
+    <ClInclude Include="Cards\FateCard.hpp" />
+    <ClInclude Include="Cards\RocketCard.hpp" />
+    <ClInclude Include="DragonGateGame.hpp" />
+    <ClInclude Include="Game\Board.hpp" />
+    <ClInclude Include="Game\Game.hpp" />
+    <ClInclude Include="Game\GameConfig.hpp" />
+    <ClInclude Include="Game\Player.hpp" />
+    <ClInclude Include="HorseRacing.hpp" />
+    <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="MiniGame.hpp" />
+    <ClInclude Include="MiniGames\MiniGameManager.hpp" />
+    <ClInclude Include="SingletonManager.hpp" />
+    <ClInclude Include="Tiles\Bank.hpp" />
+    <ClInclude Include="Tiles\CardStore.hpp" />
+    <ClInclude Include="Tiles\EventTile.hpp" />
+    <ClInclude Include="Tiles\HospitalTile.hpp" />
+    <ClInclude Include="Tiles\PropertyTile.hpp" />
+    <ClInclude Include="Tiles\StartTile.hpp" />
+    <ClInclude Include="Tiles\StoreTile.hpp" />
+    <ClInclude Include="Tiles\Tile.hpp" />
+    <ClInclude Include="Utils\Utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cards\BarrierCard.cpp" />
+    <ClCompile Include="Cards\DestroyCard.cpp" />
+    <ClCompile Include="Cards\DiceCard.cpp" />
+    <ClCompile Include="Cards\FateCard.cpp" />
+    <ClCompile Include="Cards\RocketCard.cpp" />
+    <ClCompile Include="DragonGateGame.cpp" />
+    <ClCompile Include="Game\Board.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\GameConfig.cpp" />
+    <ClCompile Include="Game\Player.cpp" />
+    <ClCompile Include="HorseRacing.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MiniGames\MinigameManager.cpp" />
+    <ClCompile Include="SingletonManager.cpp" />
+    <ClCompile Include="Tiles\Bank.cpp" />
+    <ClCompile Include="Tiles\CardStore.cpp" />
+    <ClCompile Include="Tiles\EventTile.cpp" />
+    <ClCompile Include="Tiles\HospitalTile.cpp" />
+    <ClCompile Include="Tiles\PropertyTile.cpp" />
+    <ClCompile Include="Tiles\StartTile.cpp" />
+    <ClCompile Include="Tiles\StoreTile.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

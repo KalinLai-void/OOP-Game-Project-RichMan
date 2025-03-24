@@ -1,5 +1,5 @@
-﻿#include "Game.hpp"
-#include "GameConfig.hpp"
+﻿#include "Game/Game.hpp"
+#include "Game/GameConfig.hpp"
 #include "SingletonManager.hpp"
 #include <iostream>
 using namespace std;
