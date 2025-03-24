@@ -123,13 +123,13 @@
     <ClInclude Include="MiniGames\MiniGameManager.hpp">
       <Filter>標頭檔\MiniGames</Filter>
     </ClInclude>
-    <ClInclude Include="HorseRacing.hpp">
-      <Filter>標頭檔\MiniGames</Filter>
-    </ClInclude>
-    <ClInclude Include="DragonGateGame.hpp">
-      <Filter>標頭檔\MiniGames</Filter>
-    </ClInclude>
     <ClInclude Include="MiniGame.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGames\DragonGateGame.hpp">
+      <Filter>標頭檔\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGames\HorseRacing.hpp">
       <Filter>標頭檔\MiniGames</Filter>
     </ClInclude>
   </ItemGroup>
@@ -194,10 +194,10 @@
     <ClCompile Include="MiniGames\MinigameManager.cpp">
       <Filter>來源檔案\MniGames</Filter>
     </ClCompile>
-    <ClCompile Include="HorseRacing.cpp">
+    <ClCompile Include="MiniGames\DragonGateGame.cpp">
       <Filter>來源檔案\MniGames</Filter>
     </ClCompile>
-    <ClCompile Include="DragonGateGame.cpp">
+    <ClCompile Include="MiniGames\HorseRacing.cpp">
       <Filter>來源檔案\MniGames</Filter>
     </ClCompile>
   </ItemGroup>
