@@ -63,22 +63,7 @@
     <ClInclude Include="SingletonManager.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Cards\BarrierCard.hpp">
-      <Filter>標頭檔\Cards</Filter>
-    </ClInclude>
-    <ClInclude Include="Cards\DestroyCard.hpp">
-      <Filter>標頭檔\Cards</Filter>
-    </ClInclude>
     <ClInclude Include="Cards\Card.hpp">
-      <Filter>標頭檔\Cards</Filter>
-    </ClInclude>
-    <ClInclude Include="Cards\DiceCard.hpp">
-      <Filter>標頭檔\Cards</Filter>
-    </ClInclude>
-    <ClInclude Include="Cards\FateCard.hpp">
-      <Filter>標頭檔\Cards</Filter>
-    </ClInclude>
-    <ClInclude Include="Cards\RocketCard.hpp">
       <Filter>標頭檔\Cards</Filter>
     </ClInclude>
     <ClInclude Include="Game\Board.hpp">
@@ -139,21 +124,6 @@
     </ClCompile>
     <ClCompile Include="SingletonManager.cpp">
       <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="Cards\BarrierCard.cpp">
-      <Filter>來源檔案\Cards</Filter>
-    </ClCompile>
-    <ClCompile Include="Cards\DestroyCard.cpp">
-      <Filter>來源檔案\Cards</Filter>
-    </ClCompile>
-    <ClCompile Include="Cards\DiceCard.cpp">
-      <Filter>來源檔案\Cards</Filter>
-    </ClCompile>
-    <ClCompile Include="Cards\FateCard.cpp">
-      <Filter>來源檔案\Cards</Filter>
-    </ClCompile>
-    <ClCompile Include="Cards\RocketCard.cpp">
-      <Filter>來源檔案\Cards</Filter>
     </ClCompile>
     <ClCompile Include="Game\Board.cpp">
       <Filter>來源檔案\Game</Filter>

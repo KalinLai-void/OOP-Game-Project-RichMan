@@ -2,14 +2,9 @@
 #define CARDSTORE_HPP
 
 #include "Bank.hpp"
-#include "Cards/BarrierCard.hpp"
 #include "Cards/Card.hpp"
-#include "Cards/DestroyCard.hpp"
-#include "Cards/DiceCard.hpp"
-#include "Cards/FateCard.hpp"
 #include "Game/GameConfig.hpp"
 #include "Game/Player.hpp"
-#include "Cards/RocketCard.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>

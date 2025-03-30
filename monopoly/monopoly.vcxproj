@@ -137,12 +137,7 @@
     <None Include="json\dialogue.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cards\BarrierCard.hpp" />
     <ClInclude Include="Cards\Card.hpp" />
-    <ClInclude Include="Cards\DestroyCard.hpp" />
-    <ClInclude Include="Cards\DiceCard.hpp" />
-    <ClInclude Include="Cards\FateCard.hpp" />
-    <ClInclude Include="Cards\RocketCard.hpp" />
     <ClInclude Include="Game\Board.hpp" />
     <ClInclude Include="Game\Game.hpp" />
     <ClInclude Include="Game\GameConfig.hpp" />
@@ -164,11 +159,6 @@
     <ClInclude Include="Utils\Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cards\BarrierCard.cpp" />
-    <ClCompile Include="Cards\DestroyCard.cpp" />
-    <ClCompile Include="Cards\DiceCard.cpp" />
-    <ClCompile Include="Cards\FateCard.cpp" />
-    <ClCompile Include="Cards\RocketCard.cpp" />
     <ClCompile Include="Game\Board.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameConfig.cpp" />

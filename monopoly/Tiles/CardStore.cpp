@@ -9,17 +9,7 @@ CardStore* CardStore::instance = nullptr;
 CardStore::CardStore(const GameConfig& config) {
 
     for (const auto& card : config.getCards()) {
-        if (card.name == "Barrier Card") {
-            cards.push_back(std::make_shared<BarrierCard>(card.name, card.icon, card.price, card.effect));
-        } else if (card.name == "Destroy Card") {
-            cards.push_back(std::make_shared<DestroyCard>(card.name, card.icon, card.price, card.effect));
-        } else if (card.name == "Dice Card") {
-            cards.push_back(std::make_shared<DiceCard>(card.name, card.icon, card.price, card.effect));
-        } else if (card.name == "Fate Card") {
-            cards.push_back(std::make_shared<FateCard>(card.name, card.icon, card.price, card.effect));
-        } else if (card.name == "Rocket Card") {
-            cards.push_back(std::make_shared<RocketCard>(card.name, card.icon, card.price, card.effect));
-        }
+        
     }
 
     SingletonManager::registerDestructor(CardStore::destroyInstance);
