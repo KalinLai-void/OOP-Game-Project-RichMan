@@ -31,7 +31,7 @@ private:
     int winMoney = 0;
     int passingStartBonus = 0;
     int mapSize = 8;
-    int tileWidth = 12;
+    size_t tileWidth = 14;
     long long animationTime = 0;
     bool animation = true;
     std::vector<std::string> playersName;

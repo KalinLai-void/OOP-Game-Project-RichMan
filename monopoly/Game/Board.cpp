@@ -134,28 +134,28 @@ void Board::drawBoard() {
             std::cout << std::string(this->tileWidth, '-') << "+";
         }
         std::cout << "\n";
-        for (int i = 0; i < mapSize; i++) {
+        for (size_t i = 0; i < mapSize; i++) {
             // tile name
             std::cout << "| ";
-            for (int j = 0; j < mapSize; j++) {
+            for (size_t j = 0; j < mapSize; j++) {
                 const std::string& cell = board[i][j];
                 std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
             }
             // player icon
             std::cout << "\n| ";
-            for (int j = 0; j < mapSize; j++) {
+            for (size_t j = 0; j < mapSize; j++) {
                 const std::string& cell = playerBoard[i][j];
                 std::cout << std::left << std::setw(this->tileWidth - 2 + (cell.length() - stripAnsi(cell).length())) << cell << " | ";
             }
             // property level
             std::cout << "\n| ";
-            for (int j = 0; j < mapSize; j++) {
+            for (size_t j = 0; j < mapSize; j++) {
                 std::cout << "\033[48;5;237m " << std::left << std::setw(this->tileWidth - 3) << propertyLevelIcons[propertyLevelBoard[i][j]] << resetColor
                           << " | ";
             }
             // footer
             std::cout << "\n+";
-            for (int j = 0; j < mapSize; j++) {
+            for (size_t j = 0; j < mapSize; j++) {
                 std::cout << std::string(this->tileWidth, '-') << "+";
             }
             std::cout << "\n";
