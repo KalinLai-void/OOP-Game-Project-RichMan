@@ -17,7 +17,7 @@ private:
     std::vector<std::shared_ptr<Player>> playersList;
     std::map<std::shared_ptr<Player>, int> playersPosition; // Pair(First: Init round position, Second: Current round position)
     int mapSize = 0;
-    int tileWidth = 0;
+    size_t tileWidth = 0;
     bool animation = true;
     bool animationDone = false;
     int animationTime = 0;
