@@ -8,6 +8,10 @@
 #include "Game/Board.hpp"
 class Player; // Forward declaration to prevent circular dependency
 
+
+/*
+* You can inherit from this class and override `useEffect` to implement custom card behaviro.
+*/
 class Card {
 private:
     std::string name;
@@ -37,6 +41,12 @@ public:
         return effect;
     }
 
+    /*
+    * Pure virtual function: must be implemented in derived card classes.
+    * 
+    * @param players List of all players in the game (can be used for target selection)
+    * @param curPlayer The player who is using the card
+    */
     virtual void useEffect(std::vector<std::shared_ptr<Player>>& players, std::shared_ptr<Player> curPlayer) = 0;
 };
 
