@@ -26,7 +26,19 @@ private:
     std::vector<std::vector<std::string>> playerBoard;
     std::vector<std::vector<int>> propertyLevelBoard;
     std::vector<std::string> propertyLevelIcons;
+
+    /**
+    * Update player position
+    * 
+    * @param players A list of all players.
+    */
     void updatePlayerPositions(const std::vector<std::shared_ptr<Player>>& players);
+    
+    /**
+    * Update property state
+    * 
+    * @param players A list of all players.
+    */
     void updateProperty(const std::vector<std::shared_ptr<Player>>& players);
 
 public:
@@ -37,9 +49,22 @@ public:
     Board& operator=(const Board&) = delete;
 
     void init(const GameConfig& config, const std::vector<std::shared_ptr<Player>>& players);
+    
+    /**
+    * Get the number of tiles on the board.
+    */
     int getSize() const;
+
+    /**
+    * Get the specified tile
+    */
     std::shared_ptr<Tile> getTile(int index);
+
+    /**
+    * Get a list of all tiles on the board.
+    */
     std::vector<std::shared_ptr<Tile>> getTileList();
+
     template <typename T>
     std::vector<int> findAllTilePositions() {
         std::vector<int> positions;
@@ -63,10 +88,23 @@ public:
         return -1;
     }
 
+    /**
+    * Draws the entire board
+    */
     void drawBoard();
+
+    /**
+     * Displays the Monopoly-themed ASCII art at the start of the game.
+     *
+     * Only shown if animation is enabled in the configuration.
+     */
     void drawMonopolyAscii();
 
     std::vector<std::shared_ptr<PropertyTile>> getPlayerProperty(const std::shared_ptr<Player>& player);
+    
+    /**
+    * Clear all message on terminal
+    */
     static void clearScreen();
 };
 

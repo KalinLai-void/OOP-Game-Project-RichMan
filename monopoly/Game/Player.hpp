@@ -34,6 +34,10 @@ public:
 
     long long getMoney() const;
     int getPosition() const;
+
+    /**
+    * Get the specified number for rolling dice
+    */
     int getDiceControl() const;
     bool isBankrupt() const;
     bool isInHospital() const;
@@ -58,8 +62,24 @@ public:
     void startMiniGame();
     void endMiniGame();
 
+    /**
+    * Get all cards currently held by the player
+    */
     std::vector<std::shared_ptr<Card>> getCards();
+
+    /**
+    * Display cards owned by player and allowing them to choose to use
+    * 
+    * @param players Reference to all player (used if the card affects others).
+    */
     void displayCards(std::vector<std::shared_ptr<Player>>& players);
+    
+    /**
+    * Use the specified card
+    * 
+    * @param index For obtain specified card
+    * @param players For efffecting may need choose player
+    */
     void useCard(int index, std::vector<std::shared_ptr<Player>>& players);
     int rollDice();
 };
