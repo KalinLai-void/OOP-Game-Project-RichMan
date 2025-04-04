@@ -10,7 +10,7 @@ class Player; // Forward declaration to prevent circular dependency
 
 
 /*
-* You can inherit from this class and override `useEffect` to implement custom card behaviro.
+* You can inherit from this class and override `useEffect` to implement custom card behavior.
 */
 class Card {
 private:
